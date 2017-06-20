@@ -1,0 +1,3 @@
+config/__pycache__/configfile.cpython-35.pyc
+*.pyc
+database/database.db
