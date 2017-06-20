@@ -25,8 +25,9 @@ def help_command(bot, update):
 spread it on telegram with your name? This bot just echos your messages. Send here what you \
 want and you will get the same message back, then forward the message where you want \
 and the forward label will have the name of this bot. It works also if you edit messages or forward \
-messages. It also keeps the same text formatting style."
-	update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
+messages. It also keeps the same text formatting style.\
+\n<a href=\"https://github.com/91DarioDev/ForwardsCoverBot\">Source code of the bot</a>"
+	update.message.reply_text(text=text, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 def invalid_command(bot, update):
 	text = "This command is invalid"
