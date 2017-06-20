@@ -20,7 +20,7 @@ from config import configfile
 import utils
 
 def connect():
-	conn = sqlite3.connect("database/"+configfile.db_name)
+	conn = sqlite3.connect(configfile.db_name)
 	c = conn.cursor()
 	return (conn, c)
 
