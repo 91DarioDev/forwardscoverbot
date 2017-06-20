@@ -83,6 +83,14 @@ def process_message(bot, update):
 		last_name = message.contact.last_name
 		message.reply_contact(phone_number=phone_number, first_name=first_name, last_name=last_name)
 
+	elif message.venue:
+		longitude = message.venue.location.longitude
+		latitude = message.venue.location.latitude
+		title = message.venue.title
+		address = message.venue.address
+		foursquare_id = message.venue.foursquare_id
+		message.reply_venue(longitude=longitude, latitude=latitude, title=title, address=address, foursquare_id=foursquare_id)
+
 	elif message.location:
 		longitude = message.location.longitude
 		latitude = message.location.latitude
