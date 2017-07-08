@@ -17,6 +17,7 @@
 from telegram import ParseMode
 
 import database
+import keyboards
 
 import html
 import time
@@ -25,7 +26,8 @@ import time
 def before_processing(bot, update):
 	if update.effective_chat.type != "private":
 		text = "This bot can be used only in private chats! I leave! Bye!"
-		update.effective_message.reply_text(text=text)
+		keyboard = keyboards.private_chat_kb()
+		update.effective_message.reply_text(text=text, reply_markup=keyboard)
 		bot.leave_chat(chat_id=update.effective_message.chat_id)
 		update.message = None
 		
