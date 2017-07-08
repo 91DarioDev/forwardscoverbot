@@ -25,7 +25,7 @@ def before_processing(bot, update):
 	if update.effective_chat.type != "private":
 		text = "This bot can be used only in private chats! I leave! Bye!"
 		update.effective_message.reply_text(text=text)
-		bot.leave_chat(chat_id=update.message.chat_id)
+		bot.leave_chat(chat_id=update.effective_message.chat_id)
 		update.message = None
 		
 	else:
