@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from config import configfile
+
 import locale
 locale.setlocale(locale.LC_ALL,"")
 

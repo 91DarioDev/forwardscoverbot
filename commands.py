@@ -16,18 +16,20 @@
 
 
 from telegram import ParseMode
+
 import utils
 import database
+import keyboards
 
 
 def help_command(bot, update):
+	keyboard = keyboards.github_link_kb()
 	text = "<b>Do you want to send a message to someone or in a group, but you want to avoid that someone could \
 spread it on telegram with your name? This bot just echos your messages</b>.\n\nSend here what you \
 want and you will get the same message back, then forward the message where you want \
 and the forward label will have the name of this bot.\n<i>It works also if you edit messages or forward \
-messages. It also keeps the same text formatting style.</i>\
-\n<a href=\"https://github.com/91DarioDev/ForwardsCoverBot\">Source code of the bot</a>"
-	update.message.reply_text(text=text, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+messages. It also keeps the same text formatting style.</i>"
+	update.message.reply_text(text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
 def invalid_command(bot, update):
 	text = "This command is invalid"
