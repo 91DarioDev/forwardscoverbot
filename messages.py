@@ -22,9 +22,9 @@ import time
 
 
 def before_processing(bot, update):
-	if update.message.chat.type != "private":
+	if update.effective_chat.type != "private":
 		text = "This bot can be used only in private chats! I leave! Bye!"
-		update.message.reply_text(text=text)
+		update.effective_message.reply_text(text=text)
 		bot.leave_chat(chat_id=update.message.chat_id)
 		update.message = None
 		
