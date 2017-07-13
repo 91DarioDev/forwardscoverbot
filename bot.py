@@ -45,8 +45,7 @@ def main():
 	# messages
 	dp.add_handler(MessageHandler(Filters.all, messages.before_processing), -1)
 	# commands
-	dp.add_handler(CommandHandler('start', commands.help_command))
-	dp.add_handler(CommandHandler('help', commands.help_command))
+	dp.add_handler(CommandHandler(('start', 'help'), commands.help_command))
 	dp.add_handler(CommandHandler('stats', commands.stats))
 	dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview))
 	dp.add_handler(MessageHandler(Filters.command, commands.invalid_command))
