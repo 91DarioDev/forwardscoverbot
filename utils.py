@@ -37,6 +37,6 @@ def only_admin(func):
 		if update.message.from_user.id not in configfile.admins:
 			invalid_command(bot, update, *args, **kwargs)
 			return
-		return funcs(bot, update, *args, **kwargs)
+		return func(bot, update, *args, **kwargs)
 	return wrapped
 
