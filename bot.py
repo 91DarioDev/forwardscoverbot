@@ -24,6 +24,7 @@ from config import configfile
 import database
 import commands
 import messages
+import utils
 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -48,7 +49,7 @@ def main():
 	dp.add_handler(CommandHandler(('start', 'help'), commands.help_command))
 	dp.add_handler(CommandHandler('stats', commands.stats))
 	dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview))
-	dp.add_handler(MessageHandler(Filters.command, commands.invalid_command))
+	dp.add_handler(MessageHandler(Filters.command, utils.invalid_command))
 	# messages
 	dp.add_handler(MessageHandler(~Filters.command, messages.process_message, edited_updates=True))
 

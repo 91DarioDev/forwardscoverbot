@@ -14,7 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from functools import wraps
 from config import configfile
+
 
 import locale
 locale.setlocale(locale.LC_ALL,"")
@@ -23,6 +25,18 @@ def n_dots(number):
     number = locale.format("%d", number, grouping=True)
     return number
 
-def not_allowed(bot, update):
-	if update.message.from_user.id not in configfile.admins:
-		return True
+
+def invalid_command(bot, update):
+	text = "This command is invalid"
+	update.message.reply_text(text=text, quote=True)
+
+
+def only_admin(func):
+	@wraps(func)
+	def wrapped(bot, update, *args, **kwargs):
+		if update.message.from_user.id not in configfile.admins:
+			invalid_command(bot, update, *args, **kwargs)
+			return
+		return funcs(bot, update, *args, **kwargs)
+	return wrapped
+
