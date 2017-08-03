@@ -54,15 +54,11 @@ Use it replying to the message the bot already echoed and you want to disable th
 
 	text = update.message.reply_to_message.text_html
 	update.message.reply_to_message.reply_text(text=text, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
-	
 
 
-def invalid_command(bot, update):
-	text = "This command is invalid"
-	update.message.reply_text(text=text, quote=True)
 
+@utils.only_admin
 def stats(bot, update):
-	if utils.not_allowed(bot, update):
-		invalid_command(bot, update)
-		return
 	update.message.reply_text(text=database.stats_text(), parse_mode=ParseMode.HTML)
+
+
