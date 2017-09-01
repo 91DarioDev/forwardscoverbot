@@ -29,7 +29,7 @@ def before_processing(bot, update):
 		keyboard = keyboards.private_chat_kb()
 		update.effective_message.reply_text(text=text, reply_markup=keyboard)
 		bot.leave_chat(chat_id=update.effective_message.chat_id)
-		update.message = None
+		raise DispatcherHandlerStop
 		
 	else:
 		int_time = int(time.mktime(update.message.date.timetuple()))
