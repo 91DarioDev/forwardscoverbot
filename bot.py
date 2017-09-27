@@ -51,7 +51,7 @@ def main():
 	dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview))
 	dp.add_handler(MessageHandler(Filters.command, utils.invalid_command))
 	# messages
-	dp.add_handler(MessageHandler(~Filters.command, messages.process_message, edited_updates=True))
+	dp.add_handler(MessageHandler(Filters.all, messages.process_message, edited_updates=True), 1)
 
 	# handle errors
 	dp.add_error_handler(error)
