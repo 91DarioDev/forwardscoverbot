@@ -21,6 +21,7 @@ from config import configfile
 import locale
 locale.setlocale(locale.LC_ALL,"")
 
+
 def n_dots(number):
     number = locale.format("%d", number, grouping=True)
     return number

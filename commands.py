@@ -15,13 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from telegram import ParseMode
-from telegram import MessageEntity
-from telegram import ParseMode
-
 import utils
 import database
 import keyboards
+
+from telegram import MessageEntity
+from telegram import ParseMode
 
 
 def help_command(bot, update):
@@ -54,7 +53,6 @@ Use it replying to the message the bot already echoed and you want to disable th
 
     text = update.message.reply_to_message.text_html
     update.message.reply_to_message.reply_text(text=text, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
-
 
 
 @utils.only_admin

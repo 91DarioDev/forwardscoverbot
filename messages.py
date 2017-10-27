@@ -20,7 +20,6 @@ from telegram.ext import DispatcherHandlerStop
 import database
 import keyboards
 
-import html
 import time
 
 
@@ -35,7 +34,6 @@ def before_processing(bot, update):
     else:
         int_time = int(time.mktime(update.message.date.timetuple()))
         database.add_user_db(update.message.from_user.id, int_time)
-
 
 
 def process_message(bot, update):
@@ -114,7 +112,3 @@ def process_message(bot, update):
         text = "Sorry, this kind of media is not supported yet"
         message.reply_text(text=text, quote=True)
 
-
-
-            
-                

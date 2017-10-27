@@ -15,7 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
 # the token of the bot you get from t.me/botfather (type: str)
 bot_token = "token"
 

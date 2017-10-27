@@ -16,13 +16,14 @@
 
 import sqlite3
 import time
-from config import configfile
 import utils
+from config import configfile
+
 
 def connect():
     conn = sqlite3.connect("database/"+configfile.db_name)
     c = conn.cursor()
-    return (conn, c)
+    return conn, c
 
 
 def query_w(query, *params):
@@ -48,6 +49,7 @@ def create_db():
     query = "CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY, last_activity INTEGER)"
     query_w(query)
 
+
 def add_user_db(user_id, time):
     # try to update or ignore
     query = "UPDATE OR IGNORE users SET last_activity = ? WHERE user_id = ?"
@@ -55,6 +57,7 @@ def add_user_db(user_id, time):
     # try to add or ignore
     query = "INSERT OR IGNORE INTO users(user_id, last_activity) VALUES (?, ?)"
     query_w(query, user_id, time)
+
 
 def stats_text():
     query = "SELECT count(user_id) FROM users"
@@ -71,6 +74,7 @@ def stats_text():
     text = "<b>Total users:</b> {0}\n<b>Last7days:</b> {1}\n<b>Last24h:</b> {2}"
     text = text.format(utils.n_dots(total), utils.n_dots(last7d), utils.n_dots(last24h))
     return text
+
 
 # create the database
 create_db()
