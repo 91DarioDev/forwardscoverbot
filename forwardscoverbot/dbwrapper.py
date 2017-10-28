@@ -28,7 +28,7 @@ LOCAL = threading.local()
 
 def conn():
     if not hasattr(LOCAL, "db"):
-        LOCAL.db = sqlite3.connect("database/"+configfile.DB_NAME)
+        LOCAL.db = sqlite3.connect("database/"+config.DB_NAME)
     return LOCAL.db
 
 

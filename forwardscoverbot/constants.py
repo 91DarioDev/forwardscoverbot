@@ -18,4 +18,4 @@ from forwardscoverbot import config
 
 from telegram import Bot
 
-GET_ME = Bot(configfile.BOT_TOKEN).getMe()
+GET_ME = Bot(config.BOT_TOKEN).getMe()
