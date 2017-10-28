@@ -10,6 +10,7 @@ To be sure that when you send messages to this bot to anonymize them it doesn't 
 
 **Clone and install:**
 ```
+cd path
 git clone https://github.com/91DarioDev/forwardscoverbot
 cd forwardscoverbot
 pip install .
@@ -26,11 +27,14 @@ pip install .
 ```
 forwardscoverbot
 ```
+Note: _In case you want to call forwardscoverbot from another path, you can, but you have to specify the path of the config.yaml file as first argument in the cli.
+Example:_
+`fowardscoverbot path/forwardscoverbot/config/config.yaml`
 
 **Upgrade the bot:**
 ```
+cd path/forwardscoverbot
 git pull https://github.com/91DarioDev/forwardscoverbot
-cd forwardscoverbot
 pip install --upgrade .
 ```
 
