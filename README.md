@@ -34,3 +34,12 @@ cd forwardscoverbot
 pip install .
 ```
 
+## How to use it:
+
+- send messages to the bots to get echoed messages
+
+**Commands:**
+
+- `/start`, `/help` - replies with a welcome message
+- `/disablewebpagepreview`- remove the link preview from an echoed message
+- `/stats` - get statistics about the use of the bot (admins only)
