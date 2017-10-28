@@ -14,8 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>.
 
-from forwardscoverbot import config
+# _________________________________________________________________________
 
-from telegram import Bot
+# before of running the bot you should create a file named `config.yaml`
+# the file should be the same of this one, but replacing sample variables with true data
 
-GET_ME = Bot(configfile.BOT_TOKEN).getMe()
+
+# the token of the bot you get from t.me/botfather (type: str)
+bot_token: "token"
+
+# the name of the database (type: str)
+db_name: "database.db"
+
+# a list containing the telegram ids of the admins of the bot (type: ids are int)
+admins: 
+- 1234

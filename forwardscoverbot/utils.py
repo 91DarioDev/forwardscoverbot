@@ -15,7 +15,7 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>.
 
 from functools import wraps
-from config import configfile
+from forwardscoverbot import config
 
 from telegram.ext.dispatcher import run_async
 

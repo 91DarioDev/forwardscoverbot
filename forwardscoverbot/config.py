@@ -1,8 +1,3 @@
-"""
-before of running the bot you should create a file named `configfile.py`
-the file should be the same of this one, but replacing sample variables with true data
-"""
-
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
 # Copyright (C) 2017  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 
@@ -19,13 +14,11 @@ the file should be the same of this one, but replacing sample variables with tru
 # You should have received a copy of the GNU General Public License
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>.
 
-# the token of the bot you get from t.me/botfather (type: str)
-BOT_TOKEN = "token"
+import yaml
+with open("config/config.example.yaml", 'r') as stream:
+    conf = yaml.load(stream)
 
-# the name of the database (type: str)
-DB_NAME = "database.db"
+BOT_TOKEN = conf['bot_token']
+DB_NAME = conf['db_name']
+ADMINS = conf['admins']
 
-# a python list containing the telegram ids of the admins of the bot (type: ids are int)
-ADMINS = [
-    1234
-]
