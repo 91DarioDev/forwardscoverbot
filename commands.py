@@ -16,7 +16,7 @@
 
 
 import utils
-import database
+import dbwrapper
 import keyboards
 
 from telegram import MessageEntity
@@ -63,6 +63,7 @@ def disable_web_page_preview(bot, update):
 
 @utils.only_admin
 def stats(bot, update):
-    update.message.reply_text(text=database.stats_text(), parse_mode=ParseMode.HTML)
+    update.message.reply_text(text=dbwrapper.stats_text(), parse_mode=ParseMode.HTML)
+
 
 
