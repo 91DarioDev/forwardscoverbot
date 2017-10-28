@@ -47,14 +47,15 @@ def main():
     dp = updater.dispatcher
 
     # messages
-    dp.add_handler(MessageHandler(Filters.all, messages.before_processing), -1)
-    # commands
-    dp.add_handler(CommandHandler(('start', 'help'), commands.help_command))
-    dp.add_handler(CommandHandler('stats', commands.stats))
-    dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview))
-    dp.add_handler(MessageHandler(Filters.command, utils.invalid_command))
+    dp.add_handler(MessageHandler(Filters.all, messages.before_processing), 0)
     # messages
     dp.add_handler(MessageHandler(Filters.all, messages.process_message, edited_updates=True), 1)
+    # commands
+    dp.add_handler(CommandHandler(('start', 'help'), commands.help_command), 2)
+    dp.add_handler(CommandHandler('stats', commands.stats), 2)
+    dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview), 2)
+    dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
+
 
     # handle errors
     dp.add_error_handler(error)
