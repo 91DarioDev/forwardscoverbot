@@ -16,7 +16,8 @@
 
 import sqlite3
 import time
-import utils
+
+from forwardscoverbot import utils
 from config import configfile
 
 
