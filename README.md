@@ -19,7 +19,7 @@ pip install .
 - open `forwardscoverbot/config/config.example.yaml`
 - select all and copy
 - create a file `forwardscoverbot/config/config.yaml`
-- replace the values with real values
+- paste and replace the values with real values
 - save and close
 
 **Run the bot:**
