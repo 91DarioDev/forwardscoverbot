@@ -14,8 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>.
 
-from config import configfile
+from forwardscoverbot import config
 
 from telegram import Bot
 
-GET_ME = Bot(configfile.BOT_TOKEN).getMe()
+GET_ME = Bot(config.BOT_TOKEN).getMe()
