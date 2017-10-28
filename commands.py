@@ -47,7 +47,8 @@ def disable_web_page_preview(bot, update):
         update.message.reply_to_message.reply_text(text=text, quote=True)
         return
 
-    entities = update.message.reply_to_message.parse_entities([MessageEntity.URL, MessageEntity.TEXT_LINK])
+    entities_list = [MessageEntity.URL, MessageEntity.TEXT_LINK]
+    entities = update.message.reply_to_message.parse_entities(entities_list)
     if len(entities) == 0:
         text = "This message does not have a web page preview"
         update.message.reply_to_message.reply_text(text=text, quote=True)
