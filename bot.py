@@ -15,16 +15,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler  
 import logging
 
-#files
+# files
 from config import configfile
-import database
 import commands
 import messages
 import utils
+
+from telegram.ext import (
+        Updater,
+        CommandHandler,
+        MessageHandler,
+        Filters)
 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -37,8 +40,8 @@ def error(bot, update, error):
 
 
 def main():
-    #  define the updater
-    updater = Updater(token=configfile.bot_token)
+    # define the updater
+    updater = Updater(token=configfile.BOT_TOKEN)
     
     # define the dispatcher
     dp = updater.dispatcher
@@ -55,7 +58,6 @@ def main():
 
     # handle errors
     dp.add_error_handler(error)
-
 
     updater.start_polling()
     updater.idle()

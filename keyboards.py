@@ -10,15 +10,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-
 import constants
 
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+
+
 def github_link_kb():
-    button0 = InlineKeyboardButton(text="Source code", url="https://github.com/91DarioDev/ForwardsCoverBot")
+    button0 = InlineKeyboardButton(
+            text="Source code", 
+            url="https://github.com/91DarioDev/ForwardsCoverBot")
     buttons_list = [[button0]]
     keyboard = InlineKeyboardMarkup(buttons_list)
     return keyboard
+
 
 def private_chat_kb():
     bot_link = "https://t.me/{}".format(constants.GET_ME.username)
