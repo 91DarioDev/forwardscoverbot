@@ -15,7 +15,7 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>.
 
 import yaml
-with open("config/config.example.yaml", 'r') as stream:
+with open("config/config.yaml", 'r') as stream:
     conf = yaml.load(stream)
 
 BOT_TOKEN = conf['bot_token']
