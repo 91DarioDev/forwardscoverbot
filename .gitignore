@@ -2,3 +2,4 @@
 .idea/
 /config/configfile.py
 /database/database.db
+/config/config.yaml
