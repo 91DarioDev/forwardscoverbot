@@ -18,13 +18,10 @@ from functools import wraps
 from config import configfile
 
 
-import locale
-locale.setlocale(locale.LC_ALL,"")
-
-
-def n_dots(number):
-    number = locale.format("%d", number, grouping=True)
-    return number
+def sep(num, none_is_zero=False):
+    if num is None:
+        return 0 if none_is_zero is True else None
+    return "{:,}".format(num)
 
 
 def invalid_command(bot, update):

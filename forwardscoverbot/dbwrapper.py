@@ -73,7 +73,7 @@ def stats_text():
     last7d = query_r(query, interval7d, one=True)[0]
 
     text = "<b>Total users:</b> {0}\n<b>Last7days:</b> {1}\n<b>Last24h:</b> {2}"
-    text = text.format(utils.n_dots(total), utils.n_dots(last7d), utils.n_dots(last24h))
+    text = text.format(utils.sep(total), utils.sep(last7d), utils.sep(last24h))
     return text
 
 
