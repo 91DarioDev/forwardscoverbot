@@ -36,7 +36,7 @@ pip install .
 
 ## How to use it:
 
-- send messages to the bots to get echoed messages
+- send messages to the bot to get echoed messages
 
 **Commands:**
 
