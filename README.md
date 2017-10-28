@@ -31,7 +31,7 @@ forwardscoverbot
 ```
 git pull https://github.com/91DarioDev/forwardscoverbot
 cd forwardscoverbot
-pip install .
+pip install --upgrade .
 ```
 
 ## How to use it:
