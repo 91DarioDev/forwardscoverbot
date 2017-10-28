@@ -16,34 +16,39 @@
 
 import sqlite3
 import time
+import threading
 
 from forwardscoverbot import utils
 from config import configfile
 
 
-def connect():
-    conn = sqlite3.connect("database/"+configfile.DB_NAME)
-    c = conn.cursor()
-    return conn, c
+LOCAL = threading.local()
+
+def conn():
+    if not hasattr(LOCAL, "db"):
+        LOCAL.db = sqlite3.connect("database/"+configfile.DB_NAME)
+    return LOCAL.db
 
 
 def query_w(query, *params):
-    conn, c = connect()
-    c.execute(query, params)
-    conn.commit()
-    conn.close()
+    connect = conn()
+    cursor = connect.cursor()
+    cursor.execute(query, params)
+    cursor.connection.commit()
+    cursor.close()
 
 
 def query_r(query, *params, one=False):
-    conn, c = connect()
-    c.execute(query, params)
+    connect = conn()
+    cursor = connect.cursor()
+    cursor.execute(query, params)
     try:
         if not one:
-            return c.fetchall()
+            return cursor.fetchall()
         else:
-            return c.fetchone()
+            return cursor.fetchone()
     finally:
-        conn.close()
+        cursor.close()
 
 
 def create_db():
