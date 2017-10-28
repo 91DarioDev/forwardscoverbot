@@ -14,30 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>.
 
-from functools import wraps
-from forwardscoverbot import config
+# _________________________________________________________________________
 
-from telegram.ext.dispatcher import run_async
-
-
-def sep(num, none_is_zero=False):
-    if num is None:
-        return 0 if none_is_zero is True else None
-    return "{:,}".format(num)
+# before of running the bot you should create a file named `config.yaml`
+# the file should be the same of this one, but replacing sample variables with true data
 
 
-@run_async
-def invalid_command(bot, update):
-    text = "This command is invalid"
-    update.message.reply_text(text=text, quote=True)
+# the token of the bot you get from t.me/botfather (type: str)
+bot_token: "token"
 
+# the name of the database (type: str)
+db_name: "database.db"
 
-def only_admin(func):
-    @wraps(func)
-    def wrapped(bot, update, *args, **kwargs):
-        if update.message.from_user.id not in config.ADMINS:
-            invalid_command(bot, update, *args, **kwargs)
-            return
-        return func(bot, update, *args, **kwargs)
-    return wrapped
-
+# a list containing the telegram ids of the admins of the bot (type: ids are int)
+admins: 
+- 1234

@@ -18,7 +18,7 @@
 import logging
 
 # files
-from config import configfile
+from forwardscoverbot import config
 from forwardscoverbot import commands
 from forwardscoverbot import messages
 from forwardscoverbot import utils
@@ -41,7 +41,7 @@ def error(bot, update, error):
 
 def main():
     # define the updater
-    updater = Updater(token=configfile.BOT_TOKEN)
+    updater = Updater(token=config.BOT_TOKEN)
     
     # define the dispatcher
     dp = updater.dispatcher

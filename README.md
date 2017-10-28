@@ -6,4 +6,4 @@ This telegram bot just echoes any message you send it or modify for him. If you 
 If you want to run this bot by you, you need:
 - python
 - python-telegram-bot (https://python-telegram-bot.org/)
-- copy `configfile.example.py` in `config`. Create a new file in `config` and name it `configfile.py`. Replace example values with true values 
+- copy `config.example.yaml` in `config`. Create a new file in `config` and name it `config.yaml`. Paste and replace example values with true values 
