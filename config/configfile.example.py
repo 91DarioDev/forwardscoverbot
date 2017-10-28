@@ -1,3 +1,8 @@
+"""
+before of starting the bot you should create a a file named `configfile.py`
+the file should be the same of this one, but replacing sample variables with true data
+"""
+
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
 # Copyright (C) 2017  Dario dariomsn@hotmail.it
 
@@ -22,4 +27,6 @@ bot_token = "token"
 db_name = "database.db"
 
 # a python list containing the telegram ids of the admins of the bot (type: ids are int)
-admins = []
+admins = [
+	1234
+]
