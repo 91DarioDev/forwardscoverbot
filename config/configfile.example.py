@@ -28,5 +28,5 @@ db_name = "database.db"
 
 # a python list containing the telegram ids of the admins of the bot (type: ids are int)
 admins = [
-	1234
+    1234
 ]
