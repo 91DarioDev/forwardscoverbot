@@ -14,13 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+import time
+
 from telegram import ParseMode
 from telegram.ext import DispatcherHandlerStop
 
-import dbwrapper
-import keyboards
-
-import time
+from forwardscoverbot import dbwrapper
+from forwardscoverbot import keyboards
 
 
 def before_processing(bot, update):

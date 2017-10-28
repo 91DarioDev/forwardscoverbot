@@ -15,9 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import utils
-import dbwrapper
-import keyboards
+from forwardscoverbot import utils
+from forwardscoverbot import dbwrapper
+from forwardscoverbot import keyboards
 
 from telegram import MessageEntity
 from telegram import ParseMode
