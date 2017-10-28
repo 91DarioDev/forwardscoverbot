@@ -17,7 +17,7 @@
 from telegram import ParseMode
 from telegram.ext import DispatcherHandlerStop
 
-import database
+import dbwrapper
 import keyboards
 
 import time
@@ -33,7 +33,7 @@ def before_processing(bot, update):
         
     else:
         int_time = int(time.mktime(update.message.date.timetuple()))
-        database.add_user_db(update.message.from_user.id, int_time)
+        dbwrapper.add_user_db(update.message.from_user.id, int_time)
 
 
 def process_message(bot, update):
