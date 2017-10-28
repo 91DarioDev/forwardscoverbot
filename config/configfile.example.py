@@ -1,5 +1,5 @@
 """
-before of starting the bot you should create a a file named `configfile.py`
+before of running the bot you should create a file named `configfile.py`
 the file should be the same of this one, but replacing sample variables with true data
 """
 
