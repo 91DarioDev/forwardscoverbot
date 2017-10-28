@@ -15,15 +15,17 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>.
 
 import yaml
+import sys
 try:
 	with open("config/config.yaml", 'r') as stream:
 	    conf = yaml.load(stream)
 except FileNotFoundError:
-	print("before of running the bot you should create a file named `config.yaml` in `config`.\n"
-			"\nOpen `config/config.example.yaml`\ncopy all\ncreate a file named `config.yaml`\n"
-			"replace sample variables with true data")
+	print("\n\nATTENTION:\n"
+			"before of running forwardscoverbot you should create a file named `config.yaml`"
+			" in `config`.\n\nOpen `config/config.example.yaml`\ncopy all\ncreate a file "
+			"named `config.yaml`\nreplace sample variables with true data")
+	sys.exit()
 
 BOT_TOKEN = conf['bot_token']
 DB_PATH = conf['db_path']
 ADMINS = conf['admins']
-
