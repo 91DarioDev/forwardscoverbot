@@ -51,13 +51,13 @@ def create_db():
     query_w(query)
 
 
-def add_user_db(user_id, time):
+def add_user_db(user_id, int_time):
     # try to update or ignore
     query = "UPDATE OR IGNORE users SET last_activity = ? WHERE user_id = ?"
-    query_w(query, time, user_id)
+    query_w(query, int_time, user_id)
     # try to add or ignore
     query = "INSERT OR IGNORE INTO users(user_id, last_activity) VALUES (?, ?)"
-    query_w(query, user_id, time)
+    query_w(query, user_id, int_time)
 
 
 def stats_text():
