@@ -16,8 +16,13 @@
 
 import yaml
 import sys
+
+
+path = "config/config.yaml"
+if len(sys.argv) == 1:
+	path = sys.argv[1]
 try:
-	with open("config/config.yaml", 'r') as stream:
+	with open(path, 'r') as stream:
 	    conf = yaml.load(stream)
 except FileNotFoundError:
 	print("\n\nATTENTION:\n"
