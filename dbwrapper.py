@@ -21,7 +21,7 @@ from config import configfile
 
 
 def connect():
-    conn = sqlite3.connect("database/"+configfile.db_name)
+    conn = sqlite3.connect("database/"+configfile.DB_NAME)
     c = conn.cursor()
     return conn, c
 

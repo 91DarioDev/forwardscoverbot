@@ -21,12 +21,12 @@ the file should be the same of this one, but replacing sample variables with tru
 
 
 # the token of the bot you get from t.me/botfather (type: str)
-bot_token = "token"
+BOT_TOKEN = "token"
 
 # the name of the database (type: str)
-db_name = "database.db"
+DB_NAME = "database.db"
 
 # a python list containing the telegram ids of the admins of the bot (type: ids are int)
-admins = [
+ADMINS = [
     1234
 ]

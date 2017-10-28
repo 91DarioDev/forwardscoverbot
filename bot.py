@@ -41,7 +41,7 @@ def error(bot, update, error):
 
 def main():
     # define the updater
-    updater = Updater(token=configfile.bot_token)
+    updater = Updater(token=configfile.BOT_TOKEN)
     
     # define the dispatcher
     dp = updater.dispatcher
