@@ -21,6 +21,8 @@ import threading
 from forwardscoverbot import utils
 from config import configfile
 
+from telegram.ext.dispatcher import run_async
+
 
 LOCAL = threading.local()
 
@@ -53,6 +55,7 @@ def create_db():
     run_query(query)
 
 
+@run_async
 def add_user_db(user_id, int_time):
     # try to update or ignore
     query = "UPDATE OR IGNORE users SET last_activity = ? WHERE user_id = ?"
