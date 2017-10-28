@@ -19,9 +19,9 @@ import logging
 
 # files
 from config import configfile
-import commands
-import messages
-import utils
+from forwardscoverbot import commands
+from forwardscoverbot import messages
+from forwardscoverbot import utils
 
 from telegram.ext import (
         Updater,
