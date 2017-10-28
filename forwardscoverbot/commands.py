@@ -22,7 +22,10 @@ from forwardscoverbot import keyboards
 from telegram import MessageEntity
 from telegram import ParseMode
 
+from telegram.ext.dispatcher import run_async
 
+
+@run_async
 def help_command(bot, update):
     keyboard = keyboards.github_link_kb()
     text = ("<b>Do you want to send a message to someone or in a group, but you want to avoid "
@@ -34,6 +37,7 @@ def help_command(bot, update):
     update.message.reply_text(text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
 
+@run_async
 def disable_web_page_preview(bot, update):
     if not update.message.reply_to_message:
         text = ("This command permits to remove the web page preview from a message with "

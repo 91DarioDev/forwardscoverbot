@@ -17,6 +17,8 @@
 from functools import wraps
 from config import configfile
 
+from telegram.ext.dispatcher import run_async
+
 
 def sep(num, none_is_zero=False):
     if num is None:
@@ -24,6 +26,7 @@ def sep(num, none_is_zero=False):
     return "{:,}".format(num)
 
 
+@run_async
 def invalid_command(bot, update):
     text = "This command is invalid"
     update.message.reply_text(text=text, quote=True)

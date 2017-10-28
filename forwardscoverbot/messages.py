@@ -23,6 +23,8 @@ from telegram.ext import DispatcherHandlerStop
 from forwardscoverbot import dbwrapper
 from forwardscoverbot import keyboards
 
+from telegram.ext.dispatcher import run_async
+
 
 def before_processing(bot, update):
     if update.effective_chat.type != "private":
@@ -37,6 +39,7 @@ def before_processing(bot, update):
         dbwrapper.add_user_db(update.message.from_user.id, int_time)
 
 
+@run_async
 def process_message(bot, update):
     message = update.message
     if update.edited_message:
