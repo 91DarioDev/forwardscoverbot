@@ -71,7 +71,12 @@ def process_message(bot, update):
         performer = message.audio.performer
         title = message.audio.title
         caption = message.caption
-        message.reply_audio(audio=media, duration=duration, performer=performer, title=title, caption=caption)
+        message.reply_audio(
+                audio=media, 
+                duration=duration, 
+                performer=performer, 
+                title=title, 
+                caption=caption)
     
     elif message.video:
         media = message.video.file_id
@@ -83,7 +88,10 @@ def process_message(bot, update):
         phone_number = message.contact.phone_number
         first_name = message.contact.first_name
         last_name = message.contact.last_name
-        message.reply_contact(phone_number=phone_number, first_name=first_name, last_name=last_name)
+        message.reply_contact(
+                phone_number=phone_number, 
+                first_name=first_name, 
+                last_name=last_name)
 
     elif message.venue:
         longitude = message.venue.location.longitude
@@ -91,7 +99,12 @@ def process_message(bot, update):
         title = message.venue.title
         address = message.venue.address
         foursquare_id = message.venue.foursquare_id
-        message.reply_venue(longitude=longitude, latitude=latitude, title=title, address=address, foursquare_id=foursquare_id)
+        message.reply_venue(
+                longitude=longitude, 
+                latitude=latitude, 
+                title=title, 
+                address=address, 
+                foursquare_id=foursquare_id)
 
     elif message.location:
         longitude = message.location.longitude

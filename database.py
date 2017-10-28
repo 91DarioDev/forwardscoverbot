@@ -78,3 +78,4 @@ def stats_text():
 
 # create the database
 create_db()
+
