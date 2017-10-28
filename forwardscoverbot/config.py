@@ -19,6 +19,6 @@ with open("config/config.yaml", 'r') as stream:
     conf = yaml.load(stream)
 
 BOT_TOKEN = conf['bot_token']
-DB_NAME = conf['db_name']
+DB_PATH = conf['db_path']
 ADMINS = conf['admins']
 

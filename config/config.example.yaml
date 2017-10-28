@@ -24,7 +24,7 @@
 bot_token: "token"
 
 # the name of the database (type: str)
-db_name: "database.db"
+db_path: "database/database.db"
 
 # a list containing the telegram ids of the admins of the bot (type: ids are int)
 admins: 
