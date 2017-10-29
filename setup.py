@@ -19,33 +19,33 @@ import setuptools
 
 setuptools.setup(
 
-    name = "forwardscoverbot",
-    version = "1",
+    name="forwardscoverbot",
+    version="1",
 
-    license = "GPL-3",
+    license="GPL-3",
 
-    author = "Dario 91DarioDev",
-    author_email = "dariomsn@hotmail.it",
+    author="Dario 91DarioDev",
+    author_email="dariomsn@hotmail.it",
 
-    install_requires = [
+    install_requires=[
         "python-telegram-bot",
         "Pyyaml"
     ],
 
-    packages = [
+    packages=[
         "forwardscoverbot",
     ],
 
-    entry_points = {
+    entry_points={
         "console_scripts": [
             "forwardscoverbot = forwardscoverbot.__main__:main",
         ],
     },
 
-    include_package_data = True,
-    zip_safe = False,
+    include_package_data=True,
+    zip_safe=False,
 
-    classifiers = [
+    classifiers=[
         "Not on PyPI"
     ],
 
