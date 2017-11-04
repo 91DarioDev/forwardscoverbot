@@ -30,7 +30,9 @@ forwardscoverbot
 Note: _In case you want to call forwardscoverbot from another path, you can, but you have to specify the path of the config.yaml file as first argument in the cli.
 Example:_
 
-`fowardscoverbot path/forwardscoverbot/config/config.yaml`
+```
+fowardscoverbot path/forwardscoverbot/config/config.yaml
+```
 
 **Upgrade the bot:**
 ```
