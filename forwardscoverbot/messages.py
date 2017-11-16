@@ -45,18 +45,18 @@ def process_message(bot, update):
     if update.edited_message:
         message = update.edited_message
 
+    caption = message.caption
+
     if message.text:
         message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
 
     elif message.voice:
         media = message.voice.file_id
         duration = message.voice.duration
-        caption = message.caption
         message.reply_voice(voice=media, duration=duration, caption=caption)
 
     elif message.photo:
         media = message.photo[-1].file_id
-        caption = message.caption
         message.reply_photo(photo=media, caption=caption)
 
     elif message.sticker:
@@ -66,7 +66,6 @@ def process_message(bot, update):
     elif message.document:
         media = message.document.file_id
         filename = message.document.file_name
-        caption = message.caption
         message.reply_document(document=media, filename=filename, caption=caption)
 
     elif message.audio:
@@ -74,7 +73,6 @@ def process_message(bot, update):
         duration = message.audio.duration
         performer = message.audio.performer
         title = message.audio.title
-        caption = message.caption
         message.reply_audio(
                 audio=media, 
                 duration=duration, 
@@ -84,7 +82,6 @@ def process_message(bot, update):
     
     elif message.video:
         media = message.video.file_id
-        caption = message.caption
         duration = message.video.duration
         message.reply_video(video=media, duration=duration, caption=caption)
 
