@@ -18,6 +18,7 @@
 from forwardscoverbot import utils
 from forwardscoverbot import dbwrapper
 from forwardscoverbot import keyboards
+from forwardscoverbot import messages
 
 from telegram import MessageEntity
 from telegram import ParseMode
@@ -28,12 +29,16 @@ from telegram.ext.dispatcher import run_async
 @run_async
 def help_command(bot, update):
     keyboard = keyboards.github_link_kb()
-    text = ("<b>Do you want to send a message to someone or in a group, but you want to avoid "
-            "that someone could spread it on telegram with your name? This bot just echos "
-            "your messages</b>.\n\nSend here what you want and you will get the same message "
-            "back, then forward the message where you want and the forward label will have "
-            "the name of this bot.\n<i>It works also if you edit messages or forward messages. "
-            "It also keeps the same text formatting style.</i>")
+    text = (
+        "<b>Do you want to send a message to someone or in a group, but you want to avoid "
+        "that someone could spread it on telegram with your name? This bot just echos "
+        "your messages</b>.\n\nSend here what you want and you will get the same message "
+        "back, then forward the message where you want and the forward label will have "
+        "the name of this bot.\n<i>It works also if you edit messages or forward messages. "
+        "It also keeps the same text formatting style.</i>\n\n"
+        "<b>Supported commands:</b>\n"
+        "/disablewebpagepreview\n"
+        "/removecaption")
     update.message.reply_text(text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
 
@@ -63,6 +68,29 @@ def disable_web_page_preview(bot, update):
             text=text, 
             disable_web_page_preview=True, 
             parse_mode=ParseMode.HTML)
+
+
+@run_async
+def remove_caption(bot, update):
+    if not update.message.reply_to_message:
+        text = (
+            "This command permits to remove caption from a message. Reply with this command to "
+            "the message where you want to remove the caption. Be sure the message has a caption."
+        )
+        update.message.reply_text(text=text)
+        return
+
+    if not update.message.reply_to_message.caption:
+        text = "This message has no caption, so what should i remove? Using this command with messages having caption."
+        bot.sendMessage(
+            chat_id=update.message.from_user.id,
+            text=text,
+            reply_to_message=update.message.reply_to_message.message_id,
+            quote=True
+        )
+        return
+
+    messages.process_message(bot, update, remove_caption=True)
 
 
 @utils.only_admin
