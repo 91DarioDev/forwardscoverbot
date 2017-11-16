@@ -50,3 +50,4 @@ pip install --upgrade .
 - `/start`, `/help` - replies with a welcome message
 - `/disablewebpagepreview`- remove the link preview from an echoed message
 - `/stats` - get statistics about the use of the bot (admins only)
+- `/removecaption` - remove caption from a message
