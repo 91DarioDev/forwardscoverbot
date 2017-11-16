@@ -85,7 +85,7 @@ def remove_caption(bot, update):
         bot.sendMessage(
             chat_id=update.message.from_user.id,
             text=text,
-            reply_to_message=update.message.reply_to_message.message_id,
+            reply_to_message_id=update.message.reply_to_message.message_id,
             quote=True
         )
         return
