@@ -104,7 +104,7 @@ def add_caption(bot, update):
             "the message where you want to add the caption.</b>\n\n<i>If the message already has a caption "
             "this command will overwrite the current caption with the new one.\n"
             "if the message doesn't support a caption, it simply won't add it, no errors are returned</i>\n\n\n"
-            "<i>Note: if the message is sent by you, you can just edit it to add the caption. This command is intended"
+            "<i>Note: if the message is sent by you, you can just edit it to add the caption. This command is intended "
             "in case for example you are fowarding from a channel a big file you don't want to download and "
             "upload again.</i>"
         )
