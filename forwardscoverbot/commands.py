@@ -106,7 +106,7 @@ def add_caption(bot, update):
             "if the message doesn't support a caption, it simply won't add it, no errors are returned</i>\n\n\n"
             "<i>Note: if the message is sent by you, you can just edit it to add the caption. This command is intended"
             "in case for example you are fowarding from a channel a big file you don't want to download and "
-            "upload again."
+            "upload again.</i>"
         )
         update.message.reply_text(text=text, parse_mode='HTML')
         return
