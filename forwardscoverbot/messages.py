@@ -40,15 +40,20 @@ def before_processing(bot, update):
 
 
 @run_async
-def process_message(bot, update, remove_caption=False):
+def process_message(bot, update, remove_caption=False, custom_caption=None):
     if update.edited_message:
         message = update.edited_message
     elif remove_caption:
         message = update.message.reply_to_message
+    elif custom_caption is not None:
+        message = update.message.reply_to_message
     else:
         message = update.message
 
-    caption = message.caption if remove_caption is False else None
+    if custom_caption is None:
+        caption = message.caption if remove_caption is False else None
+    else:
+        caption = custom_caption
 
     if message.text:
         message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)

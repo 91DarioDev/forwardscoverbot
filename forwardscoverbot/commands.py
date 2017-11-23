@@ -22,6 +22,7 @@ from forwardscoverbot import messages
 
 from telegram import MessageEntity
 from telegram import ParseMode
+from telegram import constants as t_consts
 
 from telegram.ext.dispatcher import run_async
 
@@ -38,7 +39,9 @@ def help_command(bot, update):
         "It also keeps the same text formatting style.</i>\n\n"
         "<b>Supported commands:</b>\n"
         "/disablewebpagepreview\n"
-        "/removecaption")
+        "/removecaption\n"
+        "/addcaption"
+    )
     update.message.reply_text(text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
 
@@ -81,7 +84,7 @@ def remove_caption(bot, update):
         return
 
     if not update.message.reply_to_message.caption:
-        text = "This message has no caption, so what should i remove? Using this command with messages having caption."
+        text = "This message has no caption, so what should i remove? Use this command with messages having caption."
         bot.sendMessage(
             chat_id=update.message.from_user.id,
             text=text,
@@ -92,6 +95,36 @@ def remove_caption(bot, update):
 
     messages.process_message(bot, update, remove_caption=True)
 
+
+@run_async
+def add_caption(bot, update):
+    if not update.message.reply_to_message:
+        text = (
+            "<b>This command permits to add a caption to a message. Reply with this command to "
+            "the message where you want to add the caption.</b>\n\n<i>If the message already has a caption "
+            "this command will overwrite the current caption with the new one.\n"
+            "if the message doesn't support a caption, it simply won't add it, no errors are returned</i>"
+        )
+        update.message.reply_text(text=text, parse_mode='HTML')
+        return
+
+    caption = " ".join(update.message.text.split(" ")[1:])
+
+    if len(caption) > t_consts.MAX_CAPTION_LENGTH:
+        text = "This caption is too long. max allowed: {} chars. Please retry removing {} chars.".format(
+            t_consts.MAX_CAPTION_LENGTH,
+            len(caption) - t_consts.MAX_CAPTION_LENGTH
+        )
+        bot.sendMessage(
+            chat_id=update.message.from_user.id,
+            text=text,
+            reply_to_message_id=update.message.reply_to_message.message_id,
+            quote=True
+        )
+        return
+
+    messages.process_message(bot, update, custom_caption=caption)
+    
 
 @utils.only_admin
 def stats(bot, update):
