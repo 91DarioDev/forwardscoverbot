@@ -100,7 +100,7 @@ def remove_caption(bot, update):
 def add_caption(bot, update):
     if not update.message.reply_to_message:
         text = (
-            "<b>This command permits to add a caption to a message. Reply with this command to "
+            "<b>This command permits to add a caption to a message. Reply with this command and the caption after it to "
             "the message where you want to add the caption.</b>\n\n<i>If the message already has a caption "
             "this command will overwrite the current caption with the new one.\n"
             "if the message doesn't support a caption, it simply won't add it, no errors are returned</i>\n\n\n"
