@@ -51,7 +51,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
         message = update.message
 
     if custom_caption is None:
-        caption = message.caption if remove_caption is False else None
+        caption = message.caption_html if remove_caption is False else None
     else:
         caption = custom_caption
 
@@ -61,11 +61,11 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     elif message.voice:
         media = message.voice.file_id
         duration = message.voice.duration
-        message.reply_voice(voice=media, duration=duration, caption=caption)
+        message.reply_voice(voice=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
 
     elif message.photo:
         media = message.photo[-1].file_id
-        message.reply_photo(photo=media, caption=caption)
+        message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
 
     elif message.sticker:
         media = message.sticker.file_id
@@ -74,7 +74,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     elif message.document:
         media = message.document.file_id
         filename = message.document.file_name
-        message.reply_document(document=media, filename=filename, caption=caption)
+        message.reply_document(document=media, filename=filename, caption=caption, parse_mode=ParseMode.HTML)
 
     elif message.audio:
         media = message.audio.file_id
@@ -86,12 +86,13 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                 duration=duration, 
                 performer=performer, 
                 title=title, 
-                caption=caption)
+                caption=caption, 
+                parse_mode=ParseMode.HTML)
     
     elif message.video:
         media = message.video.file_id
         duration = message.video.duration
-        message.reply_video(video=media, duration=duration, caption=caption)
+        message.reply_video(video=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
 
     elif message.contact:
         phone_number = message.contact.phone_number

@@ -112,6 +112,7 @@ def add_caption(bot, update):
         return
 
     caption = " ".join(update.message.text.split(" ")[1:])
+    caption_html = " ".join(update.message.text_html.split(" ")[1:])
 
     if len(caption) > t_consts.MAX_CAPTION_LENGTH:
         text = "This caption is too long. max allowed: {} chars. Please retry removing {} chars.".format(
@@ -126,7 +127,7 @@ def add_caption(bot, update):
         )
         return
 
-    messages.process_message(bot, update, custom_caption=caption)
+    messages.process_message(bot, update, custom_caption=caption_html)
     
 
 @utils.only_admin
