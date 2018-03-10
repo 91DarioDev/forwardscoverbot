@@ -51,7 +51,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
         message = update.message
 
     if custom_caption is None:
-        caption = message.caption_html if remove_caption is False else None
+        caption = message.caption_html if (message.caption and remove_caption is False) else None
     else:
         caption = custom_caption
 
