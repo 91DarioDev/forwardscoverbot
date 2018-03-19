@@ -17,6 +17,8 @@
 from telegram import InputMedia, InputMediaPhoto, InputMediaVideo
 from telegram.ext import DispatcherHandlerStop
 from telegram import ChatAction
+from telegram import ParseMode
+
 
 
 ALBUM_DICT = {}
@@ -54,7 +56,7 @@ def collect_album_items(bot, update, job_queue):
     to_collect = {}
     to_collect['message_id'] = update.message.message_id
     to_collect['file_id'] = update.message.photo[-1].file_id if update.message.photo else update.message.video.file_id
-    to_collect['caption'] = '' if update.message.caption is None else update.message.caption
+    to_collect['caption'] = '' if update.message.caption is None else update.message.caption_html
     to_collect['type'] = 'photo' if update.message.photo else 'video'
     if media_group_id not in ALBUM_DICT:
         bot.sendChatAction(
@@ -80,14 +82,16 @@ def send_album(bot, job):
             media.append(
                 InputMediaPhoto(
                     media=item['file_id'],
-                    caption=item['caption']
+                    caption=item['caption'],
+                    parse_mode=ParseMode.HTML
                 )
             )
         elif item['type'] == 'video':
             media.append(
                 InputMediaVideo(
                     media=item['file_id'],
-                    caption=item['caption']
+                    caption=item['caption'],
+                    parse_mode=ParseMode.HTML
                 )
             )
     bot.sendMediaGroup(
