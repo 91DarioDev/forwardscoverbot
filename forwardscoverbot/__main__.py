@@ -23,6 +23,7 @@ from forwardscoverbot import commands
 from forwardscoverbot import messages
 from forwardscoverbot import utils
 from forwardscoverbot import albums
+from forwardscoverbot import custom_filters
 
 from telegram.ext import (
         Updater,
@@ -54,16 +55,16 @@ def main():
     # messages
     dp.add_handler(MessageHandler(Filters.all, messages.before_processing), 0)
     # albums
-    dp.add_handler(MessageHandler(Filters.photo | Filters.video, albums.possible_album_processing, pass_job_queue=True), 1)
+    dp.add_handler(MessageHandler(custom_filters.album, albums.collect_album_items, pass_job_queue=True), 1)
     # messages
-    dp.add_handler(MessageHandler(Filters.all, messages.process_message, edited_updates=True), 2)
+    dp.add_handler(MessageHandler(Filters.all, messages.process_message, edited_updates=True), 1)
     # commands
-    dp.add_handler(CommandHandler(('start', 'help'), commands.help_command), 3)
-    dp.add_handler(CommandHandler('stats', commands.stats), 3)
-    dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview), 3)
-    dp.add_handler(CommandHandler('removecaption', commands.remove_caption), 3)
-    dp.add_handler(CommandHandler('addcaption', commands.add_caption), 3)
-    dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 3)
+    dp.add_handler(CommandHandler(('start', 'help'), commands.help_command), 2)
+    dp.add_handler(CommandHandler('stats', commands.stats), 2)
+    dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview), 2)
+    dp.add_handler(CommandHandler('removecaption', commands.remove_caption), 2)
+    dp.add_handler(CommandHandler('addcaption', commands.add_caption), 2)
+    dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
 
 
     # handle errors

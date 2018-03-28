@@ -20,26 +20,7 @@ from telegram import ChatAction
 from telegram import ParseMode
 
 
-
 ALBUM_DICT = {}
-
-
-def possible_album_processing(bot, update, job_queue):
-    if is_album(bot, update):
-        collect_album_items(bot, update, job_queue)
-        raise DispatcherHandlerStop
-    else:
-        return
-
-
-def is_album(bot, update):
-    """ 
-    return True or False if the message is part of an album
-    """
-    if update.message.media_group_id is None:
-        return False
-    else:
-        return True
 
 
 def collect_album_items(bot, update, job_queue):
@@ -47,54 +28,53 @@ def collect_album_items(bot, update, job_queue):
     if the media_group_id not a key in the dictionary yet:
         - send sending action
         - create a key in the dict with media_group_id
-        - add a list to the key and the first element is this message
+        - add a list to the key and the first element is this update
         - schedule a job in 1 sec
     else:
-        - add the message to the list of that media_group_id
+        - add update to the list of that media_group_id
     """
     media_group_id = update.message.media_group_id
-    to_collect = {}
-    to_collect['message_id'] = update.message.message_id
-    to_collect['file_id'] = update.message.photo[-1].file_id if update.message.photo else update.message.video.file_id
-    to_collect['caption'] = '' if update.message.caption is None else update.message.caption_html
-    to_collect['type'] = 'photo' if update.message.photo else 'video'
     if media_group_id not in ALBUM_DICT:
         bot.sendChatAction(
             chat_id=update.message.from_user.id, 
             action=ChatAction.UPLOAD_PHOTO if update.message.photo else ChatAction.UPLOAD_VIDEO
         )
-        ALBUM_DICT[media_group_id] = []
-        ALBUM_DICT[media_group_id].append(to_collect)
+        ALBUM_DICT[media_group_id] = [update]
         # schedule the job
-        job_queue.run_once(send_album, 1, context=[update.message.from_user.id, media_group_id])
+        job_queue.run_once(send_album, 1, context=[media_group_id])
     else:
-        ALBUM_DICT[media_group_id].append(to_collect)
+        ALBUM_DICT[media_group_id].append(update)
 
 
 def send_album(bot, job):
-    user_id, media_group_id = job.context
-    items = ALBUM_DICT[media_group_id]
+    media_group_id = job.context[0]
+    updates = ALBUM_DICT[media_group_id]
+
     # delete from ALBUM_DICT
     del ALBUM_DICT[media_group_id]
+
+    # ordering album updates
+    updates.sort(key=lambda x: x.message.message_id)
+
     media = []
-    for item in items:
-        if item['type'] == 'photo':
+    for update in updates:
+        if update.message.photo:
             media.append(
                 InputMediaPhoto(
-                    media=item['file_id'],
-                    caption=item['caption'],
+                    media=update.message.photo[-1].file_id,
+                    caption='' if update.message.caption is None else update.message.caption_html,
                     parse_mode=ParseMode.HTML
                 )
             )
-        elif item['type'] == 'video':
+        elif update.message.video:
             media.append(
                 InputMediaVideo(
-                    media=item['file_id'],
-                    caption=item['caption'],
+                    media=update.message.video.file_id,
+                    caption='' if update.message.caption is None else update.message.caption_html,
                     parse_mode=ParseMode.HTML
                 )
             )
     bot.sendMediaGroup(
-        chat_id=user_id,
+        chat_id=updates[0].message.from_user.id,
         media=media
     )
