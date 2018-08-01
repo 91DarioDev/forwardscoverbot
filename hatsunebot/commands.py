@@ -27,7 +27,7 @@ def help_command(bot, update):
         text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
 
-@run_async
+# @run_async
 def callback_minute(bot, job):
     try:
         send_media = config.PHOTO_LIST[0]
