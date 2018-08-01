@@ -1,35 +1,21 @@
-# ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2018  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
-#
-# ForwardsCoverBot is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published
-# by the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# ForwardsCoverBot is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
+#!/usr/bin/env python3
 
-
+# python lib
 import logging
 
 # files
-from forwardscoverbot import config
-from forwardscoverbot import commands
-from forwardscoverbot import messages
-from forwardscoverbot import utils
-from forwardscoverbot import albums
-from forwardscoverbot import custom_filters
+from hatsunebot import config
+from hatsunebot import commands
+from hatsunebot import messages
+from hatsunebot import utils
+from hatsunebot import albums
+from hatsunebot import custom_filters
 
-from telegram.ext import (
-        Updater,
-        CommandHandler,
-        MessageHandler,
-        Filters)
+# use the python-telegram-bot lib
+from telegram.ext import Updater
+from telegram.ext import Filters
+from telegram.ext import MessageHandler
+from telegram.ext import CommandHandler
 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -50,7 +36,7 @@ def main():
     dp = updater.dispatcher
 
     # define jobs
-    j = updater.job_queue
+    updater.job_queue
 
     # messages
     dp.add_handler(MessageHandler(Filters.all, messages.before_processing), 0)

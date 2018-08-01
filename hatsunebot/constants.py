@@ -15,12 +15,8 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
 
-from telegram.ext import BaseFilter
+from hatsunebot import config
 
-class Album(BaseFilter):
-	def filter(self, message):
-	    if (message.photo or message.video) and message.media_group_id is not None:
-	        return True
+from telegram import Bot
 
-
-album = Album()
+GET_ME = Bot(config.BOT_TOKEN).getMe()
