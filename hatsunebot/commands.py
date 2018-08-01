@@ -34,7 +34,7 @@ def callback_minute(bot, job):
     except IndexError:
         return
 
-    bot.send_photo(char_id=config.CHAT_ID, photo=send_media, caption=None)
+    bot.send_photo(chat_id=config.CHAT_ID, photo=send_media, caption=None)
     del config.PHOTO_LIST[0]
 
 
