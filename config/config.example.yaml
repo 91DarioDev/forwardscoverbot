@@ -23,9 +23,6 @@
 # the token of the bot you get from t.me/botfather (type: str)
 bot_token: "token"
 
-# the name of the database (type: str)
-db_path: "database/database.db"
-
 # a list containing the telegram ids of the admins of the bot (type: ids are int)
 admins: 
 - 1234

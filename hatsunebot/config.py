@@ -21,5 +21,4 @@ except IOError:
     sys.exit()
 
 BOT_TOKEN = conf['bot_token']
-DB_PATH = conf['db_path']
 ADMINS = conf['admins']
