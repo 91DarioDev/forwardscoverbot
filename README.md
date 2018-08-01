@@ -17,19 +17,19 @@ pip install .
 **Config the bot:**
 - open `forwards-pics-bot/config/config.example.yaml`
 - select all and copy
-- create a file `forwardscoverbot/config/config.yaml`
+- create a file `forwards-pics-bot/config/config.yaml`
 - paste and replace the values with real values
 - save and close
 
 **Run the bot:**
 ```
-bot
+hatsunebot /path/config.yaml
 ```
 
 
 **Upgrade the bot:**
 ```
-cd path/forwardscoverbot
+cd /path/forwards-pics-bot
 git pull https://github.com/rikonaka/forwards-pics-bot.git
 pip install --upgrade .
 ```
@@ -43,7 +43,3 @@ pip install --upgrade .
 **Commands:**
 
 - `/start`, `/help` - replies with a welcome message
-- `/disablewebpagepreview`- remove the link preview from an echoed message
-- `/stats` - get statistics about the use of the bot (admins only)
-- `/removecaption` - remove caption from a message
-- `/addcaption` - add or overwrite a caption to a message
