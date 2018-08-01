@@ -193,7 +193,8 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
         message.reply_text(text=text, quote=True)
 
     else:
-        text = "Sorry, this kind of media is not supported yet"
+        # text = "Sorry, this kind of media is not supported yet"
+        text = "Thanks"
         message.reply_text(text=text, quote=True)
 
 
