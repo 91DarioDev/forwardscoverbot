@@ -27,16 +27,21 @@ def help_command(bot, update):
         text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
 
-# @run_async
+# send here
+@run_async
 def callback_minute(bot, job):
     try:
-        send_message = config.PHOTO_LIST[0]
+        mid = config.MESSAGE_ID_LIST[0]
+        fid = config.FROM_CHAT_ID_LIST[0]
     except IndexError:
         return
 
     # bot.send_photo(chat_id=config.CHAT_ID, photo=send_media, caption=None)
-    bot.send_message(chat_id=config.CHAT_ID, text=send_message)
-    del config.PHOTO_LIST[0]
+    # bot.send_message(chat_id=config.CHAT_ID, text=send_message)
+    bot.forwardMessage(char_id=config.CHAT_ID,
+                       from_chat_id=fid, message_id=mid)
+    del config.MESSAGE_ID_LIST[0]
+    del config.FROM_CHAT_ID_LIST[0]
 
 
 '''

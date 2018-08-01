@@ -20,6 +20,70 @@ def before_processing(bot, update):
         raise DispatcherHandlerStop
 '''
 
+'''
+{
+    'message': {
+        'forward_from_chat': {
+            'username': u'tisin',
+            'type': u'channel',
+            'id': -1001391,
+            'title': u'\u'
+        },
+        'new_chat_photo': [],
+        'forward_from_message_id': 8,
+        'from': {
+            'username': u'F',
+            'first_name': u'F',
+            'is_bot': False,
+            'id': 360,
+            'language_code': u'en-US'
+        },
+        'photo': [
+            {
+                'width': 51,
+                'file_size': 1557,
+                'file_id': 'AgADBQAD_KcxGwXYYVStW1Des0zIABDDZchxiztdpUI0DAAEC',
+                'height': 90
+            },
+            {
+                'width': 180,
+                'file_size': 17166,
+                'file_id': 'AgADBQAD_KcxGwXYYVSpM6wKoubIoovtXUUY0DAAEC',
+                'height': 320
+            },
+            {
+                'width': 450,
+                'file_size': 66591,
+                'file_id': 'AgADBQAD_KcxGwXYYVSW1Des0zIABLPlYZZVN40kUo0DAAEC',
+                'height': 800
+            },
+            {'width': 720,
+             'file_size': 105193,
+             'file_id': 'AgADBQAD_KcxGwXYYVSpM6wtes0zIABAmVScx2EOOCT40DAAEC',
+             'height': 1280
+             }
+        ],
+        'forward_date': 944,
+        'channel_chat_created': False,
+        'caption_entities': [],
+        'delete_chat_photo': False,
+        'entities': [],
+        'new_chat_members': [],
+        'supergroup_chat_created': False,
+        'chat': {
+            'username': u'F',
+            'first_name': u'F',
+            'type': u'private',
+            'id': 9180
+        },
+        'date': 12523,
+        'group_chat_created': False,
+        'message_id': 62
+    },
+    'update_id': 9646
+}
+'''
+
 
 @run_async
 def process_message(bot, update, remove_caption=False, custom_caption=None):
@@ -54,7 +118,11 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     elif message.photo:
         # we will send all the message
         # media = message.photo[-1].file_id
-        config.PHOTO_LIST.append(message)
+        from_chat_id = message.forward_from_chat.id
+        config.FROM_CHAT_ID_LIST.append(from_chat_id)
+
+        message_id = message.message_id
+        config.MESSAGE_ID_LIST.append(message_id)
         # message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
 
     elif message.sticker:

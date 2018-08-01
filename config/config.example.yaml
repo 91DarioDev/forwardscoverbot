@@ -10,4 +10,4 @@ admins:
 - 1234
 
 # which id you want to send message
-chat_id: "chatid"
+chat_id: "id"
