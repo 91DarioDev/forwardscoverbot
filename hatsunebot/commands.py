@@ -33,6 +33,8 @@ def callback_minute(bot, job):
     try:
         mid = config.MESSAGE_ID_LIST[0]
         fid = config.FROM_CHAT_ID_LIST[0]
+        print(mid)
+        print(fid)
     except IndexError:
         return
 
