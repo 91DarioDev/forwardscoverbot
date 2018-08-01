@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 
-import time
-
 from telegram import ParseMode
 from telegram.ext import DispatcherHandlerStop
 
 from hatsunebot import keyboards
 from hatsunebot import config
-from hatsunebot import utils.invalid_command
+from hatsunebot import utils
 
 from telegram.ext.dispatcher import run_async
 
@@ -16,7 +14,7 @@ from telegram.ext.dispatcher import run_async
 def process_message(bot, update, remove_caption=False, custom_caption=None):
 
     if update.message.from_user.id not in config.ADMINS:
-        invalid_command(bot, update)
+        utils.invalid_command(bot, update)
         return
     # here get the message
     if update.edited_message:
