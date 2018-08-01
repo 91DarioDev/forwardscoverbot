@@ -52,8 +52,9 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
 
     # here we work
     elif message.photo:
-        media = message.photo[-1].file_id
-        config.PHOTO_LIST.append(media)
+        # we will send all the message
+        # media = message.photo[-1].file_id
+        config.PHOTO_LIST.append(message)
         # message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
 
     elif message.sticker:

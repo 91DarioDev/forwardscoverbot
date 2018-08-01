@@ -30,11 +30,12 @@ def help_command(bot, update):
 # @run_async
 def callback_minute(bot, job):
     try:
-        send_media = config.PHOTO_LIST[0]
+        send_message = config.PHOTO_LIST[0]
     except IndexError:
         return
 
-    bot.send_photo(chat_id=config.CHAT_ID, photo=send_media, caption=None)
+    # bot.send_photo(chat_id=config.CHAT_ID, photo=send_media, caption=None)
+    bot.send_message(chat_id=config.CHAT_ID, text=send_message)
     del config.PHOTO_LIST[0]
 
 
