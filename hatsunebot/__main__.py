@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # python lib
 import logging
@@ -38,10 +38,10 @@ def main():
     dp = updater.dispatcher
 
     # define jobs
-    updater.job_queue
+    job = updater.job_queue
+    job.run_repeating(
+        commands.callback_minute, interval=5, first=0)
 
-    # messages
-    dp.add_handler(MessageHandler(Filters.all, messages.before_processing), 0)
     # albums
     dp.add_handler(MessageHandler(custom_filters.album,
                                   albums.collect_album_items, pass_job_queue=True), 1)
@@ -50,10 +50,10 @@ def main():
         Filters.all, messages.process_message, edited_updates=True), 1)
     # commands
     dp.add_handler(CommandHandler(('start', 'help'), commands.help_command), 2)
-    dp.add_handler(CommandHandler('disablewebpagepreview',
-                                  commands.disable_web_page_preview), 2)
-    dp.add_handler(CommandHandler('removecaption', commands.remove_caption), 2)
-    dp.add_handler(CommandHandler('addcaption', commands.add_caption), 2)
+    # dp.add_handler(CommandHandler('set_ads_time', commands.set_ads_time), 2)
+    # dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview), 2)
+    # dp.add_handler(CommandHandler('removecaption', commands.remove_caption), 2)
+    # dp.add_handler(CommandHandler('addcaption', commands.add_caption), 2)
     dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
 
     # handle errors
