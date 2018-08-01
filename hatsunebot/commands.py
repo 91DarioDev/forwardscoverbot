@@ -38,7 +38,7 @@ def callback_minute(bot, job):
 
     # bot.send_photo(chat_id=config.CHAT_ID, photo=send_media, caption=None)
     # bot.send_message(chat_id=config.CHAT_ID, text=send_message)
-    bot.forwardMessage(char_id=config.CHAT_ID,
+    bot.forwardMessage(chat_id=config.CHAT_ID,
                        from_chat_id=fid, message_id=mid)
     del config.MESSAGE_ID_LIST[0]
     del config.FROM_CHAT_ID_LIST[0]
