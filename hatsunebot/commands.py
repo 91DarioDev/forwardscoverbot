@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from hatsunebot import utils
-from hatsunebot import dbwrapper
 from hatsunebot import keyboards
 from hatsunebot import messages
 
@@ -117,9 +116,3 @@ def add_caption(bot, update):
         return
 
     messages.process_message(bot, update, custom_caption=caption_html)
-
-
-@utils.only_admin
-def stats(bot, update):
-    update.message.reply_text(
-        text=dbwrapper.stats_text(), parse_mode=ParseMode.HTML)

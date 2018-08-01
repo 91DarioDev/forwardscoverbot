@@ -5,7 +5,6 @@ import time
 from telegram import ParseMode
 from telegram.ext import DispatcherHandlerStop
 
-from hatsunebot import dbwrapper
 from hatsunebot import keyboards
 
 from telegram.ext.dispatcher import run_async
@@ -21,7 +20,6 @@ def before_processing(bot, update):
         
     else:
         int_time = int(time.mktime(update.message.date.timetuple()))
-        dbwrapper.add_user_db(update.message.from_user.id, int_time)
 
 
 @run_async

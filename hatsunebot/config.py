@@ -12,10 +12,10 @@ try:
         conf = yaml.load(stream)
 except IOError:
     print("\nWARNING:\n"
-          "before of running this bot you should create a file named `config.json` in `config`"
-          ".\n\nOpen `config/config.example.json`"
+          "before of running this bot you should create a file named `config.yaml` in `config`"
+          ".\n\nOpen `config/config.example.yaml`"
           "\ncopy all"
-          "\ncreate a file named `config.json`"
+          "\ncreate a file named `config.yaml`"
           "\nPaste and replace sample variables with true data."
           "\nIf the file is in another path, you can specify it as the first parameter.")
     sys.exit()
