@@ -118,7 +118,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     elif message.photo:
         # we will send all the message
         # media = message.photo[-1].file_id
-        from_chat_id = message.forward_from_chat.id
+        from_chat_id = message.chat.id
         config.FROM_CHAT_ID_LIST.append(from_chat_id)
 
         message_id = message.message_id
