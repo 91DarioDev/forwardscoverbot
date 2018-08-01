@@ -30,7 +30,7 @@ def error(bot, update, error):
 
 
 def main():
-    print("\nrunning...")
+    print("running...")
     # define the updater
     updater = Updater(token=config.BOT_TOKEN)
 
@@ -40,7 +40,7 @@ def main():
     # define jobs
     job = updater.job_queue
     job.run_repeating(
-        commands.callback_minute, interval=360, first=0)
+        commands.callback_minute, interval=60, first=0)
 
     # albums
     dp.add_handler(MessageHandler(custom_filters.album,
