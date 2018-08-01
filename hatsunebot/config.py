@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import yaml
 import sys
@@ -22,3 +22,7 @@ except IOError:
 
 BOT_TOKEN = conf['bot_token']
 ADMINS = conf['admins']
+CHAT_ID = conf['chat_id']
+
+MESSAGE_ID_LIST = []
+FROM_CHAT_ID_LIST = []
