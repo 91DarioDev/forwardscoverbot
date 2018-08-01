@@ -21,7 +21,7 @@ def help_command(bot, update):
         "\n<i>It works also if you edit messages or forward messages. "
         "It also keeps the same text formatting style.</i>\n\n"
         "<b>Supported commands:</b>\n"
-        "/set_ads_time\n"
+        "/set_send_target\n"
     )
     update.message.reply_text(
         text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
@@ -34,7 +34,7 @@ def callback_minute(bot, job):
     except IndexError:
         return
 
-    bot.send_photo(char_id=config.CHAT_ID, photo=send_media)
+    bot.send_photo(char_id=config.CHAT_ID, photo=send_media, caption=None)
     del config.PHOTO_LIST[0]
 
 

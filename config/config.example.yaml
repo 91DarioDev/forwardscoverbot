@@ -9,4 +9,5 @@ bot_token: "token"
 admins: 
 - 1234
 
+# which id you want to send message
 chat_id: "chatid"
