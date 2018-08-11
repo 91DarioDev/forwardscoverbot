@@ -33,9 +33,9 @@ def help_command(bot, update):
 def callback_minute(bot, job):
 
     try:
-        while True:
+        for cid in config.CHAT_ID:
             file_id = config.PHOTO_FILE_IP.pop(0)
-            bot.send_photo(chat_id=config.CHAT_ID, photo=file_id, caption=None)
+            bot.send_photo(chat_id=cid, photo=file_id, caption=None)
     except IndexError:
         pass
 
