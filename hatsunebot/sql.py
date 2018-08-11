@@ -121,27 +121,28 @@ def insert_mysql(db, file_id, date):
     all_full = True
     if check_same_value(db, file_id) == 1:
         return
-    try:
-        for i in range(0, config.NU_RANDOM):
-            # we check all the database is full or not
-            table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
-            if check_table_full(db, table_name) == 1:
-                continue
-            else:
-                all_full = False
-                cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
-                    table_name, file_id, date))
-            # db.commit()
-        if all_full == True:
-            table_name = "{0}pic_{1}".format(
-                config.SQL_FORMAT, config.NU_RANDOM + 1)
-            create_new_tables(db, table_name)
+
+    for i in range(0, config.NU_RANDOM):
+        # we check all the database is full or not
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        if check_table_full(db, table_name) == 1:
+            continue
+        else:
+            all_full = False
             cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
                 table_name, file_id, date))
-        return 0
-    except Exception:
-        return 1
-        # db.rollback()
+        # db.commit()
+    if all_full == True:
+        table_name = "{0}pic_{1}".format(
+            config.SQL_FORMAT, config.NU_RANDOM + 1)
+        create_new_tables(db, table_name)
+        try:
+            cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
+                table_name, file_id, date))
+        except Exception:
+            return 1
+    return 0
+    # db.rollback()
 
 
 def commit_mysql(db):
