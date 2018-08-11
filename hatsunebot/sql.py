@@ -56,7 +56,7 @@ def check_same_value(db, file_id):
 
     get_max_tables()
     cursor = db.cursor()
-    for i in range(0, config.NU_RANDOM + 1):
+    for i in range(0, config.NU_RANDOM):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         cursor.execute("SELECT * FROM %s WHERE file_id = '%s' limit 1" %
                        (table_name, file_id))
@@ -137,7 +137,7 @@ def insert_mysql(db, file_id, date):
                 config.SQL_FORMAT, config.NU_RANDOM + 1)
             create_new_tables(db, table_name)
             cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
-                    table_name, file_id, date))
+                table_name, file_id, date))
         return 0
     except Exception:
         return 1
