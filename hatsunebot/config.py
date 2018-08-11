@@ -29,11 +29,17 @@ FROM_CHAT_ID_LIST = []
 PHOTO_FILE_IP = []
 
 # set the sql status
-SQL_STATUS = True
-SQL_SERVER = "localhost"
-SQL_USER = "hatsune"
-SQL_PASSWORD = "test@test"
-SQL_DATABASE = "hatsunebot"
-SQL_FORMAT = "h_"
-MAX_ROWS = 1000
+SQL_STATUS = conf["sql_status"]
+if SQL_STATUS == "True":
+    SQL_STATUS = True
+else:
+    SQL_STATUS = False
+
+SQL_SERVER = conf["sql_server"]
+SQL_USER = conf["sql_user"]
+SQL_PASSWORD = conf["sql_password"]
+SQL_DATABASE = conf["sql_database"]
+SQL_FORMAT = conf["sql_format"]
+MAX_ROWS = int(conf["sql_rows"])
+
 CURRENT_TABLE = ""

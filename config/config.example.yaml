@@ -11,3 +11,12 @@ admins:
 
 # which id you want to send message
 chat_id: "id"
+
+# sql setting
+sql_status: "True"
+sql_server: "localhost"
+sql_user: "hatsune"
+sql_password: "test@test"
+sql_database: "hatsunebot"
+sql_format: "h_"
+max_rows: 1000

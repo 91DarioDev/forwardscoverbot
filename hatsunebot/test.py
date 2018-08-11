@@ -3,8 +3,8 @@
 import sys
 import time
 
-from hatsunebot import messages
-from hatsunebot import config
+import messages
+import config
 
 
 if __name__ == '__main__':
