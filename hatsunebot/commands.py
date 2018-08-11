@@ -18,8 +18,8 @@ from telegram.ext.dispatcher import run_async
 def random_pic(bot, update):
     file_id = sql.random_pick_from_mysql()
     file_id = file_id[0]
-    logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    logging.debug(file_id)
+    # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    # logging.debug(file_id)
     for cid in config.CHAT_ID:
         bot.send_photo(chat_id=cid, photo=file_id, caption=None)
 
