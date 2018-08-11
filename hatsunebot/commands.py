@@ -12,7 +12,6 @@ from telegram.ext.dispatcher import run_async
 
 
 @run_async
-@only_admin
 def help_command(bot, update):
 
     keyboard = keyboards.github_link_kb()
@@ -53,7 +52,6 @@ def callback_minute(bot, job):
 
 
 @run_async
-@only_admin
 def turn_off_sql(bot, update):
 
     if config.SQL_STATUS == False:
@@ -66,7 +64,6 @@ def turn_off_sql(bot, update):
 
 
 @run_async
-@only_admin
 def turn_on_sql(bot, update):
 
     if config.SQL_STATUS == True:
