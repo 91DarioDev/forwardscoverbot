@@ -20,7 +20,7 @@ def check_mysql_full(db, table_name):
     cursor = db.cursor()
     # not test yet
     try:
-        if cursor.execute("select table_rows from information_schema.tables where table_schema='%s'" % table_name) == 0:
+        if cursor.execute("select table_rows from information_schema.tables where table_name='%s'" % table_name) == 1:
             rows = cursor.fetchone()
         else:
             return -2
@@ -38,7 +38,7 @@ def create_new_tables(db, table_name):
     cursor = db.cursor()
     # not test yet
     try:
-        if cursor.execute("CREATE TABLE %s (file_id CHAR(100) NOT NULL, date CHAR(10))" % table_name) == 0:
+        if cursor.execute("CREATE TABLE %s (file_id CHAR(100) NOT NULL, date CHAR(10))" % table_name) == 1:
             return 0
         else:
             return 1
