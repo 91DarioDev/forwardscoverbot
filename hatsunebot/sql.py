@@ -27,8 +27,11 @@ def check_mysql_full(db, table_name):
         logging.debug(rows)
     except Exception:
         return -1
-    if int(rows) >= config.MAX_ROWS:
-        return 1
+    try:
+        if int(rows) >= config.MAX_ROWS:
+            return 1
+    except TypeError:
+        return -1
     return 0
 
 
