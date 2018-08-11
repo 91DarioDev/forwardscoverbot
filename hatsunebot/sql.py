@@ -3,7 +3,7 @@
 import pymysql
 import logging
 import sys
-import time
+from datetime import datetime
 
 from hatsunebot import config
 
@@ -20,9 +20,9 @@ def check_mysql_full(db, table_name):
     cursor = db.cursor()
     # not test yet
     try:
-        cursor.execute("select table_rows from information_schema.tables where table_name='%s'" % table_name) == 1
+        cursor.execute(
+            "select table_rows from information_schema.tables where table_name='%s'" % table_name) == 1
         rows = cursor.fetchone()
-        logging.info('>>>>>>>>>>>>>>>>>>>' + rows)
     except Exception:
         return -1
     if int(rows) >= config.MAX_ROWS:
@@ -105,7 +105,8 @@ def process_sql(file_id):
                 break
             nu += 1
 
-        date = time.asctime(time.localtime(time.time()))
+        dt = datetime.now()
+        date = dt.strftime('%y-%m-%d-%I:%M:%S-%p')
         if insert_mysql(db, config.CURRENT_TABLE, file_id, date) == 1:
             db.rollback()
         return db
