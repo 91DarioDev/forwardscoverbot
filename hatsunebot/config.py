@@ -40,6 +40,6 @@ SQL_USER = conf["sql_user"]
 SQL_PASSWORD = conf["sql_password"]
 SQL_DATABASE = conf["sql_database"]
 SQL_FORMAT = conf["sql_format"]
-MAX_ROWS = int(conf["sql_rows"])
+MAX_ROWS = int(conf["max_rows"])
 
 CURRENT_TABLE = ""
