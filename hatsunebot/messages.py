@@ -105,6 +105,7 @@ def process_message_subdivision(bot, update, message, caption):
 
 
 @run_async
+@only_admin
 def process_message(bot, update, remove_caption=False, custom_caption=None):
 
     # here get the message
