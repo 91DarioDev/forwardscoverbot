@@ -84,6 +84,7 @@ def rollback_mysql(db):
 
 def close_mysql(db):
 
+    logging.info('Close mysql connection')
     db.close()
 
 
