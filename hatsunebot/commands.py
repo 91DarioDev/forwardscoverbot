@@ -30,16 +30,22 @@ def help_command(bot, update):
 # send here
 @run_async
 def callback_minute(bot, job):
+
     try:
-        mid = config.MESSAGE_ID_LIST[0]
-        fid = config.FROM_CHAT_ID_LIST[0]
+        while True:
+            file_id = config.PHOTO_FILE_IP.pop(0)
+            bot.send_photo(chat_id=config.CHAT_ID, photo=file_id, caption=None)
     except IndexError:
-        return
+        pass
 
-    # bot.send_photo(chat_id=config.CHAT_ID, photo=send_media, caption=None)
+    # try:
+    #     mid = config.MESSAGE_ID_LIST[0]
+    #     fid = config.FROM_CHAT_ID_LIST[0]
+    # except IndexError:
+    #     return
     # bot.send_message(chat_id=config.CHAT_ID, text=send_message)
-    for c in config.CHAT_ID:
-        bot.forwardMessage(chat_id=c, from_chat_id=fid, message_id=mid)
+    # for c in config.CHAT_ID:
+    #     bot.forwardMessage(chat_id=c, from_chat_id=fid, message_id=mid)
 
-    del config.MESSAGE_ID_LIST[0]
-    del config.FROM_CHAT_ID_LIST[0]
+    # del config.MESSAGE_ID_LIST[0]
+    # del config.FROM_CHAT_ID_LIST[0]

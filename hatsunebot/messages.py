@@ -11,28 +11,7 @@ from telegram.ext.dispatcher import run_async
 
 
 @run_async
-def process_message(bot, update, remove_caption=False, custom_caption=None):
-
-    if update.message.from_user.id not in config.ADMINS:
-        utils.invalid_command(bot, update)
-        return
-
-    # here get the message
-    if update.edited_message:
-        message = update.edited_message
-    elif remove_caption:
-        message = update.message.reply_to_message
-    elif custom_caption is not None:
-        message = update.message.reply_to_message
-    else:
-        message = update.message
-
-    if custom_caption is None:
-        # caption is message title
-        caption = message.caption_html if (
-            message.caption and remove_caption is False) else None
-    else:
-        caption = custom_caption
+def process_message_subdivision(bot, update, message):
 
     # then use the message
     if message.text:
@@ -50,12 +29,13 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
         # This is what the bot do now
         # we will send all the message
         # media = message.photo[-1].file_id
-        from_chat_id = message.chat.id
-        config.FROM_CHAT_ID_LIST.append(from_chat_id)
+        # from_chat_id = message.chat.id
+        # config.FROM_CHAT_ID_LIST.append(from_chat_id)
 
-        message_id = message.message_id
-        config.MESSAGE_ID_LIST.append(message_id)
+        # message_id = message.message_id
+        # config.MESSAGE_ID_LIST.append(message_id)
         # message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
+        pass
 
     elif message.sticker:
         # media = message.sticker.file_id
@@ -121,3 +101,33 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
         # text = "Thanks"
         # message.reply_text(text=text, quote=True)
         pass
+
+
+@run_async
+def process_message(bot, update, remove_caption=False, custom_caption=None):
+
+    if update.message.from_user.id not in config.ADMINS:
+        utils.invalid_command(bot, update)
+        return
+
+    # here get the message
+    if update.edited_message:
+        message = update.edited_message
+    elif remove_caption:
+        message = update.message.reply_to_message
+    elif custom_caption is not None:
+        message = update.message.reply_to_message
+    else:
+        message = update.message
+
+    if custom_caption is None:
+        # caption is message title
+        caption = message.caption_html if (
+            message.caption and remove_caption is False) else None
+    else:
+        caption = custom_caption
+
+    config.PHOTO_FILE_IP.append(
+        u.message.photo[-1].file_id for u in update if u.message.photo)
+
+    process_message_subdivision(bot, update, message)
