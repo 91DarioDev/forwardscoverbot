@@ -38,6 +38,8 @@ def help_command(bot, update):
         "<b>Supported commands(Only for admin):</b>\n"
         "/turn_off_sql\n"
         "/turn_on_sql\n"
+        "/stop_forward\n"
+        "/start_forward\n"
     )
     update.message.reply_text(
         text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
