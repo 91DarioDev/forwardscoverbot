@@ -10,10 +10,20 @@ from datetime import datetime
 from hatsunebot import config
 
 
-def random_pick_from_mysql(db):
+def get_max_tables():
 
     db = connect_mysql()
-    table_id = random.randint(0, config.NU)
+    cursor = db.cursor()
+    cursor.execute(
+        "SELECT table_rows FROM information_schema.tables WHERE table_schema='%s'" % config.SQL_DATABASE)
+    rows = cursor.fetchall()
+    config.NU_RANDOM = len(rows)
+
+
+def random_pick_from_mysql(db):
+
+    get_max_tables()
+    table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
     logging.info(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
     cursor_0 = db.cursor()
@@ -29,7 +39,7 @@ def random_pick_from_mysql(db):
     try:
         return_result = cursor_1.fetchall()[random_rows]
     except IndexError:
-        return_result = random_pick_from_mysql()
+        return_result = random_pick_from_mysql(db)
 
     return return_result
 
