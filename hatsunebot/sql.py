@@ -26,14 +26,14 @@ def random_pick_from_mysql(db):
     get_max_tables()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    # logging.info(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
+    logging.debug(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
     cursor_0 = db.cursor()
     cursor_0.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
     rows = cursor_0.fetchone()[0]
     random_rows = random.randint(0, rows)
-    # logging.info(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
+    logging.debug(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
 
     cursor_1 = db.cursor()
     cursor_1.execute("SELECT file_id FROM %s" % table_name)
