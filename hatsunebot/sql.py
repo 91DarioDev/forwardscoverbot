@@ -10,7 +10,7 @@ from datetime import datetime
 from hatsunebot import config
 
 
-def random_pick_from_mysql():
+def random_pick_from_mysql(db):
 
     db = connect_mysql()
     table_id = random.randint(0, config.NU)
@@ -28,11 +28,9 @@ def random_pick_from_mysql():
     cursor_1.execute("SELECT file_id FROM %s" % table_name)
     try:
         return_result = cursor_1.fetchall()[random_rows]
-        close_mysql(db)
     except IndexError:
         return_result = random_pick_from_mysql()
 
-    close_mysql(db)
     return return_result
 
 

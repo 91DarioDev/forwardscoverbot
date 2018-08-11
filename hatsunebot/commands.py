@@ -16,7 +16,9 @@ from telegram.ext.dispatcher import run_async
 
 @run_async
 def random_pic(bot, update):
-    file_id = sql.random_pick_from_mysql()
+    db = sql.connect_mysql()
+    file_id = sql.random_pick_from_mysql(db)
+    sql.close_mysql(db)
     file_id = file_id[0]
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(file_id)
