@@ -17,11 +17,10 @@ from telegram.ext import Filters
 from telegram.ext import MessageHandler
 from telegram.ext import CommandHandler
 
-
-# logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-#                    level=logging.INFO)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.DEBUG)
+                    level=logging.INFO)
+# logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+#                     level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
@@ -40,7 +39,7 @@ def main():
     # define jobs
     job = updater.job_queue
     job.run_repeating(
-        commands.callback_minute, interval=1, first=0)
+        commands.callback_minute, interval=10, first=0)
 
     # albums
     dp.add_handler(MessageHandler(custom_filters.album,

@@ -128,7 +128,9 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     config.PHOTO_FILE_IP.append(
         u.message.photo[-1].file_id for u in update if u.message.photo)
 
-    sql.process_sql(
+    db = sql.process_sql(
         u.message.photo[-1].file_id for u in update if u.message.photo)
 
+    sql.commit_mysql(db)
+    sql.close_mysql(db)
     process_message_subdivision(bot, update, message, caption)

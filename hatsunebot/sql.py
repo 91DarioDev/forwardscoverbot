@@ -12,17 +12,18 @@ def get_mysql_version(db):
 
     cursor = db.cursor()
     cursor.execute("SELECT version()")
-    return cursor.fetchone()
+    return cursor.fetchone()[0]
 
 
-def check_mysql_full(db, database_name):
+def check_mysql_full(db, table_name):
 
     cursor = db.cursor()
     # not test yet
     try:
-        cursor.execute(
-            "select table_rows from information_schema.tables where table_schema='{}'".format(database_name))
-        rows = cursor.fetchone()
+        if cursor.execute("select table_rows from information_schema.tables where table_schema='%s'" % table_name) == 0:
+            rows = cursor.fetchone()
+        else:
+            return -2
     except Exception:
         return -1
     if int(rows) >= config.MAX_ROWS:
@@ -35,9 +36,10 @@ def create_new_tables(db, table_name):
     cursor = db.cursor()
     # not test yet
     try:
-        cursor.execute(
-            "CREATE TABLE {0} (file_id CHAR(100) NOT NULL, date CHAR(10) NOT NULL".format(table_name))
-        return 0
+        if cursor.execute("CREATE TABLE %s (file_id CHAR(100) NOT NULL, date CHAR(10))" % table_name) == 0:
+            return 0
+        else:
+            return 1
     except Exception:
         return 1
 
@@ -59,11 +61,28 @@ def insert_mysql(db, table_name, file_id, date):
 
     cursor = db.cursor()
     try:
-        cursor.execute(
-            "INSERT INTO {0}(file_id, date) VALUES ({1}, {2})".format(table_name, file_id, date))
-        db.commit()
+        cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
+            table_name, file_id, date))
+        # db.commit()
+        return 0
     except Exception:
-        db.rollback()
+        return 1
+        # db.rollback()
+
+
+def commit_mysql(db):
+
+    db.commit()
+
+
+def rollback_mysql(db):
+
+    db.rollback()
+
+
+def close_mysql(db):
+
+    db.close()
 
 
 def process_sql(file_id):
@@ -87,7 +106,8 @@ def process_sql(file_id):
             nu += 1
 
         date = time.asctime(time.localtime(time.time()))
-        insert_mysql(db, config.CURRENT_TABLE, file_id, date)
-        db.close()
+        if insert_mysql(db, config.CURRENT_TABLE, file_id, date) == 1:
+            db.rollback()
+        return db
     else:
         pass
