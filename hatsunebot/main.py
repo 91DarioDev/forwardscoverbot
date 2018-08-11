@@ -51,8 +51,8 @@ def main():
     dp.add_handler(CommandHandler(('start', 'help'), commands.help_command), 2)
     dp.add_handler(CommandHandler(
         'turn_off_forward', commands.turn_off_sql), 2)
-    dp.add_handler(CommandHandler(
-        'turn_on_forward', commands.turn_on_sql), 2)
+    dp.add_handler(CommandHandler('turn_on_forward', commands.turn_on_sql), 2)
+    dp.add_handler(CommandHandler('random', commands.random_pic), 2)
     # dp.add_handler(CommandHandler('set_ads_time', commands.set_ads_time), 2)
     # dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview), 2)
     # dp.add_handler(CommandHandler('removecaption', commands.remove_caption), 2)

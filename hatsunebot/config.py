@@ -29,11 +29,8 @@ FROM_CHAT_ID_LIST = []
 PHOTO_FILE_ID = []
 
 # set the sql status
-SQL_STATUS = conf["sql_status"]
-if SQL_STATUS == "True":
-    SQL_STATUS = True
-else:
-    SQL_STATUS = False
+SQL_STATUS = True
+FORWARD_STATUS = True
 
 SQL_SERVER = conf["sql_server"]
 SQL_USER = conf["sql_user"]

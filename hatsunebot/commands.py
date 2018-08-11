@@ -4,11 +4,19 @@ from hatsunebot.utils import only_admin
 from hatsunebot import keyboards
 from hatsunebot import messages
 from hatsunebot import config
+from hatsunebot import sql
 
 # from telegram import MessageEntity
 from telegram import ParseMode
 # from telegram import constants as t_consts
 from telegram.ext.dispatcher import run_async
+
+
+@run_async
+def random_pic(bot, update):
+    file_id = sql.random_pick_from_mysql()
+    for cid in config.CHAT_ID:
+        bot.send_photo(chat_id=cid, photo=file_id, caption=None)
 
 
 @run_async
@@ -35,7 +43,8 @@ def callback_minute(bot, job):
     try:
         for cid in config.CHAT_ID:
             file_id = config.PHOTO_FILE_ID[0]
-            bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+            if config.FORWARD_STATUS == True:
+                bot.send_photo(chat_id=cid, photo=file_id, caption=None)
             del config.PHOTO_FILE_ID[0]
     except IndexError:
         pass
@@ -75,5 +84,31 @@ def turn_on_sql(bot, update):
     else:
         config.SQL_STATUS = True
         text = ("Turn on sql done")
+        update.message.reply_text(text=text)
+    return
+
+
+@run_async
+@only_admin
+def stop_forward(bot, update):
+
+    if config.FORWARD_STATUS == False:
+        pass
+    else:
+        config.FORWARD_STATUS = False
+        text = ("Stop forward now")
+        update.message.reply_text(text=text)
+    return
+
+
+@run_async
+@only_admin
+def start_forward(bot, update):
+
+    if config.FORWARD_STATUS == True:
+        pass
+    else:
+        config.SQL_STATUS = True
+        text = ("Start forward nwo")
         update.message.reply_text(text=text)
     return

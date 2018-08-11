@@ -13,7 +13,6 @@ admins:
 chat_id: "id"
 
 # sql setting
-sql_status: "True"
 sql_server: "localhost"
 sql_user: "hatsune"
 sql_password: "test@test"

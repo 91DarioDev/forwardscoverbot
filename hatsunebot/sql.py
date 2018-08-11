@@ -3,9 +3,28 @@
 import pymysql
 import logging
 import sys
+import random
+
 from datetime import datetime
 
 from hatsunebot import config
+
+
+def random_pick_from_mysql():
+
+    db = connect_mysql()
+    table_id = random.randint(0, config.NU)
+    table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
+    cursor_0 = db.cursor()
+    cursor_0.execute(
+        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+
+    rows = cursor_0.fetchone()[0]
+    random_rows = random.randint(0, rows)
+
+    cursor_1 = db.cursor()
+    cursor_1.execute("SELECT file_id FROM %s" % table_name)
+    return cursor_1.fetchall()[random_rows]
 
 
 def get_mysql_version(db):
@@ -37,7 +56,7 @@ def check_mysql_full(db, table_name):
     # not test yet
     try:
         cursor.execute(
-            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name) == 1
+            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
         rows = cursor.fetchone()[0]
         # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
         # logging.debug(rows)
