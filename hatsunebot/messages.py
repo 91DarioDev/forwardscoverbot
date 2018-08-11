@@ -127,8 +127,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
 
     if message.photo:
         fid = message.photo[-1].file_id
-        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, config.NU)
-        db = sql.process_sql(fid, table_name)
+        db = sql.process_sql(fid)
         sql.commit_mysql(db)
         sql.close_mysql(db)
 

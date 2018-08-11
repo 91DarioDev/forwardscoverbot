@@ -67,24 +67,27 @@ def check_same_value(db, file_id):
     return 0
 
 
-def check_mysql_full(db, table_name):
+def check_mysql_full(db):
 
     cursor = db.cursor()
+    get_max_tables()
+    if config.NU_RANDOM == 0:
+        return -1
     # not test yet
-    try:
-        cursor.execute(
-            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-        rows = cursor.fetchone()[0]
-        # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
-        # logging.debug(rows)
-    except Exception:
-        return -1
-    try:
-        if int(rows) >= config.MAX_ROWS:
-            return 1
-    except TypeError:
-        return -1
-    return 0
+    for i in range(0, config.NU_RANDOM + 1):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        try:
+            cursor.execute(
+                "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+            rows = cursor.fetchone()[0]
+            # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
+            # logging.debug(rows)
+        except Exception:
+            pass
+    if int(rows) >= config.MAX_ROWS:
+        return 1
+    else:
+        return 0
 
 
 def create_new_tables(db, table_name):
@@ -144,15 +147,15 @@ def close_mysql(db):
     db.close()
 
 
-def process_sql(file_id, table_name):
+def process_sql(file_id):
 
     if config.SQL_STATUS == True:
         db = connect_mysql()
         while True:
-            check_result = check_mysql_full(db, table_name)
+            check_result = check_mysql_full(db)
             if check_result == 1:
                 config.NU += 1
-                table_name = "{0}pic_{1}".format(config.SQL_FORMAT, config.NU)
+
                 process_sql(file_id, table_name)
                 # create_new_tables(db, table_name)
                 # config.CURRENT_TABLE = table_name
