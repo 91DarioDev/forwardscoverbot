@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import yaml
 import sys
@@ -20,10 +20,20 @@ except IOError:
           "\nIf the file is in another path, you can specify it as the first parameter.")
     sys.exit()
 
-BOT_TOKEN = conf['bot_token']
-ADMINS = conf['admins']
-CHAT_ID = conf['chat_id']
+BOT_TOKEN = conf["bot_token"]
+ADMINS = conf["admins"]
+CHAT_ID = conf["chat_id"]
 
 MESSAGE_ID_LIST = []
 FROM_CHAT_ID_LIST = []
 PHOTO_FILE_IP = []
+
+# set the sql status
+SQL_STATUS = True
+SQL_SERVER = "localhost"
+SQL_USER = "hatsune"
+SQL_PASSWORD = "test@test"
+SQL_DATABASE = "hatsunebot"
+SQL_FORMAT = "h_"
+MAX_ROWS = 1000
+CURRENT_TABLE = ""

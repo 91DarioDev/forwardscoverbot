@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from telegram import InputMedia, InputMediaPhoto, InputMediaVideo
 from telegram.ext import DispatcherHandlerStop
@@ -22,7 +22,7 @@ def collect_album_items(bot, update, job_queue):
     media_group_id = update.message.media_group_id
     if media_group_id not in ALBUM_DICT:
         bot.sendChatAction(
-            chat_id=update.message.from_user.id, 
+            chat_id=update.message.from_user.id,
             action=ChatAction.UPLOAD_PHOTO if update.message.photo else ChatAction.UPLOAD_VIDEO
         )
         ALBUM_DICT[media_group_id] = [update]

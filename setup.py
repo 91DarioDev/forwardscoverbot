@@ -15,7 +15,8 @@ setuptools.setup(
 
     install_requires=[
         "python-telegram-bot",
-        "Pyyaml"
+        "Pyyaml",
+        "PyMySQL"
     ],
 
     packages=[

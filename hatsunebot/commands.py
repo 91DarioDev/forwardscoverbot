@@ -1,27 +1,28 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-from hatsunebot import utils
+from hatsunebot.utils import only_admin
 from hatsunebot import keyboards
 from hatsunebot import messages
 from hatsunebot import config
 
-#from telegram import MessageEntity
+# from telegram import MessageEntity
 from telegram import ParseMode
-#from telegram import constants as t_consts
-
+# from telegram import constants as t_consts
 from telegram.ext.dispatcher import run_async
 
 
 @run_async
+@only_admin
 def help_command(bot, update):
+
     keyboard = keyboards.github_link_kb()
     text = (
-        "<b>Do you want to send a ads message to someone or in a group, but you are not online forever</b>."
-        "\n\nSend here what you want and set the time interval"
+        "<b>Hatsune' Telegram Bot Guide:</b>."
         "\n<i>It works also if you edit messages or forward messages. "
         "It also keeps the same text formatting style.</i>\n\n"
-        "<b>Supported commands:</b>\n"
-        "/set_send_target\n"
+        "<b>Supported commands(Only for admin):</b>\n"
+        "/turn_off_sql\n"
+        "/turn_on_sql\n"
     )
     update.message.reply_text(
         text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
@@ -49,3 +50,29 @@ def callback_minute(bot, job):
 
     # del config.MESSAGE_ID_LIST[0]
     # del config.FROM_CHAT_ID_LIST[0]
+
+
+@run_async
+@only_admin
+def turn_off_sql(bot, update):
+
+    if config.SQL_STATUS == False:
+        pass
+    else:
+        config.SQL_STATUS = False
+        text = ("Turn off sql done")
+        update.message.reply_text(text=text)
+    return
+
+
+@run_async
+@only_admin
+def turn_on_sql(bot, update):
+
+    if config.SQL_STATUS == True:
+        pass
+    else:
+        config.SQL_STATUS = True
+        text = ("Turn on sql done")
+        update.message.reply_text(text=text)
+    return

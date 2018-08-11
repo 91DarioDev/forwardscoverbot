@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from functools import wraps
 from hatsunebot import config
@@ -14,8 +14,8 @@ def sep(num, none_is_zero=False):
 
 @run_async
 def invalid_command(bot, update):
-    #text = "This command is invalid"
-    #update.message.reply_text(text=text, quote=True)
+    text = "This command is invalid"
+    update.message.reply_text(text=text, quote=True)
     pass
 
 
@@ -27,4 +27,3 @@ def only_admin(func):
             return
         return func(bot, update, *args, **kwargs)
     return wrapped
-
