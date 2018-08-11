@@ -14,8 +14,8 @@ def sep(num, none_is_zero=False):
 
 @run_async
 def invalid_command(bot, update):
-    text = "This command is invalid"
-    update.message.reply_text(text=text, quote=True)
+    # text = "This command is invalid"
+    # update.message.reply_text(text=text, quote=True)
     pass
 
 
