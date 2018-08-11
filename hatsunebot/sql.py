@@ -69,33 +69,6 @@ def check_same_value(db, file_id):
     return 0
 
 
-def check_mysql_full(start, db):
-
-    cursor = db.cursor()
-    get_max_tables()
-    if config.NU_RANDOM == 0:
-        return 0
-
-    if start == config.NU_RANDOM:
-        return -1
-    # not test yet
-    for i in range(start, config.NU_RANDOM + 1):
-        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
-        try:
-            cursor.execute(
-                "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-            rows = cursor.fetchall()
-            rows = len(rows)
-            # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
-            # logging.debug(rows)
-        except Exception:
-            pass
-        if int(rows) < config.MAX_ROWS:
-            return i
-        elif int(rows) >= config.MAX_ROWS:
-            return check_mysql_full(i, db)
-
-
 def create_new_tables(db, table_name):
 
     cursor = db.cursor()
@@ -122,15 +95,49 @@ def connect_mysql():
         sys.exit(1)
 
 
-def insert_mysql(db, table_name, file_id, date):
+def check_table_full(db, table_name):
 
     cursor = db.cursor()
+    cursor.execute(
+        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+    rows = cursor.fetchall()
+    if len(rows) == 0:
+        rows = 0
+    else:
+        rows = rows[0]
+
+    if rows >= config.MAX_ROWS:
+        return 1
+    else:
+        return 0
+    # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
+    # logging.debug(rows)
+
+
+def insert_mysql(db, file_id, date):
+
+    cursor = db.cursor()
+    get_max_tables()
+    all_full = True
     if check_same_value(db, file_id) == 1:
         return
     try:
-        cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
-            table_name, file_id, date))
-        # db.commit()
+        for i in range(0, config.NU_RANDOM):
+            # we check all the database is full or not
+            table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+            if check_table_full(db, table_name) == 1:
+                continue
+            else:
+                all_full = False
+                cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
+                    table_name, file_id, date))
+            # db.commit()
+        if all_full == True:
+            table_name = "{0}pic_{1}".format(
+                config.SQL_FORMAT, config.NU_RANDOM + 1)
+            create_new_tables(db, table_name)
+            cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
+                    table_name, file_id, date))
         return 0
     except Exception:
         return 1
@@ -157,24 +164,10 @@ def process_sql(file_id):
 
     if config.SQL_STATUS == True:
         db = connect_mysql()
-        check_result = check_mysql_full(0, db)
-        if check_result == -1:
-            table_name = "{0}pic_{1}".format(
-                config.SQL_FORMAT, config.NU_RANDOM + 1)
-            # here we create the new tables
-            create_new_tables(db, table_name)
-            dt = datetime.now()
-            date = dt.strftime('%Y_%m_%d_%I_%M_%S')
-            if insert_mysql(db, table_name, file_id, date) == 1:
-                db.rollback()
-            return db
-        else:
-            table_name = "{0}pic_{1}".format(
-                config.SQL_FORMAT, config.NU_RANDOM)
-            dt = datetime.now()
-            date = dt.strftime('%Y_%m_%d_%I_%M_%S')
-            if insert_mysql(db, table_name, file_id, date) == 1:
-                db.rollback()
-            return db
+        dt = datetime.now()
+        date = dt.strftime('%Y_%m_%d_%I_%M_%S')
+        if insert_mysql(db, file_id, date) == 1:
+            db.rollback()
+        return db
     else:
         pass
