@@ -28,7 +28,7 @@ def check_mysql_full(db, table_name):
         return -1
     if len(rows) == 0:
         return -1
-    if int(rows) >= config.MAX_ROWS:
+    elif int(rows) >= config.MAX_ROWS:
         return 1
     return 0
 
