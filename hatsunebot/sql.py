@@ -106,7 +106,7 @@ def check_table_full(db, table_name):
     if len(rows) == 0:
         rows = 0
     else:
-        rows = rows[0]
+        rows = rows[0][0]
 
     if rows >= config.MAX_ROWS:
         return 1
