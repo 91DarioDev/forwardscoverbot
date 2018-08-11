@@ -33,8 +33,9 @@ def callback_minute(bot, job):
 
     try:
         for cid in config.CHAT_ID:
-            file_id = config.PHOTO_FILE_IP.pop(0)
+            file_id = config.PHOTO_FILE_ID[0]
             bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+            del config.PHOTO_FILE_ID[0]
     except IndexError:
         pass
 

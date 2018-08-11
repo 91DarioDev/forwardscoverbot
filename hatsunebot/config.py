@@ -26,7 +26,7 @@ CHAT_ID = conf["chat_id"]
 
 MESSAGE_ID_LIST = []
 FROM_CHAT_ID_LIST = []
-PHOTO_FILE_IP = []
+PHOTO_FILE_ID = []
 
 # set the sql status
 SQL_STATUS = conf["sql_status"]
