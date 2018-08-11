@@ -125,12 +125,11 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     else:
         caption = custom_caption
 
-    db = sql.process_sql(
-        u.message.photo[-1].file_id for u in update if u.message.photo)
+    if message.photo:
+        fid = message.photo[-1].file_id
+        db = sql.process_sql(fid)
+        sql.commit_mysql(db)
+        sql.close_mysql(db)
 
-    sql.commit_mysql(db)
-    sql.close_mysql(db)
-
-    config.PHOTO_FILE_ID.append(
-        u.message.photo[-1].file_id for u in update if u.message.photo)
-    process_message_subdivision(bot, update, message, caption)
+        config.PHOTO_FILE_ID.append(fid)
+        process_message_subdivision(bot, update, message, caption)
