@@ -52,7 +52,7 @@ def connect_mysql():
     try:
         db = pymysql.connect(config.SQL_SERVER, config.SQL_USER,
                              config.SQL_PASSWORD, config.SQL_DATABASE)
-        logging.info("Connect to {}".format(get_mysql_version))
+        logging.info("Connect to {}".format(get_mysql_version(db)))
         return db
     except Exception:
         logging.error("Can't connected to mysql server...")
