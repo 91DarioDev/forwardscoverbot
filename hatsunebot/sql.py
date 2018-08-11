@@ -90,18 +90,17 @@ def close_mysql(db):
     db.close()
 
 
-def process_sql(file_id):
+def process_sql(file_id, table_name):
 
     if config.SQL_STATUS == True:
         db = connect_mysql()
         nu = 0
         while True:
-            table_name = "{0}pic_{1}".format(config.SQL_FORMAT, nu)
             check_result = check_mysql_full(db, table_name)
             if check_result == 1:
-                # nu += 1
-                process_sql(file_id)
-                # table_name = "{0}pic_{1}".format(config.SQL_FORMAT, nu)
+                nu += 1
+                table_name = "{0}pic_{1}".format(config.SQL_FORMAT, nu)
+                process_sql(file_id, table_name)
                 # create_new_tables(db, table_name)
                 # config.CURRENT_TABLE = table_name
                 break
