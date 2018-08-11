@@ -6,7 +6,7 @@ import setuptools
 setuptools.setup(
 
     name="hatsunebot",
-    version="1.1",
+    version="0.2",
 
     license="AGPL-3.0",
 
@@ -20,12 +20,12 @@ setuptools.setup(
     ],
 
     packages=[
-        "hatsunebot",
+        "hatsune",
     ],
 
     entry_points={
         "console_scripts": [
-            "hatsunebot = hatsunebot.__main__:main",
+            "hatsune = hatsunebot.__main__:main",
         ],
     },
 
