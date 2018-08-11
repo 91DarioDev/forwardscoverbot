@@ -94,19 +94,18 @@ def process_sql(file_id, table_name):
 
     if config.SQL_STATUS == True:
         db = connect_mysql()
-        nu = 0
         while True:
             check_result = check_mysql_full(db, table_name)
             if check_result == 1:
-                nu += 1
-                table_name = "{0}pic_{1}".format(config.SQL_FORMAT, nu)
+                config.NU += 1
+                table_name = "{0}pic_{1}".format(config.SQL_FORMAT, config.NU)
                 process_sql(file_id, table_name)
                 # create_new_tables(db, table_name)
                 # config.CURRENT_TABLE = table_name
                 break
 
             elif check_result == -1:
-                table_name = "{0}pic_{1}".format(config.SQL_FORMAT, nu)
+                table_name = "{0}pic_{1}".format(config.SQL_FORMAT, config.NU)
                 create_new_tables(db, table_name)
                 config.CURRENT_TABLE = table_name
                 break
@@ -114,10 +113,10 @@ def process_sql(file_id, table_name):
             elif check_result == 0:
                 config.CURRENT_TABLE = table_name
                 break
-            nu += 1
+            config.NU += 1
 
         dt = datetime.now()
-        date = dt.strftime('%y-%m-%d-%I:%M:%S-%p')
+        date = dt.strftime('%Y-%m-%d-%I:%M:%S-%p')
         if insert_mysql(db, config.CURRENT_TABLE, file_id, date) == 1:
             db.rollback()
         return db

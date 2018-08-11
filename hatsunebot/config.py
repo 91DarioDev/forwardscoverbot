@@ -43,3 +43,4 @@ SQL_FORMAT = conf["sql_format"]
 MAX_ROWS = int(conf["max_rows"])
 
 CURRENT_TABLE = ""
+NU = 0
