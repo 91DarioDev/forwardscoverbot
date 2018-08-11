@@ -135,7 +135,7 @@ def insert_mysql(db, file_id, date):
         # db.commit()
     if all_full == True:
         table_name = "{0}pic_{1}".format(
-            config.SQL_FORMAT, config.NU_RANDOM + 1)
+            config.SQL_FORMAT, config.NU_RANDOM)
         create_new_tables(db, table_name)
         try:
             cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
