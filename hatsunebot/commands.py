@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import logging
+
 from hatsunebot.utils import only_admin
 from hatsunebot import keyboards
 from hatsunebot import messages
@@ -15,6 +17,8 @@ from telegram.ext.dispatcher import run_async
 @run_async
 def random_pic(bot, update):
     file_id = sql.random_pick_from_mysql()
+    logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    logging.debug(file_id)
     for cid in config.CHAT_ID:
         bot.send_photo(chat_id=cid, photo=file_id, caption=None)
 
