@@ -20,7 +20,7 @@ def check_mysql_full(db, table_name):
     cursor = db.cursor()
     # not test yet
     try:
-        cursor.execute("select table_rows from information_schema.tables where table_name='%s'" % table_name) == 1:
+        cursor.execute("select table_rows from information_schema.tables where table_name='%s'" % table_name) == 1
         rows = cursor.fetchone()
     except Exception:
         return -1
