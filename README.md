@@ -11,7 +11,7 @@ https://github.com/91DarioDev/forwardscoverbot
 cd path
 git clone https://github.com/rikonaka/forwards-pics-bot.git
 cd forwards-pics-bot
-pip install .
+pip3 install --upgrade .
 ```
 
 **Config the bot:**
