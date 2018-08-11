@@ -25,7 +25,7 @@ setuptools.setup(
 
     entry_points={
         "console_scripts": [
-            "hatsunebot = hatsunebot.main:main",
+            "hatsunebot = hatsunebot.__main__:main",
         ],
     },
 
