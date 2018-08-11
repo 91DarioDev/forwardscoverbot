@@ -123,6 +123,7 @@ def insert_mysql(db, file_id, date):
         return
 
     for i in range(0, config.NU_RANDOM):
+        logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>{}".format(i))
         # we check all the database is full or not
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         if check_table_full(db, table_name) == 1:
