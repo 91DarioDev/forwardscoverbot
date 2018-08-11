@@ -101,6 +101,8 @@ def check_table_full(db, table_name):
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
     rows = cursor.fetchall()
+    logging.debug(">>>>>>>>>>>>>>>>>>>>>")
+    logging.debug(rows)
     if len(rows) == 0:
         rows = 0
     else:
@@ -110,8 +112,6 @@ def check_table_full(db, table_name):
         return 1
     else:
         return 0
-    # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
-    # logging.debug(rows)
 
 
 def insert_mysql(db, file_id, date):
