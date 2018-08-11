@@ -39,6 +39,4 @@ SQL_DATABASE = conf["sql_database"]
 SQL_FORMAT = conf["sql_format"]
 MAX_ROWS = int(conf["max_rows"])
 
-CURRENT_TABLE = ""
-NU = 0
 NU_RANDOM = 0

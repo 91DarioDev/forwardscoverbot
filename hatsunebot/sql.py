@@ -18,6 +18,7 @@ def get_max_tables():
         "SELECT table_rows FROM information_schema.tables WHERE table_schema='%s'" % config.SQL_DATABASE)
     rows = cursor.fetchall()
     config.NU_RANDOM = len(rows)
+    close_mysql(db)
 
 
 def random_pick_from_mysql(db):
@@ -53,8 +54,9 @@ def get_mysql_version(db):
 
 def check_same_value(db, file_id):
 
+    get_max_tables()
     cursor = db.cursor()
-    for i in range(0, config.NU + 1):
+    for i in range(0, config.NU_RANDOM + 1):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         cursor.execute("SELECT * FROM %s WHERE file_id = '%s' limit 1" %
                        (table_name, file_id))
@@ -67,27 +69,31 @@ def check_same_value(db, file_id):
     return 0
 
 
-def check_mysql_full(db):
+def check_mysql_full(start, db):
 
     cursor = db.cursor()
     get_max_tables()
     if config.NU_RANDOM == 0:
+        return 0
+
+    if start == config.NU_RANDOM:
         return -1
     # not test yet
-    for i in range(0, config.NU_RANDOM + 1):
+    for i in range(start, config.NU_RANDOM + 1):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         try:
             cursor.execute(
                 "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-            rows = cursor.fetchone()[0]
+            rows = cursor.fetchall()
+            rows = len(rows)
             # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
             # logging.debug(rows)
         except Exception:
             pass
-    if int(rows) >= config.MAX_ROWS:
-        return 1
-    else:
-        return 0
+        if int(rows) < config.MAX_ROWS:
+            return i
+        elif int(rows) >= config.MAX_ROWS:
+            return check_mysql_full(i, db)
 
 
 def create_new_tables(db, table_name):
@@ -151,31 +157,24 @@ def process_sql(file_id):
 
     if config.SQL_STATUS == True:
         db = connect_mysql()
-        while True:
-            check_result = check_mysql_full(db)
-            if check_result == 1:
-                config.NU += 1
-
-                process_sql(file_id, table_name)
-                # create_new_tables(db, table_name)
-                # config.CURRENT_TABLE = table_name
-                break
-
-            elif check_result == -1:
-                table_name = "{0}pic_{1}".format(config.SQL_FORMAT, config.NU)
-                create_new_tables(db, table_name)
-                config.CURRENT_TABLE = table_name
-                break
-
-            elif check_result == 0:
-                config.CURRENT_TABLE = table_name
-                break
-            config.NU += 1
-
-        dt = datetime.now()
-        date = dt.strftime('%Y-%m-%d-%I:%M:%S-%p')
-        if insert_mysql(db, config.CURRENT_TABLE, file_id, date) == 1:
-            db.rollback()
-        return db
+        check_result = check_mysql_full(0, db)
+        if check_result == -1:
+            table_name = "{0}pic_{1}".format(
+                config.SQL_FORMAT, config.NU_RANDOM + 1)
+            # here we create the new tables
+            create_new_tables(db, table_name)
+            dt = datetime.now()
+            date = dt.strftime('%Y_%m_%d_%I_%M_%S')
+            if insert_mysql(db, table_name, file_id, date) == 1:
+                db.rollback()
+            return db
+        else:
+            table_name = "{0}pic_{1}".format(
+                config.SQL_FORMAT, config.NU_RANDOM)
+            dt = datetime.now()
+            date = dt.strftime('%Y_%m_%d_%I_%M_%S')
+            if insert_mysql(db, table_name, file_id, date) == 1:
+                db.rollback()
+            return db
     else:
         pass
