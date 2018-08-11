@@ -20,7 +20,7 @@ setuptools.setup(
     ],
 
     packages=[
-        "hatsune",
+        "hatsunebot",
     ],
 
     entry_points={
