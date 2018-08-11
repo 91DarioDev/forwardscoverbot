@@ -23,7 +23,7 @@ pip install .
 
 **Run the bot:**
 ```
-hatsunebot /path/config.yaml
+hatsune /path/config.yaml
 ```
 
 
