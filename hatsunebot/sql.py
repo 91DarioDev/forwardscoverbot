@@ -15,16 +15,32 @@ def get_mysql_version(db):
     return cursor.fetchone()[0]
 
 
+def check_same_value(db, file_id):
+
+    cursor = db.cursor()
+    for i in range(0, config.NU + 1):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        cursor.execute("SELECT * FROM %s WHERE file_id = '%s' limit 1" %
+                       (table_name, file_id))
+        try:
+            rows = cursor.fetchone()[0]
+            return 1
+        except Exception:
+            pass
+
+    return 0
+
+
 def check_mysql_full(db, table_name):
 
     cursor = db.cursor()
     # not test yet
     try:
         cursor.execute(
-            "select table_rows from information_schema.tables where table_name='%s'" % table_name) == 1
+            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name) == 1
         rows = cursor.fetchone()[0]
-        logging.debug(">>>>>>>>>>>>>>>>>>>>>")
-        logging.debug(rows)
+        # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
+        # logging.debug(rows)
     except Exception:
         return -1
     try:
@@ -54,7 +70,7 @@ def connect_mysql():
     try:
         db = pymysql.connect(config.SQL_SERVER, config.SQL_USER,
                              config.SQL_PASSWORD, config.SQL_DATABASE)
-        logging.info("Connect to {}".format(get_mysql_version(db)))
+        logging.debug("Connect to {}".format(get_mysql_version(db)))
         return db
     except Exception:
         logging.error("Can't connected to mysql server...")
@@ -64,6 +80,8 @@ def connect_mysql():
 def insert_mysql(db, table_name, file_id, date):
 
     cursor = db.cursor()
+    if check_same_value(db, file_id) == 1:
+        return
     try:
         cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
             table_name, file_id, date))
@@ -86,7 +104,7 @@ def rollback_mysql(db):
 
 def close_mysql(db):
 
-    logging.info('Close mysql connection')
+    logging.debug('Close mysql connection')
     db.close()
 
 
