@@ -22,6 +22,7 @@ def check_mysql_full(db, table_name):
     try:
         cursor.execute("select table_rows from information_schema.tables where table_name='%s'" % table_name) == 1
         rows = cursor.fetchone()
+        logging.info('>>>>>>>>>>>>>>>>>>>' + rows)
     except Exception:
         return -1
     if int(rows) >= config.MAX_ROWS:
