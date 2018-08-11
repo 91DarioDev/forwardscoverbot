@@ -99,10 +99,11 @@ def process_sql(file_id):
             table_name = "{0}pic_{1}".format(config.SQL_FORMAT, nu)
             check_result = check_mysql_full(db, table_name)
             if check_result == 1:
-                nu += 1
-                table_name = "{0}pic_{1}".format(config.SQL_FORMAT, nu)
-                create_new_tables(db, table_name)
-                config.CURRENT_TABLE = table_name
+                # nu += 1
+                process_sql(file_id)
+                # table_name = "{0}pic_{1}".format(config.SQL_FORMAT, nu)
+                # create_new_tables(db, table_name)
+                # config.CURRENT_TABLE = table_name
                 break
 
             elif check_result == -1:
