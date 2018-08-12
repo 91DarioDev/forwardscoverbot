@@ -17,6 +17,7 @@ from telegram.ext.dispatcher import run_async
 
 @run_async
 def random_pic(bot, update):
+
     db = sql.connect_mysql()
     file_id = sql.random_pick_from_mysql(db)
     sql.close_mysql(db)
@@ -48,7 +49,7 @@ def help_command(bot, update):
 
 @run_async
 def callback_sql(bot, job):
-
+    
     # deep copy the list of SQL_LIST
     # then we delete is one by one
     # COPY_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
