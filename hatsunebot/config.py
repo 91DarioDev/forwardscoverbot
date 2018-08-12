@@ -23,6 +23,7 @@ except IOError:
 BOT_TOKEN = conf["bot_token"]
 ADMINS = conf["admins"]
 ADMINS_GROUP = conf["admins_group"]
+print(ADMINS_GROUP)
 CHAT_ID = conf["chat_id"]
 
 # MESSAGE_ID_LIST = []
