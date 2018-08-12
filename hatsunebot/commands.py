@@ -4,7 +4,7 @@ import logging
 import copy
 
 from hatsunebot.utils import only_admin
-from hatsunebot import keyboards
+# from hatsunebot import keyboards
 from hatsunebot import messages
 from hatsunebot import config
 from hatsunebot import sql
@@ -43,7 +43,7 @@ def random_pic(bot, update):
 @only_admin
 def help_command(bot, update):
 
-    keyboard = keyboards.github_link_kb()
+    # keyboard = keyboards.github_link_kb()
     text = (
         "<b>Hatsune' Telegram Bot Guide:</b>."
         "\n<i>It works also if you edit messages or forward messages. "
