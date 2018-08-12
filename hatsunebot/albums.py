@@ -96,9 +96,11 @@ def collect_album_items(bot, update, job_queue):
 
         message_id = update.message.message_id
         tmp_list.append(message_id)
+
         from_chat_id = update.message.chat.id
         tmp_list.append(from_chat_id)
         file_id = f.file_id
+        tmp_list.append(file_id)
 
         sql.process_sql(db, file_id)
         for t in config.THREE_TYPE_LIST:
