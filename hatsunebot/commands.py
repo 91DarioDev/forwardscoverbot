@@ -54,8 +54,10 @@ def help_command(bot, update):
         "/stop_forward\n"
         "/start_forward\n"
     )
+    # update.message.reply_text(
+    #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
     update.message.reply_text(
-        text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
+        text=text, parse_mode=ParseMode.HTML)
 
 
 @run_async
