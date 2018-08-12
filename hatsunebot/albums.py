@@ -103,6 +103,7 @@ def collect_album_items(bot, update, job_queue):
         sql.process_sql(db, file_id)
         for t in config.THREE_TYPE_LIST:
             # check the same value
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>{}".format(t))
             if file_id == t[2]:
                 SAME = True
                 # if f not in config.PHOTO_FILE_ID:
