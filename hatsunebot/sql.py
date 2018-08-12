@@ -32,7 +32,10 @@ def random_pick_from_mysql(db):
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
     rows = cursor_0.fetchone()
-    print(rows)
+    if rows is None:
+        random_pick_from_mysql(db)
+        return
+    # print(rows)
     rows = rows[0]
     random_rows = random.randint(0, rows)
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
@@ -42,8 +45,8 @@ def random_pick_from_mysql(db):
 
     try:
         r_mid = cursor_1.fetchall()
-        print(r_mid)
-        r_mid = r_mid[random_rows]
+        # print(r_mid)
+        r_mid = r_mid[random_rows][0]
     except IndexError:
         r_mid, r_fid = random_pick_from_mysql(db)
 
