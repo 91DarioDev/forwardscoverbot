@@ -92,7 +92,8 @@ def collect_album_items(bot, update, job_queue):
     for f in update.message.photo:
         file_id = f.file_id
         sql.process_sql(db, file_id)
-        config.PHOTO_FILE_ID.append(file_id)
+        if f not in config.PHOTO_FILE_ID:
+            config.PHOTO_FILE_ID.append(file_id)
 
     sql.commit_mysql(db)
     sql.close_mysql(db)
