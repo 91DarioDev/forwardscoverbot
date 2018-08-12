@@ -26,14 +26,14 @@ def random_pick_from_mysql(db):
     get_max_tables()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    logging.debug(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
+    # logging.debug(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
     cursor_0 = db.cursor()
     cursor_0.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
     rows = cursor_0.fetchone()[0]
     random_rows = random.randint(0, rows)
-    logging.debug(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
+    # logging.debug(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
 
     cursor_1 = db.cursor()
     cursor_1.execute("SELECT file_id FROM %s" % table_name)
@@ -60,11 +60,8 @@ def check_same_value(db, file_id):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         cursor.execute("SELECT * FROM %s WHERE file_id = '%s' limit 1" %
                        (table_name, file_id))
-        try:
-            rows = cursor.fetchone()[0]
+        if len(cursor.fetchone()) != 0:
             return 1
-        except Exception:
-            pass
 
     return 0
 
@@ -101,8 +98,8 @@ def check_table_full(db, table_name):
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
     rows = cursor.fetchall()
-    logging.debug(">>>>>>>>>>>>>>>>>>>>>")
-    logging.debug(rows)
+    # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
+    # logging.debug(rows)
     if len(rows) == 0:
         rows = 0
     else:
@@ -123,7 +120,7 @@ def insert_mysql(db, file_id, date):
         return
 
     for i in range(0, config.NU_RANDOM):
-        logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>{}".format(i))
+        # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>{}".format(i))
         # we check all the database is full or not
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         if check_table_full(db, table_name) == 1:
@@ -132,7 +129,6 @@ def insert_mysql(db, file_id, date):
             all_full = False
             cursor.execute("INSERT INTO %s(file_id, date) VALUES ('%s', '%s')" % (
                 table_name, file_id, date))
-        # db.commit()
     if all_full == True:
         table_name = "{0}pic_{1}".format(
             config.SQL_FORMAT, config.NU_RANDOM)
@@ -143,7 +139,6 @@ def insert_mysql(db, file_id, date):
         except Exception:
             return 1
     return 0
-    # db.rollback()
 
 
 def commit_mysql(db):
@@ -158,7 +153,7 @@ def rollback_mysql(db):
 
 def close_mysql(db):
 
-    logging.debug('Close mysql connection')
+    # logging.debug('Close mysql connection')
     db.close()
 
 

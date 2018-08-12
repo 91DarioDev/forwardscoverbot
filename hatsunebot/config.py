@@ -24,8 +24,8 @@ BOT_TOKEN = conf["bot_token"]
 ADMINS = conf["admins"]
 CHAT_ID = conf["chat_id"]
 
-MESSAGE_ID_LIST = []
-FROM_CHAT_ID_LIST = []
+#MESSAGE_ID_LIST = []
+#FROM_CHAT_ID_LIST = []
 PHOTO_FILE_ID = []
 
 # set the sql status
@@ -40,3 +40,4 @@ SQL_FORMAT = conf["sql_format"]
 MAX_ROWS = int(conf["max_rows"])
 
 NU_RANDOM = 0
+ALBUM_DICT = {}

@@ -5,8 +5,7 @@ from telegram.ext import DispatcherHandlerStop
 from telegram import ChatAction
 from telegram import ParseMode
 
-
-ALBUM_DICT = {}
+from hatsunebot import config
 
 
 def collect_album_items(bot, update, job_queue):
@@ -20,24 +19,24 @@ def collect_album_items(bot, update, job_queue):
         - add update to the list of that media_group_id
     """
     media_group_id = update.message.media_group_id
-    if media_group_id not in ALBUM_DICT:
+    if media_group_id not in config.ALBUM_DICT:
         bot.sendChatAction(
             chat_id=update.message.from_user.id,
             action=ChatAction.UPLOAD_PHOTO if update.message.photo else ChatAction.UPLOAD_VIDEO
         )
-        ALBUM_DICT[media_group_id] = [update]
+        config.ALBUM_DICT[media_group_id] = [update]
         # schedule the job
         job_queue.run_once(send_album, 1, context=[media_group_id])
     else:
-        ALBUM_DICT[media_group_id].append(update)
+        config.ALBUM_DICT[media_group_id].append(update)
 
 
 def send_album(bot, job):
     media_group_id = job.context[0]
-    updates = ALBUM_DICT[media_group_id]
+    updates = config.ALBUM_DICT[media_group_id]
 
     # delete from ALBUM_DICT
-    del ALBUM_DICT[media_group_id]
+    del config.ALBUM_DICT[media_group_id]
 
     # ordering album updates
     updates.sort(key=lambda x: x.message.message_id)

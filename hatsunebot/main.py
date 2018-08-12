@@ -20,7 +20,7 @@ from telegram.ext import CommandHandler
 # logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 #                    level=logging.INFO)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+                    level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
@@ -42,6 +42,7 @@ def main():
         commands.callback_minute, interval=10, first=0)
 
     # albums
+    # many picture here
     dp.add_handler(MessageHandler(custom_filters.album,
                                   albums.collect_album_items, pass_job_queue=True), 1)
     # messages
