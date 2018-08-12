@@ -55,6 +55,7 @@ def random_pick_from_mysql(db):
         "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, r_mid))
     r_fid = cursor_2.fetchone()[0]
 
+    print(r_mid, r_fid)
     return (r_mid, r_fid)
 
 
