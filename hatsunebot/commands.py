@@ -19,8 +19,12 @@ from telegram.ext.dispatcher import run_async
 def random_pic(bot, update):
 
     db = sql.connect_mysql()
-    mid, fid = sql.random_pick_from_mysql(db)
-    print("2: {0} {1}".format(mid, fid))
+    try:
+        mid, fid = sql.random_pick_from_mysql(db)
+    except TypeError:
+        text = "..."
+        update.message.reply_text(text=text, quote=True)
+    # print("2: {0} {1}".format(mid, fid))
 
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(file_id)

@@ -58,7 +58,7 @@ def random_pick_from_mysql(db):
         else:
             r_fid = r_fid[0]
 
-    print(r_mid, r_fid)
+    # print(r_mid, r_fid)
     return (r_mid, r_fid)
 
 
