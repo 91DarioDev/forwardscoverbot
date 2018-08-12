@@ -31,10 +31,9 @@ def random_pic(bot, update):
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(file_id)
     for cid in config.CHAT_ID:
-        if config.FORWARD_STATUS == True:
-            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
-            bot.forwardMessage(
-                chat_id=cid, from_chat_id=fid, message_id=mid)
+        # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+        bot.forwardMessage(
+            chat_id=cid, from_chat_id=fid, message_id=mid)
 
     sql.close_mysql(db)
 
