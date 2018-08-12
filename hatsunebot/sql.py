@@ -21,49 +21,37 @@ def get_max_tables():
     close_mysql(db)
 
 
-def random_pick_from_mysql(db):
+def select_fid(db, table_name, mid):
 
-    get_max_tables()
-    table_id = random.randint(0, config.NU_RANDOM)
-    table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    # logging.debug(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
+    cursor = db.cursor()
+    while True:
+        cursor.execute(
+            "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, mid))
+        fid = cursor.fetchone()[0]
+        if fid != None:
+            break
+
+    return fid
+
+
+def random_pick_mid(db, table_name):
+
     cursor_0 = db.cursor()
-    cursor_0.execute(
-        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-
-    rows = cursor_0.fetchone()
-    if rows is None:
-        return
-
-    # print(rows)
-    rows = rows[0]
-    random_rows = random.randint(0, rows)
-    # logging.debug(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
-
     cursor_1 = db.cursor()
-    cursor_1.execute("SELECT message_id FROM %s" % table_name)
+    while True:
+        cursor_0.execute(
+            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
-    r_mid = cursor_1.fetchall()
-    if r_mid == None:
-        return
+        rows = cursor_0.fetchone()[0]
+        random_rows = random.randint(0, rows)
 
-    # print(r_mid)
-    else:
-        r_mid = r_mid[random_rows][0]
-        cursor_2 = db.cursor()
-        cursor_2.execute(
-            "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, r_mid))
-        r_fid = cursor_2.fetchone()
-        if r_fid == None:
-            return
-        else:
-            r_fid = r_fid[0]
+        cursor_1.execute("SELECT message_id FROM %s" % table_name)
 
-    # print(r_mid, r_fid)
-    tmp_list = []
-    tmp_list.append(r_mid)
-    tmp_list.append(r_fid)
-    return tmp_list
+        mid = cursor_1.fetchall()[random_rows][0]
+        if mid != None:
+            break
+
+    return mid
 
 
 def get_mysql_version(db):

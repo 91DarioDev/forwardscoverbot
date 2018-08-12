@@ -2,6 +2,7 @@
 
 import logging
 import copy
+import random
 
 from hatsunebot.utils import only_admin
 # from hatsunebot import keyboards
@@ -19,8 +20,13 @@ from telegram.ext.dispatcher import run_async
 def random_pic(bot, update):
 
     db = sql.connect_mysql()
+
+    sql.get_max_tables()
+    table_id = random.randint(0, config.NU_RANDOM)
+    table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
+    # logging.debug(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
     try:
-        result_list = sql.random_pick_from_mysql(db)
+        result_list = sql.random_pick_mid(db, table_name)
     except TypeError:
         text = "..."
         update.message.reply_text(text=text, quote=True)
