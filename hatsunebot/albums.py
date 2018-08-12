@@ -89,9 +89,24 @@ def collect_album_items(bot, update, job_queue):
     """
     # now we append every file_id into list and sql
     # THREE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID]]
+    """
+    [
+        [3991, 366039180, 'AgADBQADHqgxG6docVevwzHBji_opA801TIABAqGbUg-S8HFP8ECAAEC'],
+        [3991, 366039180, 'AgADBQADHqgxG6docVevwzHBji_opA801TIABFLydOubQv-6QMECAAEC'],
+        [3991, 366039180, 'AgADBQADHqgxG6docVevwzHBji_opA801TIABPcr_ZfuycSkQcECAAEC'],
+        [3991, 366039180, 'AgADBQADHqgxG6docVevwzHBji_opA801TIABAcJOOcyQWj8PsECAAEC'],
+        [3992, 366039180, 'AgADBQADH6gxG6docVcHRcI6L68KiLRK1TIABIypPaslbU-akLICAAEC'],
+        [3992, 366039180, 'AgADBQADH6gxG6docVcHRcI6L68KiLRK1TIABORRdKr0KXgRkbICAAEC'],
+        [3992, 366039180, 'AgADBQADH6gxG6docVcHRcI6L68KiLRK1TIABAt95ny_A6KmkrICAAEC'],
+        [3992, 366039180, 'AgADBQADH6gxG6docVcHRcI6L68KiLRK1TIABHhZdVsgP_YDj7ICAAEC'],
+        [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABBgKpuOY0jmrxTkBAAEC'],
+        [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABOQB-N1TfaNgxjkBAAEC'],
+        [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABLYJfkdL-oupxDkBAAEC']]
+    """
+
+    config.CONFLICT_LIST = []
     db = sql.connect_mysql()
     for f in update.message.photo:
-        SAME = False
         tmp_list = []
 
         message_id = update.message.message_id
@@ -102,17 +117,19 @@ def collect_album_items(bot, update, job_queue):
         file_id = f.file_id
         tmp_list.append(file_id)
 
+        # conflict check
+        media_group_id = update.message.media_group_id
+
         sql.process_sql(db, file_id)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>{}".format(config.THREE_TYPE_LIST))
         for t in config.THREE_TYPE_LIST:
             # check the same value
             # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>{}".format(t))
-            if file_id == t[2]:
-                SAME = True
                 # if f not in config.PHOTO_FILE_ID:
                 # config.PHOTO_FILE_ID.append(file_id)
-        if SAME == False:
+        if media_group_id not in config.CONFLICT_LIST:
             config.THREE_TYPE_LIST.append(tmp_list)
+            config.CONFLICT_LIST.append(media_group_id)
 
     sql.commit_mysql(db)
     sql.close_mysql(db)
@@ -124,7 +141,7 @@ def collect_album_items(bot, update, job_queue):
 #             action=ChatAction.UPLOAD_PHOTO if update.message.photo else ChatAction.UPLOAD_VIDEO
 #         )
 #         config.ALBUM_DICT[media_group_id] = [update]
-#         schedule the job
+#         # schedule the job
 #         job_queue.run_once(send_album, 1, context=[media_group_id])
 #     else:
 #         config.ALBUM_DICT[media_group_id].append(update)

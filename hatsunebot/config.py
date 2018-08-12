@@ -43,3 +43,4 @@ MAX_ROWS = int(conf["max_rows"])
 
 NU_RANDOM = 0
 # ALBUM_DICT = {}
+CONFLICT_LIST = []
