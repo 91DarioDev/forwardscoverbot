@@ -108,6 +108,10 @@ def process_message_subdivision(bot, update, message, caption):
 @only_admin
 def process_message(bot, update, remove_caption=False, custom_caption=None):
 
+    if update.message.forward_from_chat.username not in config.ADMINS_GROUP:
+            print(update.message.forward_from_chat.username)
+            print(config.ADMINS_GROUP)
+            return
     # here get the message
     if update.edited_message:
         message = update.edited_message

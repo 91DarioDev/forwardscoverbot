@@ -23,10 +23,7 @@ def only_admin(func):
     @wraps(func)
     def wrapped(bot, update, *args, **kwargs):
         if update.message.from_user.id not in config.ADMINS:
-            if update.message.forward_from_chat.username not in config.ADMINS_GROUP:
-                print(update.message.forward_from_chat.username)
-                print(config.ADMINS_GROUP)
-                invalid_command(bot, update, *args, **kwargs)
+            invalid_command(bot, update, *args, **kwargs)
             return
         return func(bot, update, *args, **kwargs)
     return wrapped
