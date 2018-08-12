@@ -122,11 +122,6 @@ def collect_album_items(bot, update, job_queue):
 
         sql.process_sql(db, file_id)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>{}".format(config.THREE_TYPE_LIST))
-        for t in config.THREE_TYPE_LIST:
-            # check the same value
-            # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>{}".format(t))
-                # if f not in config.PHOTO_FILE_ID:
-                # config.PHOTO_FILE_ID.append(file_id)
         if media_group_id not in config.CONFLICT_LIST:
             config.THREE_TYPE_LIST.append(tmp_list)
             config.CONFLICT_LIST.append(media_group_id)
