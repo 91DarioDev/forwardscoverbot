@@ -105,8 +105,6 @@ def collect_album_items(bot, update, job_queue):
     ]
     """
     if update.message.forward_from_chat.username not in config.ADMINS_GROUP:
-        print(update.message.forward_from_chat.username)
-        print(config.ADMINS_GROUP)
         return
 
     config.CONFLICT_LIST = []
