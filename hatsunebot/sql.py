@@ -33,8 +33,8 @@ def random_pick_from_mysql(db):
 
     rows = cursor_0.fetchone()
     if rows is None:
-        random_pick_from_mysql(db)
         return
+
     # print(rows)
     rows = rows[0]
     random_rows = random.randint(0, rows)
@@ -45,7 +45,8 @@ def random_pick_from_mysql(db):
 
     r_mid = cursor_1.fetchall()
     if r_mid == None:
-        r_mid, r_fid = random_pick_from_mysql(db)
+        return
+
     # print(r_mid)
     else:
         r_mid = r_mid[random_rows][0]
@@ -54,12 +55,15 @@ def random_pick_from_mysql(db):
             "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, r_mid))
         r_fid = cursor_2.fetchone()
         if r_fid == None:
-            r_mid, r_fid = random_pick_from_mysql(db)
+            return
         else:
             r_fid = r_fid[0]
 
     # print(r_mid, r_fid)
-    return (r_mid, r_fid)
+    tmp_list = []
+    tmp_list.append(r_mid)
+    tmp_list.append(r_fid)
+    return tmp_list
 
 
 def get_mysql_version(db):

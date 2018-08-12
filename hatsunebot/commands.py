@@ -20,7 +20,7 @@ def random_pic(bot, update):
 
     db = sql.connect_mysql()
     try:
-        mid, fid = sql.random_pick_from_mysql(db)
+        result_list = sql.random_pick_from_mysql(db)
     except TypeError:
         text = "..."
         update.message.reply_text(text=text, quote=True)
@@ -30,6 +30,8 @@ def random_pic(bot, update):
 
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(file_id)
+    fid = result_list[0]
+    mid = result_list[1]
     for cid in config.CHAT_ID:
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
         bot.forwardMessage(
