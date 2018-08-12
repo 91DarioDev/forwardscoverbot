@@ -31,7 +31,9 @@ def random_pick_from_mysql(db):
     cursor_0.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
-    rows = cursor_0.fetchone()[0]
+    rows = cursor_0.fetchone()
+    print(rows)
+    rows = rows[0]
     random_rows = random.randint(0, rows)
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
 
