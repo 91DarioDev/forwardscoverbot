@@ -24,20 +24,22 @@ def random_pic(bot, update):
     sql.get_max_tables()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    # logging.debug(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
     try:
-        result_list = sql.random_pick_mid(db, table_name)
-    except TypeError:
+        mid = sql.random_pick_mid(db, table_name)
+    except Exception:
         text = "..."
         update.message.reply_text(text=text, quote=True)
         sql.close_mysql(db)
         return
-    # print("2: {0} {1}".format(mid, fid))
 
-    # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    # logging.debug(file_id)
-    fid = result_list[0]
-    mid = result_list[1]
+    try:
+        fid = sql.select_fid(db, table_name, mid)
+    except Exception:
+        text = "..."
+        update.message.reply_text(text=text, quote=True)
+        sql.close_mysql(db)
+        return
+
     for cid in config.CHAT_ID:
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
         bot.forwardMessage(
