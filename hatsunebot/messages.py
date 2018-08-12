@@ -8,7 +8,7 @@ from telegram.ext.dispatcher import run_async
 from hatsunebot import keyboards
 from hatsunebot import config
 from hatsunebot.utils import only_admin
-from hatsunebot import sql
+# from hatsunebot import sql
 
 
 @run_async
@@ -126,13 +126,8 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
         caption = custom_caption
 
     if message.photo:
-        file_id = message.photo[-1].file_id
-        db = sql.connect_mysql()
-        sql.process_sql(db, file_id)
-        sql.commit_mysql(db)
-        sql.close_mysql(db)
 
-        # THREE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID]]
+        # FIVE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
         tmp_list = []
         message_id = message.message_id
         tmp_list.append(message_id)
@@ -140,7 +135,13 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
         from_chat_id = message.chat.id
         tmp_list.append(from_chat_id)
         # config.FROM_CHAT_ID_LIST.append(from_chat_id)
-        tmp_list.append(file_id)
-        # config.PHOTO_FILE_ID.append(file_id)
-        config.THREE_TYPE_LIST.append(tmp_list)
+
+        # now we get them all
+        for f in message.photo:
+            file_id = f.file_id
+            tmp_list.append(file_id)
+            # config.PHOTO_FILE_ID.append(file_id)
+
+        config.SQL_LIST.append(tmp_list) 
+        config.FIVE_TYPE_LIST.append(tmp_list)
         process_message_subdivision(bot, update, message, caption)

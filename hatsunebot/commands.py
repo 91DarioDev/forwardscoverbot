@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import copy
 
 from hatsunebot.utils import only_admin
 from hatsunebot import keyboards
@@ -45,12 +46,28 @@ def help_command(bot, update):
         text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
 
-# send here
 @run_async
-def callback_minute(bot, job):
+def callback_sql(bot, job):
+
+    # deep copy the list of SQL_LIST
+    # then we delete is one by one
+    # COPY_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
+    COPY_LIST = copy.deepcopy(config.SQL_LIST)
+    db = sql.connect_mysql()
+    for c in COPY_LIST:
+        sql.process_sql(db, c)
+        del config.SQL_LIST[0]
+    sql.commit_mysql(db)
+    sql.close_mysql(db)
+
+# send here
+
+
+@run_async
+def callback_minute_send(bot, job):
 
     try:
-        three_type = config.THREE_TYPE_LIST[0]
+        three_type = config.FIVE_TYPE_LIST[0]
         # file_id = config.PHOTO_FILE_ID[0]
     except IndexError:
         return
@@ -66,7 +83,7 @@ def callback_minute(bot, job):
                 chat_id=cid, from_chat_id=fid, message_id=mid)
 
     # del config.PHOTO_FILE_ID[0]
-    del config.THREE_TYPE_LIST[0]
+    del config.FIVE_TYPE_LIST[0]
 
     # try:
     #     mid = config.MESSAGE_ID_LIST[0]

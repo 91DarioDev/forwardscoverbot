@@ -6,7 +6,7 @@ from telegram import ChatAction
 from telegram import ParseMode
 
 from hatsunebot import config
-from hatsunebot import sql
+# from hatsunebot import sql
 
 """
 {
@@ -101,33 +101,31 @@ def collect_album_items(bot, update, job_queue):
         [3992, 366039180, 'AgADBQADH6gxG6docVcHRcI6L68KiLRK1TIABHhZdVsgP_YDj7ICAAEC'],
         [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABBgKpuOY0jmrxTkBAAEC'],
         [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABOQB-N1TfaNgxjkBAAEC'],
-        [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABLYJfkdL-oupxDkBAAEC']]
+        [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABLYJfkdL-oupxDkBAAEC']
+    ]
     """
 
     config.CONFLICT_LIST = []
-    db = sql.connect_mysql()
+    tmp_list = []
+
+    message_id = update.message.message_id
+    tmp_list.append(message_id)
+
+    from_chat_id = update.message.chat.id
+    tmp_list.append(from_chat_id)
+
+    # db = sql.connect_mysql()
     for f in update.message.photo:
-        tmp_list = []
-
-        message_id = update.message.message_id
-        tmp_list.append(message_id)
-
-        from_chat_id = update.message.chat.id
-        tmp_list.append(from_chat_id)
-        file_id = f.file_id
-        tmp_list.append(file_id)
+        tmp_list.append(f.file_id)
 
         # conflict check
-        media_group_id = update.message.media_group_id
+        # media_group_id = update.message.media_group_id
 
-        sql.process_sql(db, file_id)
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>{}".format(config.THREE_TYPE_LIST))
-        if media_group_id not in config.CONFLICT_LIST:
-            config.THREE_TYPE_LIST.append(tmp_list)
-            config.CONFLICT_LIST.append(media_group_id)
-
-    sql.commit_mysql(db)
-    sql.close_mysql(db)
+    config.SQL_LIST.append(tmp_list)
+    config.FIVE_TYPE_LIST.append(tmp_list)
+    # sql.process_sql(db, tmp_list)
+    # sql.commit_mysql(db)
+    # sql.close_mysql(db)
 
 #     media_group_id = update.message.media_group_id
 #     if media_group_i not in config.ALBUM_DICT:
@@ -174,4 +172,3 @@ def collect_album_items(bot, update, job_queue):
 #         chat_id=updates[0].message.from_user.id,
 #         media=media
 #     )
-#
