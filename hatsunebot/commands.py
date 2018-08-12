@@ -47,7 +47,7 @@ def random_pic(bot, update):
     for cid in config.CHAT_ID:
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
         bot.forwardMessage(
-            chat_id=cid, from_chat_id=fid, message_d=mid)
+            chat_id=cid, from_chat_id=fid, message_id=mid)
 
     sql.close_mysql(db)
 
