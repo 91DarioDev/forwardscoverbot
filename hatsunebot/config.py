@@ -40,4 +40,4 @@ SQL_FORMAT = conf["sql_format"]
 MAX_ROWS = int(conf["max_rows"])
 
 NU_RANDOM = 0
-ALBUM_DICT = {}
+# ALBUM_DICT = {}

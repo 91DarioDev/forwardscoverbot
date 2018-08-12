@@ -60,7 +60,7 @@ def check_same_value(db, file_id):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         cursor.execute("SELECT * FROM %s WHERE file_id = '%s' limit 1" %
                        (table_name, file_id))
-        if len(cursor.fetchone()) != 0:
+        if cursor.fetchone() != None:
             return 1
 
     return 0
@@ -71,7 +71,7 @@ def create_new_tables(db, table_name):
     cursor = db.cursor()
     # not test yet
     try:
-        if cursor.execute("CREATE TABLE %s (file_id CHAR(100) NOT NULL, date CHAR(10))" % table_name) == 1:
+        if cursor.execute("CREATE TABLE %s (file_id CHAR(100) NOT NULL, date VARCHAR(30))" % table_name) == 1:
             return 0
         else:
             return 1
@@ -157,14 +157,13 @@ def close_mysql(db):
     db.close()
 
 
-def process_sql(file_id):
+def process_sql(db, file_id):
 
     if config.SQL_STATUS == True:
-        db = connect_mysql()
+        # db = connect_mysql()
         dt = datetime.now()
         date = dt.strftime('%Y_%m_%d_%I_%M_%S')
         if insert_mysql(db, file_id, date) == 1:
             db.rollback()
-        return db
     else:
         pass
