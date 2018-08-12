@@ -31,7 +31,7 @@ def select_fid(db, table_name, mid):
         if fid != None:
             break
 
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(fid))
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(fid))
     return fid
 
 
@@ -52,7 +52,7 @@ def random_pick_mid(db, table_name):
         if mid != None:
             break
 
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
     return mid
 
 
