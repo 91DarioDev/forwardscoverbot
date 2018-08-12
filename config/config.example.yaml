@@ -1,21 +1,3 @@
-# ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2018  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
-#
-# ForwardsCoverBot is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published
-# by the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# ForwardsCoverBot is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
-
-# _________________________________________________________________________
-
 # before of running the bot you should create a file named `config.yaml`
 # the file should be the same of this one, but replacing sample variables with true data
 
@@ -23,9 +5,17 @@
 # the token of the bot you get from t.me/botfather (type: str)
 bot_token: "token"
 
-# the name of the database (type: str)
-db_path: "database/database.db"
-
 # a list containing the telegram ids of the admins of the bot (type: ids are int)
 admins: 
 - 1234
+
+# which id you want to send message
+chat_id: "id"
+
+# sql setting
+sql_server: "localhost"
+sql_user: "hatsune"
+sql_password: "test@test"
+sql_database: "hatsunebot"
+sql_format: "h_"
+max_rows: 1000
