@@ -43,17 +43,20 @@ def random_pick_from_mysql(db):
     cursor_1 = db.cursor()
     cursor_1.execute("SELECT message_id FROM %s" % table_name)
 
-    try:
-        r_mid = cursor_1.fetchall()
-        # print(r_mid)
-        r_mid = r_mid[random_rows][0]
-    except IndexError:
+    r_mid = cursor_1.fetchall()
+    if r_mid == None:
         r_mid, r_fid = random_pick_from_mysql(db)
-
-    cursor_2 = db.cursor()
-    cursor_2.execute(
-        "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, r_mid))
-    r_fid = cursor_2.fetchone()[0]
+    # print(r_mid)
+    else:
+        r_mid = r_mid[random_rows][0]
+        cursor_2 = db.cursor()
+        cursor_2.execute(
+            "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, r_mid))
+        r_fid = cursor_2.fetchone()
+        if r_fid == None:
+            r_mid, r_fid = random_pick_from_mysql(db)
+        else:
+            r_fid = r_fid[0]
 
     print(r_mid, r_fid)
     return (r_mid, r_fid)
