@@ -132,5 +132,15 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
         sql.commit_mysql(db)
         sql.close_mysql(db)
 
-        config.PHOTO_FILE_ID.append(file_id)
+        # THREE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID]]
+        tmp_list = []
+        message_id = message.message_id
+        tmp_list.append(message_id)
+        # config.MESSAGE_ID_LIST.append(message_id)
+        from_chat_id = message.chat.id
+        tmp_list.append(from_chat_id)
+        # config.FROM_CHAT_ID_LIST.append(from_chat_id)
+        tmp_list.append(file_id)
+        # config.PHOTO_FILE_ID.append(file_id)
+        config.THREE_TYPE_LIST.append(tmp_list)
         process_message_subdivision(bot, update, message, caption)

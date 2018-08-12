@@ -88,12 +88,27 @@ def collect_album_items(bot, update, job_queue):
         - add update to the list of that media_group_id
     """
     # now we append every file_id into list and sql
+    # THREE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID]]
     db = sql.connect_mysql()
     for f in update.message.photo:
+        SAME = False
+        tmp_list = []
+
+        message_id = update.message.message_id
+        tmp_list.append(message_id)
+        from_chat_id = update.message.chat.id
+        tmp_list.append(from_chat_id)
         file_id = f.file_id
+
         sql.process_sql(db, file_id)
-        if f not in config.PHOTO_FILE_ID:
-            config.PHOTO_FILE_ID.append(file_id)
+        for t in config.THREE_TYPE_LIST:
+            # check the same value
+            if file_id == t[2]:
+                SAME = True
+                # if f not in config.PHOTO_FILE_ID:
+                # config.PHOTO_FILE_ID.append(file_id)
+        if SAME == False:
+            config.THREE_TYPE_LIST.append(tmp_list)
 
     sql.commit_mysql(db)
     sql.close_mysql(db)

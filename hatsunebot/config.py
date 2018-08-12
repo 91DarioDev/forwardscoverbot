@@ -24,9 +24,11 @@ BOT_TOKEN = conf["bot_token"]
 ADMINS = conf["admins"]
 CHAT_ID = conf["chat_id"]
 
-#MESSAGE_ID_LIST = []
-#FROM_CHAT_ID_LIST = []
-PHOTO_FILE_ID = []
+# MESSAGE_ID_LIST = []
+# FROM_CHAT_ID_LIST = []
+# THREE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID]]
+THREE_TYPE_LIST = []
+# PHOTO_FILE_ID = []
 
 # set the sql status
 SQL_STATUS = True

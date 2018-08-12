@@ -50,13 +50,23 @@ def help_command(bot, update):
 def callback_minute(bot, job):
 
     try:
-        for cid in config.CHAT_ID:
-            file_id = config.PHOTO_FILE_ID[0]
-            if config.FORWARD_STATUS == True:
-                bot.send_photo(chat_id=cid, photo=file_id, caption=None)
-            del config.PHOTO_FILE_ID[0]
+        three_type = config.THREE_TYPE_LIST[0]
+        # file_id = config.PHOTO_FILE_ID[0]
     except IndexError:
-        pass
+        return
+    mid = three_type[0]
+    fid = three_type[1]
+    for cid in config.CHAT_ID:
+        # only send one pic once
+        # THREE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID]]
+        # file_id = three_type[2]
+        if config.FORWARD_STATUS == True:
+            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+            bot.forwardMessage(
+                chat_id=cid, from_chat_id=fid, message_id=mid)
+
+    # del config.PHOTO_FILE_ID[0]
+    del config.THREE_TYPE_LIST[0]
 
     # try:
     #     mid = config.MESSAGE_ID_LIST[0]
