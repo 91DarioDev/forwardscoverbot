@@ -27,6 +27,7 @@ def random_pic(bot, update):
     try:
         mid = sql.random_pick_mid(db, table_name)
     except Exception:
+        random_pic(bot, update)
         text = "..."
         update.message.reply_text(text=text, quote=True)
         sql.close_mysql(db)
@@ -35,6 +36,7 @@ def random_pic(bot, update):
     try:
         fid = sql.select_fid(db, table_name, mid)
     except Exception:
+        random_pic(bot, update)
         text = "..."
         update.message.reply_text(text=text, quote=True)
         sql.close_mysql(db)
@@ -43,7 +45,7 @@ def random_pic(bot, update):
     for cid in config.CHAT_ID:
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
         bot.forwardMessage(
-            chat_id=cid, from_chat_id=fid, message_id=mid)
+            chat_id=cid, from_chat_id=fid, message_d=mid)
 
     sql.close_mysql(db)
 
