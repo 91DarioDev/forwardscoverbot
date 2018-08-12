@@ -20,7 +20,7 @@ def random_pic(bot, update):
 
     db = sql.connect_mysql()
     mid, fid = sql.random_pick_from_mysql(db)
-    sql.close_mysql(db)
+    print("2: {0} {1}".format(mid, fid))
 
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(file_id)
@@ -29,6 +29,8 @@ def random_pic(bot, update):
             # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
             bot.forwardMessage(
                 chat_id=cid, from_chat_id=fid, message_id=mid)
+
+    sql.close_mysql(db)
 
 
 @run_async
