@@ -19,13 +19,16 @@ from telegram.ext.dispatcher import run_async
 def random_pic(bot, update):
 
     db = sql.connect_mysql()
-    file_id = sql.random_pick_from_mysql(db)
+    mid, fid = sql.random_pick_from_mysql(db)
     sql.close_mysql(db)
-    file_id = file_id[0]
+
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(file_id)
     for cid in config.CHAT_ID:
-        bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+        if config.FORWARD_STATUS == True:
+            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+            bot.forwardMessage(
+                chat_id=cid, from_chat_id=fid, message_id=mid)
 
 
 @run_async
@@ -49,7 +52,7 @@ def help_command(bot, update):
 
 @run_async
 def callback_sql(bot, job):
-    
+
     # deep copy the list of SQL_LIST
     # then we delete is one by one
     # COPY_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
@@ -76,8 +79,6 @@ def callback_minute_send(bot, job):
     fid = three_type[1]
     for cid in config.CHAT_ID:
         # only send one pic once
-        # THREE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID]]
-        # file_id = three_type[2]
         if config.FORWARD_STATUS == True:
             # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
             bot.forwardMessage(

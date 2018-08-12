@@ -36,13 +36,21 @@ def random_pick_from_mysql(db):
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
 
     cursor_1 = db.cursor()
-    cursor_1.execute("SELECT file_id FROM %s" % table_name)
-    try:
-        return_result = cursor_1.fetchall()[random_rows]
-    except IndexError:
-        return_result = random_pick_from_mysql(db)
+    cursor_1.execute("SELECT message_id FROM %s" % table_name)
 
-    return return_result
+    try:
+        r_mid = cursor_1.fetchall()
+        print(r_mid)
+        r_mid = r_mid[random_rows]
+    except IndexError:
+        r_mid, r_fid = random_pick_from_mysql(db)
+
+    cursor_2 = db.cursor()
+    cursor_2.execute(
+        "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, r_mid))
+    r_fid = cursor_2.fetchone()[0]
+
+    return (r_mid, r_fid)
 
 
 def get_mysql_version(db):
