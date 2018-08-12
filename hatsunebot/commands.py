@@ -61,7 +61,7 @@ def help_command(bot, update):
         "<b>Hatsune' Telegram Bot Guide:</b>."
         "\n<i>It works also if you edit messages or forward messages. "
         "It also keeps the same text formatting style.</i>\n\n"
-        "<b>Turn Status:</b>\n"
+        "<b>MySQL Status:</b>\n"
         "{0}\n"
         "<b>Forward Status:</b>\n"
         "{1}\n"
