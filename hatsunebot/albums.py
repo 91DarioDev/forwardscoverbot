@@ -103,6 +103,7 @@ def collect_album_items(bot, update, job_queue):
         tmp_list.append(file_id)
 
         sql.process_sql(db, file_id)
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>{}".format(config.THREE_TYPE_LIST))
         for t in config.THREE_TYPE_LIST:
             # check the same value
             # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>{}".format(t))
