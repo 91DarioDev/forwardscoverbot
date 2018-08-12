@@ -24,6 +24,7 @@ def random_pic(bot, update):
     except TypeError:
         text = "..."
         update.message.reply_text(text=text, quote=True)
+        sql.close_mysql(db)
         return
     # print("2: {0} {1}".format(mid, fid))
 
