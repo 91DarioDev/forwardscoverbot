@@ -2,6 +2,7 @@
 
 import yaml
 import sys
+import logging
 
 
 path = "config/config.yaml"
@@ -21,10 +22,13 @@ except IOError:
     sys.exit()
 
 BOT_TOKEN = conf["bot_token"]
+logging.info("BOT TOKEN: {}".format(BOT_TOKEN))
 ADMINS = conf["admins"]
+logging.info("ADMINS: {}".format(ADMINS))
 ADMINS_GROUP = conf["admins_group"]
-print(ADMINS_GROUP)
+logging.info("ADMINS GROUP: {}".format(ADMINS_GROUP))
 CHAT_ID = conf["chat_id"]
+logging.info("CHAT ID: {}".format(CHAT_ID))
 
 # MESSAGE_ID_LIST = []
 # FROM_CHAT_ID_LIST = []
@@ -39,11 +43,17 @@ SQL_STATUS = True
 FORWARD_STATUS = True
 
 SQL_SERVER = conf["sql_server"]
+logging.info("MYSQL SERVER ADDRESS: {}".format(SQL_SERVER))
 SQL_USER = conf["sql_user"]
+logging.info("MYSQL USER: {}".format(SQL_USER))
 SQL_PASSWORD = conf["sql_password"]
+logging.info("MYSQL PASSWORD: ********")
 SQL_DATABASE = conf["sql_database"]
+logging.info("MYSQL DATABASE: {}".format(SQL_DATABASE))
 SQL_FORMAT = conf["sql_format"]
+logging.info("MYSQL FORMAT: {}".format(SQL_FORMAT))
 MAX_ROWS = int(conf["max_rows"])
+logging.info("MYSQL MAX ROWS: {}".format(MAX_ROWS))
 
 NU_RANDOM = 0
 # ALBUM_DICT = {}
