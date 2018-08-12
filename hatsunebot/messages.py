@@ -108,10 +108,12 @@ def process_message_subdivision(bot, update, message, caption):
 @only_admin
 def process_message(bot, update, remove_caption=False, custom_caption=None):
 
+    if update.message.forward_from_chat.username == None:
+        return
     if update.message.forward_from_chat.username not in config.ADMINS_GROUP:
-            print(update.message.forward_from_chat.username)
-            print(config.ADMINS_GROUP)
-            return
+        # print(update.message.forward_from_chat.username)
+        # print(config.ADMINS_GROUP)
+        return
     # here get the message
     if update.edited_message:
         message = update.edited_message
@@ -146,6 +148,6 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
             tmp_list.append(file_id)
             # config.PHOTO_FILE_ID.append(file_id)
 
-        config.SQL_LIST.append(tmp_list) 
+        config.SQL_LIST.append(tmp_list)
         config.FIVE_TYPE_LIST.append(tmp_list)
         process_message_subdivision(bot, update, message, caption)

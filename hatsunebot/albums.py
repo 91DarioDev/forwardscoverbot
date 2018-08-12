@@ -104,6 +104,8 @@ def collect_album_items(bot, update, job_queue):
         [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABLYJfkdL-oupxDkBAAEC']
     ]
     """
+    if update.message.forward_from_chat.username == None:
+        return
     if update.message.forward_from_chat.username not in config.ADMINS_GROUP:
         return
 
