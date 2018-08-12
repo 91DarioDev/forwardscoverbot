@@ -106,7 +106,7 @@ def turn_off_sql(bot, update):
         pass
     else:
         config.SQL_STATUS = False
-        text = ("Turn off sql done")
+        text = ("Turn off sql record done")
         update.message.reply_text(text=text)
     return
 
@@ -119,7 +119,7 @@ def turn_on_sql(bot, update):
         pass
     else:
         config.SQL_STATUS = True
-        text = ("Turn on sql done")
+        text = ("Turn on sql record done")
         update.message.reply_text(text=text)
     return
 
@@ -145,6 +145,6 @@ def start_forward(bot, update):
         pass
     else:
         config.SQL_STATUS = True
-        text = ("Start forward nwo")
+        text = ("Start forward now")
         update.message.reply_text(text=text)
     return

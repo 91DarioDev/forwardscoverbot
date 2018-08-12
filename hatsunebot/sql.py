@@ -87,7 +87,7 @@ def create_new_tables(db, table_name):
     """
     try:
         # message_id, from_chat_id， file_id_1, file_id_2, file_id_3
-        if cursor.execute("CREATE TABLE %s (message_id CHAR(50) NOT NULL, from_chat_id CHAR(30) NOT NULL, file_id_1 VARCHAR(100), file_id_2 VARCHAR(100), file_id_3 VARCHAR(100), date VARCHAR(30))" % table_name) == 1:
+        if cursor.execute("CREATE TABLE %s (message_id CHAR(100) NOT NULL, from_chat_id CHAR(50) NOT NULL, file_id_1 VARCHAR(200), file_id_2 VARCHAR(200), file_id_3 VARCHAR(200), date VARCHAR(30))" % table_name) == 1:
             return 0
         else:
             return 1
