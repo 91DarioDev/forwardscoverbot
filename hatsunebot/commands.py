@@ -24,6 +24,7 @@ def random_pic(bot, update):
     except TypeError:
         text = "..."
         update.message.reply_text(text=text, quote=True)
+        return
     # print("2: {0} {1}".format(mid, fid))
 
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
