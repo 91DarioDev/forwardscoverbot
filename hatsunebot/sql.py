@@ -124,13 +124,13 @@ def check_table_full(db, table_name):
     cursor = db.cursor()
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-    rows = cursor.fetchall()
+    rows = cursor.fetchone()
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(rows)
     if len(rows) == 0:
         rows = 0
     else:
-        rows = rows[0][0]
+        rows = rows[0]
 
     if rows >= config.MAX_ROWS:
         return 1
