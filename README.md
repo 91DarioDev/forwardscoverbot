@@ -89,7 +89,7 @@ hatsune /path/config.yaml
 ## Upgrade the bot:
 ```
 cd /path/forwards-pics-bot
-git pull https://github.com/rikonaka/forwards-pics-bot.git
+git pull
 pip install --upgrade .
 ```
 
