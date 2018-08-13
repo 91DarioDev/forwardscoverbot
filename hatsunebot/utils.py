@@ -18,21 +18,21 @@ def sep(num, none_is_zero=False):
 @run_async
 def common_help(bot, update):
 
-    button_list = [
-        InlineKeyboardButton("help", callback_data="/help"),
-        InlineKeyboardButton("random", callback_data="/random"),
-    ]
+    # button_list = [
+    #     InlineKeyboardButton("help", callback_data="/help"),
+    #     InlineKeyboardButton("random", callback_data="/random"),
+    # ]
 
-    reply_markup = InlineKeyboardMarkup(bot.build_menu(button_list, n_cols=2))
-    bot.send_message("help menu", reply_markup=reply_markup)
+    # reply_markup = InlineKeyboardMarkup(update.build_menu(button_list, n_cols=2))
+    # bot.send_message("help menu", reply_markup=reply_markup)
 
-    # custom_keyboard = [["/help", "/random"]]
-    # reply_markup = ReplyKeyboardMarkup(custom_keyboard)
- 
-    # cid = update.message.chat.id
+    custom_keyboard = [["/help", "/random"]]
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+
+    cid = update.message.chat.id
     # bot.send_message(chat_id=cid, text="Please se this",
     #                  reply_markup=reply_markup)
-    # bot.send_message(chat_id=cid, text=None, reply_markup=reply_markup)
+    bot.send_message(chat_id=cid, text=None, reply_markup=reply_markup)
 
 
 def full_list(in_list):
