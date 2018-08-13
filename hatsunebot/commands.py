@@ -174,7 +174,7 @@ def start_forward(bot, update):
     if config.FORWARD_STATUS == True:
         pass
     else:
-        config.SQL_STATUS = True
+        config.FORWARD_STATUS = True
         text = ("Start forward now")
         update.message.reply_text(text=text)
     return
