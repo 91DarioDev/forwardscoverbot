@@ -48,7 +48,7 @@ def random_pic(bot, update):
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
     cid = update.message.chat.id
     bot.forwardMessage(
-            chat_id=cid, from_chat_id=fid, message_id=mid)
+        chat_id=cid, from_chat_id=fid, message_id=mid)
 
     sql.close_mysql(db)
 
@@ -102,12 +102,15 @@ def callback_sql(bot, job):
 def callback_minute_send(bot, job):
 
     try:
-        three_type = config.FIVE_TYPE_LIST[0]
+        five_type = config.FIVE_TYPE_LIST[0]
         # file_id = config.PHOTO_FILE_ID[0]
     except IndexError:
         return
-    mid = three_type[0]
-    fid = three_type[1]
+
+    if len(five_type) == 0:
+        return
+    mid = five_type[0]
+    fid = five_type[1]
     for cid in config.CHAT_ID:
         # only send one pic once
         if config.FORWARD_STATUS == True:
