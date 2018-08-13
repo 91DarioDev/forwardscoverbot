@@ -47,11 +47,9 @@ from hatsunebot.utils import full_list
         'from': {
             'language_code': '',
             'is_bot': False,
-            'username':
-            'Floe',
+            'username':'Floe',
             'id': 36,
-            'first_name':
-            'Flr'
+            'first_name':'Flr'
         },
         'forward_from_chat': {
             'username': 't',
