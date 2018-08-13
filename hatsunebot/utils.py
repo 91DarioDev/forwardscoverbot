@@ -13,7 +13,7 @@ def sep(num, none_is_zero=False):
 
 def full_list(in_list):
     
-    if in_list < 5:
+    if in_list < config.FIVE_TYPE_LIST_LENGTH:
         in_list.append("None")
         full_list(in_list)
     else:
