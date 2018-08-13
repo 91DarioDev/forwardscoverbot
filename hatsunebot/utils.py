@@ -40,8 +40,8 @@ def full_list(in_list):
 @run_async
 def invalid_command(bot, update):
     # text = "This command is invalid"
-    text = "Hi~"
-    update.message.reply_text(text=text, quote=True)
+    # text = "Hi~"
+    # update.message.reply_text(text=text, quote=True)
     pass
 
 
