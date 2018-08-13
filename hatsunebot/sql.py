@@ -197,7 +197,10 @@ def process_sql(db, in_list):
         # db = connect_mysql()
         dt = datetime.now()
         date = dt.strftime('%Y-%m-%d %I:%M:%S')
-        if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
-            db.rollback()
+        try:
+            if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
+                db.rollback()
+        except IndexError:
+            pass
     else:
         pass
