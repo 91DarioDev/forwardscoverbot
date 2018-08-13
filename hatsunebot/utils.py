@@ -12,10 +12,23 @@ def sep(num, none_is_zero=False):
     return "{:,}".format(num)
 
 
+def full_list(in_list):
+
+    if len(in_list) < config.FIVE_TYPE_LIST_MAX_LENGTH:
+        if len(in_list) > config.FIVE_TYPE_LIST_MIN_LENGTH:
+            in_list.append("None")
+            full_list(in_list)
+        else:
+            raise Exception
+    else:
+        return in_list
+
+
 @run_async
 def invalid_command(bot, update):
     # text = "This command is invalid"
-    # update.message.reply_text(text=text, quote=True)
+    text = "Hi~"
+    update.message.reply_text(text=text, quote=True)
     pass
 
 

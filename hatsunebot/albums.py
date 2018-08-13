@@ -6,6 +6,7 @@ from telegram import ChatAction
 from telegram import ParseMode
 
 from hatsunebot import config
+from hatsunebot.utils import full_list
 # from hatsunebot import sql
 
 """
@@ -104,25 +105,32 @@ def collect_album_items(bot, update, job_queue):
         [3993, 366039180, 'AgADBQADIKgxG6docVdP_5qOFLTLuk-p1jIABLYJfkdL-oupxDkBAAEC']
     ]
     """
+    if update.message.forward_from_chat:
+        if update.message.forward_from_chat.username not in config.ADMINS_GROUP:
+            return
 
-    config.CONFLICT_LIST = []
-    tmp_list = []
+        config.CONFLICT_LIST = []
+        tmp_list = []
 
-    message_id = update.message.message_id
-    tmp_list.append(message_id)
+        message_id = update.message.message_id
+        tmp_list.append(message_id)
 
-    from_chat_id = update.message.chat.id
-    tmp_list.append(from_chat_id)
+        from_chat_id = update.message.chat.id
+        tmp_list.append(from_chat_id)
 
-    # db = sql.connect_mysql()
-    for f in update.message.photo:
-        tmp_list.append(f.file_id)
+        # db = sql.connect_mysql()
+        for f in update.message.photo:
+            tmp_list.append(f.file_id)
 
-        # conflict check
-        # media_group_id = update.message.media_group_id
+            # conflict check
+            # media_group_id = update.message.media_group_id
+        try:
+            tmp_list = full_list(tmp_list)
+        except Exception:
+            return
+        config.SQL_LIST.append(tmp_list)
+        config.FIVE_TYPE_LIST.append(tmp_list)
 
-    config.SQL_LIST.append(tmp_list)
-    config.FIVE_TYPE_LIST.append(tmp_list)
     # sql.process_sql(db, tmp_list)
     # sql.commit_mysql(db)
     # sql.close_mysql(db)

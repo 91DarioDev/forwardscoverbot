@@ -2,6 +2,7 @@
 
 import logging
 import copy
+import random
 
 from hatsunebot.utils import only_admin
 # from hatsunebot import keyboards
@@ -19,17 +20,30 @@ from telegram.ext.dispatcher import run_async
 def random_pic(bot, update):
 
     db = sql.connect_mysql()
-    try:
-        mid, fid = sql.random_pick_from_mysql(db)
-    except TypeError:
-        text = "..."
-        update.message.reply_text(text=text, quote=True)
-        sql.close_mysql(db)
-        return
-    # print("2: {0} {1}".format(mid, fid))
 
-    # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    # logging.debug(file_id)
+    sql.get_max_tables()
+    table_id = random.randint(0, config.NU_RANDOM)
+    table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
+    try:
+        mid = sql.random_pick_mid(db, table_name)
+    except Exception:
+        random_pic(bot, update)
+        # text = "..."
+        # update.message.reply_text(text=text, quote=True)
+        # sql.close_mysql(db)
+        return
+
+    try:
+        fid = sql.select_fid(db, table_name, mid)
+    except Exception:
+        random_pic(bot, update)
+        # text = "..."
+        # update.message.reply_text(text=text, quote=True)
+        # sql.close_mysql(db)
+        return
+
+    # print("++++++++++++++++++++{}".format(mid))
+    # print("++++++++++++++++++++{}".format(fid))
     for cid in config.CHAT_ID:
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
         bot.forwardMessage(
@@ -47,11 +61,16 @@ def help_command(bot, update):
         "<b>Hatsune' Telegram Bot Guide:</b>."
         "\n<i>It works also if you edit messages or forward messages. "
         "It also keeps the same text formatting style.</i>\n\n"
-        "<b>Supported commands(Only for admin):</b>\n"
+        "<b>MySQL Status:</b>\n"
+        "{0}\n"
+        "<b>Forward Status:</b>\n"
+        "{1}\n"
+        "\n<b>Supported commands(Only for admin):</b>\n"
         "/turn_off_sql\n"
         "/turn_on_sql\n"
         "/stop_forward\n"
-        "/start_forward\n"
+        "/start_forward\n".format(str(config.SQL_STATUS),
+                                  str(config.FORWARD_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
@@ -66,6 +85,8 @@ def callback_sql(bot, job):
     # then we delete is one by one
     # COPY_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
     COPY_LIST = copy.deepcopy(config.SQL_LIST)
+    if len(COPY_LIST) == 0:
+        return
     db = sql.connect_mysql()
     for c in COPY_LIST:
         sql.process_sql(db, c)
@@ -155,7 +176,7 @@ def start_forward(bot, update):
     if config.FORWARD_STATUS == True:
         pass
     else:
-        config.SQL_STATUS = True
+        config.FORWARD_STATUS = True
         text = ("Start forward now")
         update.message.reply_text(text=text)
     return

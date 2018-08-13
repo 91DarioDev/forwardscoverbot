@@ -21,45 +21,39 @@ def get_max_tables():
     close_mysql(db)
 
 
-def random_pick_from_mysql(db):
+def select_fid(db, table_name, mid):
 
-    get_max_tables()
-    table_id = random.randint(0, config.NU_RANDOM)
-    table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    # logging.debug(">>>>>>>>>>>>>>>>>>>table_name: {}".format(table_name))
+    cursor = db.cursor()
+    while True:
+        cursor.execute(
+            "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, mid))
+        fid = cursor.fetchone()[0]
+        if fid != None:
+            break
+
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(fid))
+    return fid
+
+
+def random_pick_mid(db, table_name):
+
     cursor_0 = db.cursor()
-    cursor_0.execute(
-        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-
-    rows = cursor_0.fetchone()
-    if rows is None:
-        random_pick_from_mysql(db)
-        return
-    # print(rows)
-    rows = rows[0]
-    random_rows = random.randint(0, rows)
-    # logging.debug(">>>>>>>>>>>>>>>>>>>>>>random_rows: {}".format(random_rows))
-
     cursor_1 = db.cursor()
-    cursor_1.execute("SELECT message_id FROM %s" % table_name)
+    while True:
+        cursor_0.execute(
+            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
-    r_mid = cursor_1.fetchall()
-    if r_mid == None:
-        r_mid, r_fid = random_pick_from_mysql(db)
-    # print(r_mid)
-    else:
-        r_mid = r_mid[random_rows][0]
-        cursor_2 = db.cursor()
-        cursor_2.execute(
-            "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, r_mid))
-        r_fid = cursor_2.fetchone()
-        if r_fid == None:
-            r_mid, r_fid = random_pick_from_mysql(db)
-        else:
-            r_fid = r_fid[0]
+        rows = cursor_0.fetchone()[0]
+        random_rows = random.randint(0, rows)
 
-    # print(r_mid, r_fid)
-    return (r_mid, r_fid)
+        cursor_1.execute("SELECT message_id FROM %s" % table_name)
+
+        mid = cursor_1.fetchall()[random_rows][0]
+        if mid != None:
+            break
+
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
+    return mid
 
 
 def get_mysql_version(db):
@@ -130,13 +124,13 @@ def check_table_full(db, table_name):
     cursor = db.cursor()
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-    rows = cursor.fetchall()
+    rows = cursor.fetchone()
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(rows)
     if len(rows) == 0:
         rows = 0
     else:
-        rows = rows[0][0]
+        rows = rows[0]
 
     if rows >= config.MAX_ROWS:
         return 1
@@ -144,8 +138,24 @@ def check_table_full(db, table_name):
         return 0
 
 
+def insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
+
+    if db:
+        if message_id:
+            if from_chat_id:
+                if file_id_1:
+                    if file_id_2:
+                        if file_id_3:
+                            if date:
+                                return 0
+
+    return 1
+
+
 def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
 
+    if insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) == 1:
+        return
     cursor = db.cursor()
     get_max_tables()
     all_full = True
@@ -203,7 +213,11 @@ def process_sql(db, in_list):
         # db = connect_mysql()
         dt = datetime.now()
         date = dt.strftime('%Y-%m-%d %I:%M:%S')
-        if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
-            db.rollback()
+        try:
+            if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
+                db.rollback()
+        except Exception:
+            # IndexError and TypeError
+            pass
     else:
         pass
