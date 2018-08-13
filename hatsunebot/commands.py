@@ -5,6 +5,7 @@ import copy
 import random
 
 from hatsunebot.utils import only_admin
+from hatsunebot.utils import common_help
 # from hatsunebot import keyboards
 from hatsunebot import messages
 from hatsunebot import config
@@ -14,6 +15,12 @@ from hatsunebot import sql
 from telegram import ParseMode
 # from telegram import constants as t_consts
 from telegram.ext.dispatcher import run_async
+
+
+@run_async
+@only_admin
+def common_help_show(bot, update):
+    common_help(bot, update)
 
 
 @run_async

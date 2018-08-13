@@ -61,6 +61,7 @@ def main():
     dp.add_handler(CommandHandler('start_forward', commands.start_forward), 2)
     # random
     dp.add_handler(CommandHandler('random', commands.random_pic), 2)
+    dp.add_handler(CommandHandler('chelp', commands.common_help_show), 2)
     # invalid_command
     dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
 
