@@ -127,7 +127,7 @@ def callback_minute_send(bot, job):
     except IndexError:
         return
 
-    if len(five_type) == 0:
+    if five_type is None:
         return
     mid = five_type[0]
     fid = five_type[1]
