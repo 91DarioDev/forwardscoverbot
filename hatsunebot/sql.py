@@ -138,8 +138,24 @@ def check_table_full(db, table_name):
         return 0
 
 
+def insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
+
+    if db:
+        if message_id:
+            if from_chat_id:
+                if file_id_1:
+                    if file_id_2:
+                        if file_id_3:
+                            if date:
+                                return 0
+
+    return 1
+
+
 def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
 
+    if insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) == 1:
+        return
     cursor = db.cursor()
     get_max_tables()
     all_full = True
@@ -200,7 +216,8 @@ def process_sql(db, in_list):
         try:
             if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
                 db.rollback()
-        except IndexError:
+        except Exception:
+            # IndexError and TypeError
             pass
     else:
         pass

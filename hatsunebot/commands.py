@@ -85,6 +85,8 @@ def callback_sql(bot, job):
     # then we delete is one by one
     # COPY_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
     COPY_LIST = copy.deepcopy(config.SQL_LIST)
+    if len(COPY_LIST) == 0:
+        return
     db = sql.connect_mysql()
     for c in COPY_LIST:
         sql.process_sql(db, c)
