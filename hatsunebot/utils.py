@@ -20,8 +20,9 @@ def common_help(bot, update):
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
 
     cid = update.message.chat.id
-    bot.send_message(chat_id=cid, text="Please use this",
-                     reply_markup=reply_markup)
+    # bot.send_message(chat_id=cid, text="Please use this",
+    #                  reply_markup=reply_markup)
+    bot.send_message(chat_id=cid, reply_markup=reply_markup)
 
 
 def full_list(in_list):
