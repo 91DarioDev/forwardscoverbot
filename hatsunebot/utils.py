@@ -11,6 +11,13 @@ def sep(num, none_is_zero=False):
         return 0 if none_is_zero is True else None
     return "{:,}".format(num)
 
+def full_list(in_list):
+    
+    if in_list < 5:
+        in_list.append("None")
+        full_list(in_list)
+    else:
+        return in_list
 
 @run_async
 def invalid_command(bot, update):

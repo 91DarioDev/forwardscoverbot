@@ -6,6 +6,7 @@ from telegram import ChatAction
 from telegram import ParseMode
 
 from hatsunebot import config
+from hatsunebot.utils import full_list
 # from hatsunebot import sql
 
 """
@@ -123,11 +124,9 @@ def collect_album_items(bot, update, job_queue):
 
             # conflict check
             # media_group_id = update.message.media_group_id
-
+        tmp_list = full_list(tmp_list)
         config.SQL_LIST.append(tmp_list)
         config.FIVE_TYPE_LIST.append(tmp_list)
-
-
 
     # sql.process_sql(db, tmp_list)
     # sql.commit_mysql(db)

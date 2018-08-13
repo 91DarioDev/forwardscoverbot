@@ -8,6 +8,7 @@ from telegram.ext.dispatcher import run_async
 from hatsunebot import keyboards
 from hatsunebot import config
 from hatsunebot.utils import only_admin
+from hatsunebot.utils import full_list
 # from hatsunebot import sql
 
 
@@ -147,6 +148,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                 tmp_list.append(file_id)
                 # config.PHOTO_FILE_ID.append(file_id)
 
+            tmp_list = full_list(tmp_list)
             config.SQL_LIST.append(tmp_list)
             config.FIVE_TYPE_LIST.append(tmp_list)
             process_message_subdivision(bot, update, message, caption)
