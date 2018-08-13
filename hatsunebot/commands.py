@@ -44,9 +44,10 @@ def random_pic(bot, update):
 
     # print("++++++++++++++++++++{}".format(mid))
     # print("++++++++++++++++++++{}".format(fid))
-    for cid in config.CHAT_ID:
+    # for cid in config.CHAT_ID:
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
-        bot.forwardMessage(
+    cid = update.message.chat.id
+    bot.forwardMessage(
             chat_id=cid, from_chat_id=fid, message_id=mid)
 
     sql.close_mysql(db)
