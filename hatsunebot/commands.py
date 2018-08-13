@@ -18,9 +18,17 @@ from telegram.ext.dispatcher import run_async
 
 
 @run_async
-@only_admin
 def common_help_show(bot, update):
+
     common_help(bot, update)
+    text = (
+        "<b>PicBot Guide:</b>."
+        "\n<i>See the titswiki random photo from begin to now.</i>\n\n"
+    )
+    # update.message.reply_text(
+    #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
+    update.message.reply_text(
+        text=text, parse_mode=ParseMode.HTML)
 
 
 @run_async
@@ -80,7 +88,7 @@ def help_command(bot, update):
         "/stop_forward\n"
         "/start_forward\n"
         "/rhelp".format(str(config.SQL_STATUS),
-                                  str(config.FORWARD_STATUS))
+                        str(config.FORWARD_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
