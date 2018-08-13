@@ -16,7 +16,7 @@ def sep(num, none_is_zero=False):
 @run_async
 def common_help(bot, update):
 
-    custom_keyboard = [["Random"]]
+    custom_keyboard = [["/help", "/random"]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
 
     cid = update.message.chat.id
@@ -52,6 +52,6 @@ def only_admin(func):
             return
         else:
             common_help(bot, update, *args, **kwargs)
-            return
+            # return
         return func(bot, update, *args, **kwargs)
     return wrapped
