@@ -34,6 +34,7 @@ def common_help_show(bot, update):
 @run_async
 def random_pic(bot, update):
 
+    # we have to
     if update.message.from.is_bot == True:
         return
     db = sql.connect_mysql()
