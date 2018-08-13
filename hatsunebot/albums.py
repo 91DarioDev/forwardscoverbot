@@ -124,7 +124,10 @@ def collect_album_items(bot, update, job_queue):
 
             # conflict check
             # media_group_id = update.message.media_group_id
-        tmp_list = full_list(tmp_list)
+        try:
+            tmp_list = full_list(tmp_list)
+        except Exception:
+            return
         config.SQL_LIST.append(tmp_list)
         config.FIVE_TYPE_LIST.append(tmp_list)
 

@@ -11,13 +11,18 @@ def sep(num, none_is_zero=False):
         return 0 if none_is_zero is True else None
     return "{:,}".format(num)
 
+
 def full_list(in_list):
-    
-    if len(in_list) < config.FIVE_TYPE_LIST_LENGTH:
-        in_list.append("None")
-        full_list(in_list)
+
+    if len(in_list) < config.FIVE_TYPE_LIST_MAX_LENGTH:
+        if len(in_list) > config.FIVE_TYPE_LIST_MIN_LENGTH:
+            in_list.append("None")
+            full_list(in_list)
+        else:
+            raise Exception
     else:
         return in_list
+
 
 @run_async
 def invalid_command(bot, update):
