@@ -32,7 +32,7 @@ def common_help(bot, update):
     cid = update.message.chat.id
     # bot.send_message(chat_id=cid, text="Please se this",
     #                  reply_markup=reply_markup)
-    bot.send_message(chat_id=cid, text=None, reply_markup=reply_markup)
+    bot.send_message(chat_id=cid, text="So", reply_markup=reply_markup)
 
 
 def full_list(in_list):
