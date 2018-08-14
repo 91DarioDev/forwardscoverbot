@@ -15,6 +15,7 @@ from hatsunebot import sql
 from telegram import ParseMode
 # from telegram import constants as t_consts
 from telegram.ext.dispatcher import run_async
+from telegram import error
 
 
 @run_async
@@ -65,8 +66,11 @@ def random_pic(bot, update):
     # for cid in config.CHAT_ID:
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
     cid = update.message.chat.id
-    bot.forwardMessage(
-        chat_id=cid, from_chat_id=fid, message_id=mid)
+    try:
+        bot.forwardMessage(
+            chat_id=cid, from_chat_id=fid, message_id=mid)
+    except error.TimedOut:
+        pass
 
     sql.close_mysql(db)
 
@@ -85,13 +89,12 @@ def help_command(bot, update):
         "<b>Forward Status:</b>\n"
         "{1}\n"
         "\n<b>Supported commands(Only for admin):</b>\n"
-        "/helpforadmin\n"
+        "/isins\n"
         "/turn_off_sql\n"
         "/turn_on_sql\n"
         "/stop_forward\n"
-        "/start_forward\n"
-        "/rhelp".format(str(config.SQL_STATUS),
-                        str(config.FORWARD_STATUS))
+        "/start_forward\n".format(str(config.SQL_STATUS),
+                                  str(config.FORWARD_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
@@ -105,6 +108,8 @@ def callback_sql(bot, job):
     # deep copy the list of SQL_LIST
     # then we delete is one by one
     # COPY_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
+    if config.SQL_STATUS == False:
+        return
     COPY_LIST = copy.deepcopy(config.SQL_LIST)
     if len(COPY_LIST) == 0:
         return
@@ -121,6 +126,8 @@ def callback_sql(bot, job):
 @run_async
 def callback_minute_send(bot, job):
 
+    if config.FORWARD_STATUS == False:
+        return
     try:
         five_type = config.FIVE_TYPE_LIST[0]
         # file_id = config.PHOTO_FILE_ID[0]
@@ -133,10 +140,9 @@ def callback_minute_send(bot, job):
     fid = five_type[1]
     for cid in config.CHAT_ID:
         # only send one pic once
-        if config.FORWARD_STATUS == True:
-            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
-            bot.forwardMessage(
-                chat_id=cid, from_chat_id=fid, message_id=mid)
+        # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+        bot.forwardMessage(
+            chat_id=cid, from_chat_id=fid, message_id=mid)
 
     # del config.PHOTO_FILE_ID[0]
     del config.FIVE_TYPE_LIST[0]

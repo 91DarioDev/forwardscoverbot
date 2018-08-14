@@ -51,7 +51,7 @@ def main():
     dp.add_handler(MessageHandler(
         Filters.all, messages.process_message, edited_updates=True), 1)
     # commands
-    dp.add_handler(CommandHandler('helpforadmin', commands.help_command), 2)
+    dp.add_handler(CommandHandler('isins', commands.help_command), 2)
     # turn series
     dp.add_handler(CommandHandler(
         'turn_off_mysql', commands.turn_off_sql), 2)

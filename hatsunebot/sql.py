@@ -209,15 +209,12 @@ def process_sql(db, in_list):
 
     #            0              1           2          3           4
     # LIST = [MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3]
-    if config.SQL_STATUS == True:
-        # db = connect_mysql()
-        dt = datetime.now()
-        date = dt.strftime('%Y-%m-%d %I:%M:%S')
-        try:
-            if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
-                db.rollback()
-        except Exception:
-            # IndexError and TypeError
-            pass
-    else:
+    # db = connect_mysql()
+    dt = datetime.now()
+    date = dt.strftime('%Y-%m-%d %I:%M:%S')
+    try:
+        if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
+            db.rollback()
+    except Exception:
+        # IndexError and TypeError
         pass
