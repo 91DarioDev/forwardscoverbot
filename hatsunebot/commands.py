@@ -89,12 +89,12 @@ def help_command(bot, update):
         "<b>Forward Status:</b>\n"
         "{1}\n"
         "\n<b>Supported commands(Only for admin):</b>\n"
-        "/show\n"
-        "/turn_off_sql\n"
-        "/turn_on_sql\n"
-        "/stop_forward\n"
-        "/start_forward\n".format(str(config.SQL_STATUS),
-                                  str(config.FORWARD_STATUS))
+        "/show\n\n\n"
+        "/turn_off_sql\n\n\n"
+        "/turn_on_sql\n\n\n"
+        "/stop_forward\n\n\n"
+        "/start_forward\n\n\n".format(str(config.SQL_STATUS),
+                                      str(config.FORWARD_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
