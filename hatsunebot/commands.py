@@ -88,7 +88,7 @@ def help_command(bot, update):
         "{0}\n"
         "<b>Forward Status:</b>\n"
         "{1}\n"
-        "\n<b>Supported commands(Only for admin):</b>\n"
+        "\n<b>Supported commands(Only for admin):</b>\n\n"
         "/show\n\n"
         "/turn_off_sql\n\n"
         "/turn_on_sql\n\n"
