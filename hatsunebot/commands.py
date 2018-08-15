@@ -141,8 +141,11 @@ def callback_minute_send(bot, job):
     for cid in config.CHAT_ID:
         # only send one pic once
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
-        bot.forwardMessage(
-            chat_id=cid, from_chat_id=fid, message_id=mid)
+        try:
+            bot.forwardMessage(
+                chat_id=cid, from_chat_id=fid, message_id=mid)
+        except error.BadRequest:
+            pass
 
     # del config.PHOTO_FILE_ID[0]
     del config.FIVE_TYPE_LIST[0]
