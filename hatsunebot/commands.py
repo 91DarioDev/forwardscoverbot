@@ -129,6 +129,7 @@ def callback_sql(bot, job):
 def callback_minute_send(bot, job):
 
     if config.FORWARD_STATUS == False:
+        config.FIVE_TYPE_LIST = []
         return
     try:
         five_type = config.FIVE_TYPE_LIST[0]
