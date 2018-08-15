@@ -67,8 +67,8 @@ def random_pic(bot, update):
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
     cid = update.message.chat.id
     try:
-        print(fid)
-        print(mid)
+        # print(fid)
+        # print(mid)
         bot.forwardMessage(
             chat_id=cid, from_chat_id=fid, message_id=mid)
     except error.TimedOut:
