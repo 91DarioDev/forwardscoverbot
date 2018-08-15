@@ -96,7 +96,7 @@ def help_command(bot, update):
         "/turn_on_sql\n\n"
         "/stop_forward\n\n"
         "/start_forward\n\n".format(str(config.SQL_STATUS),
-                                      str(config.FORWARD_STATUS))
+                                    str(config.FORWARD_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
@@ -112,6 +112,7 @@ def callback_sql(bot, job):
     # COPY_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
     if config.SQL_STATUS == False:
         return
+
     COPY_LIST = copy.deepcopy(config.SQL_LIST)
     if len(COPY_LIST) == 0:
         return
@@ -131,6 +132,7 @@ def callback_minute_send(bot, job):
     if config.FORWARD_STATUS == False:
         config.FIVE_TYPE_LIST = []
         return
+
     try:
         five_type = config.FIVE_TYPE_LIST[0]
         # file_id = config.PHOTO_FILE_ID[0]
