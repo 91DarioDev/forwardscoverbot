@@ -123,7 +123,7 @@ def check_table_full(db, table_name):
 
     cursor = db.cursor()
     cursor.execute(
-        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s' AND table_schema='%s'" % (table_name, config.SQL_DATABASE))
     rows = cursor.fetchone()
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(rows)
