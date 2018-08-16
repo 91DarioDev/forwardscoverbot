@@ -73,7 +73,6 @@ def check_same_value(db, file_id):
                        (table_name, file_id))
         if cursor.fetchone() != None:
             return 1
-
     return 0
 
 
@@ -214,7 +213,7 @@ def process_sql(db, in_list):
     date = dt.strftime('%Y-%m-%d %I:%M:%S')
     try:
         if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
-            db.rollback()
+            rollback_mysql(db)
     except Exception:
         # IndexError and TypeError
         pass
