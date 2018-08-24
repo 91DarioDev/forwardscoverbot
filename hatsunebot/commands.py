@@ -134,26 +134,26 @@ def callback_minute_send(bot, job):
         return
 
     try:
-        five_type = config.FIVE_TYPE_LIST[0]
+        COPY_FIVE_LIST = copy.deepcopy(config.FIVE_TYPE_LIST[0])
         # file_id = config.PHOTO_FILE_ID[0]
     except IndexError:
         return
 
-    if five_type is None:
+    if COPY_FIVE_LIST is None:
         return
-    mid = five_type[0]
-    fid = five_type[1]
-    for cid in config.CHAT_ID:
-        # only send one pic once
-        # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
-        try:
-            bot.forwardMessage(
-                chat_id=cid, from_chat_id=fid, message_id=mid)
-        except error.BadRequest:
-            pass
-
-    # del config.PHOTO_FILE_ID[0]
-    del config.FIVE_TYPE_LIST[0]
+    for five_type in COPY_FIVE_LIST:
+        mid = five_type[0]
+        fid = five_type[1]
+        for cid in config.CHAT_ID:
+            # only send one pic once
+            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+            try:
+                bot.forwardMessage(
+                    chat_id=cid, from_chat_id=fid, message_id=mid)
+            except error.BadRequest:
+                pass
+        # del config.PHOTO_FILE_ID[0]
+        del config.FIVE_TYPE_LIST[0]
 
     # try:
     #     mid = config.MESSAGE_ID_LIST[0]
