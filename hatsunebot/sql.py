@@ -50,6 +50,7 @@ def random_pick_mid(db, table_name):
 
         mid = cursor_1.fetchall()[random_rows][0]
         if mid:
+            print(mid)
             break
 
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
