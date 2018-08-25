@@ -19,4 +19,4 @@ def write_it(input_str):
         with open(config.ERROR_LOG, 'a+') as fp:
             fp.writelines(date + ': ' + input_str)
     except Exception as e:
-        write_it(e)
+        write_it(e.args)
