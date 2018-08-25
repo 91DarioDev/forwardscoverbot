@@ -125,8 +125,8 @@ def collect_album_items(bot, update, job_queue):
             # media_group_id = update.message.media_group_id
         try:
             tmp_list = full_list(tmp_list)
-        except Exception:
-            e = 'collect_album_items tmp_list failed: ' + e
+        except Exception as e:
+            e = 'collect_album_items tmp_list failed: ' + e.args
             error_log.write_it(e)
             return
         config.SQL_LIST.append(tmp_list)
