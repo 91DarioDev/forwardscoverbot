@@ -54,6 +54,10 @@ def random_pic(bot, update):
         else:
             e = 'random_pic() get mid failed: ' + str(e.args)
             error_log.write_it(e)
+        try:
+            sql.close_mysql(db)
+        except Exception:
+            pass
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
@@ -65,6 +69,10 @@ def random_pic(bot, update):
     except Exception as e:
         e = 'random_pic() get fid failed: ' + str(e.args)
         error_log.write_it(e)
+        try:
+            sql.close_mysql(db)
+        except Exception:
+            pass
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
@@ -86,7 +94,10 @@ def random_pic(bot, update):
         error_log.write_it(e)
         pass
 
-    sql.close_mysql(db)
+    try:
+        sql.close_mysql(db)
+    except Exception:
+        pass
 
 
 @run_async
