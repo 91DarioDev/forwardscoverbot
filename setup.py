@@ -25,7 +25,7 @@ version="0.3",
 
     entry_points={
         "console_scripts": [
-            "hatsune = hatsunebot.__main__:main",
+            "bot = hatsunebot.__main__:main",
         ],
     },
 

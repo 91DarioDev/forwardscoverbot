@@ -10,6 +10,7 @@ from hatsunebot.utils import common_help
 from hatsunebot import messages
 from hatsunebot import config
 from hatsunebot import sql
+from hatsunebot import error_log
 
 # from telegram import MessageEntity
 from telegram import ParseMode
@@ -45,7 +46,9 @@ def random_pic(bot, update):
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
     try:
         mid = sql.random_pick_mid(db, table_name)
-    except Exception:
+    except Exception as e:
+        e = 'random_pic() get mid failed: ' + e
+        error_log.write_it(e)
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
@@ -54,7 +57,9 @@ def random_pic(bot, update):
 
     try:
         fid = sql.select_fid(db, table_name, mid)
-    except Exception:
+    except Exception as e:
+        e = 'random_pic() get fid failed: ' + e
+        error_log.write_it(e)
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
@@ -71,7 +76,9 @@ def random_pic(bot, update):
         # print(mid)
         bot.forwardMessage(
             chat_id=cid, from_chat_id=fid, message_id=mid)
-    except error.TimedOut:
+    except Exception as e:
+        e = 'random_pic() ForwardMessage failed: ' + e
+        error_log.write_it(e)
         pass
 
     sql.close_mysql(db)
@@ -134,15 +141,15 @@ def callback_minute_send(bot, job):
         return
 
     try:
-        COPY_FIVE_LIST = copy.deepcopy(config.FIVE_TYPE_LIST)
+        COPY_LIST = copy.deepcopy(config.FIVE_TYPE_LIST)
         # file_id = config.PHOTO_FILE_ID[0]
     except IndexError:
         return
 
-    if COPY_FIVE_LIST is None:
+    if COPY_LIST is None:
         return
 
-    for five_type in COPY_FIVE_LIST:
+    for five_type in COPY_LIST:
         mid = five_type[0]
         fid = five_type[1]
         for cid in config.CHAT_ID:
@@ -151,10 +158,17 @@ def callback_minute_send(bot, job):
             try:
                 bot.forwardMessage(
                     chat_id=cid, from_chat_id=fid, message_id=mid)
-            except error.BadRequest:
+            except Exception as e:
+                e = 'callback_minute_send() ForwardMessage failed: ' + e
+                error_log.write_it(e)
                 pass
         # del config.PHOTO_FILE_ID[0]
-        del config.FIVE_TYPE_LIST[0]
+        try:
+            del config.FIVE_TYPE_LIST[0]
+        except Exception as e:
+            e = 'callback_minute_send() del failed: ' + e
+            error_log.write_it(e)
+            pass
 
     # try:
     #     mid = config.MESSAGE_ID_LIST[0]

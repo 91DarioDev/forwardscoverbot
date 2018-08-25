@@ -9,6 +9,7 @@ from hatsunebot import keyboards
 from hatsunebot import config
 from hatsunebot.utils import only_admin
 from hatsunebot.utils import full_list
+from hatsunebot import error_log
 # from hatsunebot import sql
 
 
@@ -150,7 +151,9 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
 
             try:
                 tmp_list = full_list(tmp_list)
-            except Exception:
+            except Exception as e:
+                e = 'process_message() tmp_list failed: ' + e
+                error_log.write_it(e)
                 return
             config.SQL_LIST.append(tmp_list)
             config.FIVE_TYPE_LIST.append(tmp_list)
