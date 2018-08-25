@@ -168,7 +168,7 @@ def callback_minute_send(bot, job):
             del config.FIVE_TYPE_LIST[0]
         except Exception as e:
             e = 'callback_minute_send() del failed: ' + e.args + \
-                ' ---> ' + error_config_list
+                ' ---> ' + str(error_config_list)
             error_log.write_it(e)
             pass
 
