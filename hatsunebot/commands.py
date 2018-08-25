@@ -134,13 +134,14 @@ def callback_minute_send(bot, job):
         return
 
     try:
-        COPY_FIVE_LIST = copy.deepcopy(config.FIVE_TYPE_LIST[0])
+        COPY_FIVE_LIST = copy.deepcopy(config.FIVE_TYPE_LIST)
         # file_id = config.PHOTO_FILE_ID[0]
     except IndexError:
         return
 
     if COPY_FIVE_LIST is None:
         return
+
     for five_type in COPY_FIVE_LIST:
         mid = five_type[0]
         fid = five_type[1]
