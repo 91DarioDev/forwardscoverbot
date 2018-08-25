@@ -49,11 +49,11 @@ def random_pick_mid(db, table_name):
         cursor_1.execute("SELECT message_id FROM %s" % table_name)
 
         mid = cursor_1.fetchall()[random_rows][0]
-        if mid != None:
+        if mid:
             break
 
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
-    return mid
+    return (mid, random_rows)
 
 
 def get_mysql_version(db):

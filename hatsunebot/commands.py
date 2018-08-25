@@ -45,10 +45,14 @@ def random_pic(bot, update):
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
     try:
-        mid = sql.random_pick_mid(db, table_name)
+        mid, r_rows = sql.random_pick_mid(db, table_name)
     except Exception as e:
-        e = 'random_pic() get mid failed: ' + str(e.args)
-        error_log.write_it(e)
+        if r_rows:
+            e = 'random_pic() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
+            error_log.write_it(e)
+        else:
+            e = 'random_pic() get mid failed: ' + str(e.args)
+            error_log.write_it(e)
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
