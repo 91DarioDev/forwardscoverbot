@@ -159,7 +159,7 @@ def callback_minute_send(bot, job):
                 bot.forwardMessage(
                     chat_id=cid, from_chat_id=fid, message_id=mid)
             except Exception as e:
-                e = 'callback_minute_send() ForwardMessage failed: ' + e = ' ---> ' + fid + ', ' + mid
+                e = 'callback_minute_send() ForwardMessage failed: ' + e + ' ---> ' + fid + ', ' + mid
                 error_log.write_it(e)
                 pass
         # del config.PHOTO_FILE_ID[0]
