@@ -6,7 +6,7 @@ import setuptools
 setuptools.setup(
 
     name="hatsunebot",
-version="0.3",
+version="0.4",
 
     license="AGPL-3.0",
 
