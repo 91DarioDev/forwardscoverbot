@@ -47,7 +47,7 @@ def random_pic(bot, update):
     try:
         mid = sql.random_pick_mid(db, table_name)
     except Exception as e:
-        e = 'random_pic() get mid failed: ' + str(e.args) + ' ---> ' + str(mid)
+        e = 'random_pic() get mid failed: ' + str(e.args)
         error_log.write_it(e)
         random_pic(bot, update)
         # text = "..."
@@ -58,7 +58,7 @@ def random_pic(bot, update):
     try:
         fid = sql.select_fid(db, table_name, mid)
     except Exception as e:
-        e = 'random_pic() get fid failed: ' + str(e.args) + ' ---> ' + str(fid)
+        e = 'random_pic() get fid failed: ' + str(e.args)
         error_log.write_it(e)
         random_pic(bot, update)
         # text = "..."
