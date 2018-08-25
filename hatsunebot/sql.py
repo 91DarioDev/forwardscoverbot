@@ -4,10 +4,10 @@ import pymysql
 import logging
 import sys
 import random
-
 from datetime import datetime
 
 from hatsunebot import config
+from hatsunebot import error_log
 
 
 def get_max_tables():
@@ -39,6 +39,7 @@ def random_pick_mid(db, table_name):
 
     cursor_0 = db.cursor()
     cursor_1 = db.cursor()
+    mid = -1
     while True:
         cursor_0.execute(
             "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
@@ -49,11 +50,16 @@ def random_pick_mid(db, table_name):
         cursor_1.execute("SELECT message_id FROM %s" % table_name)
 
         mid = cursor_1.fetchall()[random_rows][0]
-        if mid != None:
+        if mid:
+            # print(mid)
             break
 
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
-    return mid
+
+    if mid != -1:
+        return (mid, random_rows)
+    else:
+        raise Exception('We can NOT get the mid')
 
 
 def get_mysql_version(db):
@@ -73,7 +79,6 @@ def check_same_value(db, file_id):
                        (table_name, file_id))
         if cursor.fetchone() != None:
             return 1
-
     return 0
 
 
@@ -102,7 +107,9 @@ def create_new_tables(db, table_name):
             return 0
         else:
             return 1
-    except Exception:
+    except Exception as e:
+        e = 'create_new_tables() execute failed: ' + str(e.args)
+        error_log.write_it(e)
         return 1
 
 
@@ -123,7 +130,7 @@ def check_table_full(db, table_name):
 
     cursor = db.cursor()
     cursor.execute(
-        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s' AND table_schema='%s'" % (table_name, config.SQL_DATABASE))
     rows = cursor.fetchone()
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(rows)
@@ -175,8 +182,11 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
             try:
                 cursor.execute("INSERT INTO %s(message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (
                     table_name, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date))
-            except Exception:
+            except Exception as e:
+                e = 'insert_mysql() execute-1 failed: ' + str(e.args)
+                error_log.write_it(e)
                 return 1
+
     if all_full == True:
         table_name = "{0}pic_{1}".format(
             config.SQL_FORMAT, config.NU_RANDOM)
@@ -184,7 +194,9 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
         try:
             cursor.execute("INSERT INTO %s(message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (
                 table_name, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date))
-        except Exception:
+        except Exception as e:
+            e = 'insert_mysql() execute-2 failed: ' + str(e.args)
+            error_log.write_it(e)
             return 1
     return 0
 
@@ -209,15 +221,14 @@ def process_sql(db, in_list):
 
     #            0              1           2          3           4
     # LIST = [MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3]
-    if config.SQL_STATUS == True:
-        # db = connect_mysql()
-        dt = datetime.now()
-        date = dt.strftime('%Y-%m-%d %I:%M:%S')
-        try:
-            if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
-                db.rollback()
-        except Exception:
-            # IndexError and TypeError
-            pass
-    else:
+    # db = connect_mysql()
+    dt = datetime.now()
+    date = dt.strftime('%Y-%m-%d %I:%M:%S')
+    try:
+        if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
+            rollback_mysql(db)
+    except Exception as e:
+        # IndexError and TypeError
+        e = 'process_sql() failed: ' + str(e.args)
+        error_log.write_it(e)
         pass

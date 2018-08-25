@@ -16,6 +16,9 @@ admins_group:
 # which id you want to send message
 chat_id: "id"
 
+# set the log file to store the error message
+error_log_location: "/var/log/hatsunebot_error.log"
+
 # sql setting
 sql_server: "localhost"
 sql_user: "hatsune"

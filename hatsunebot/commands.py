@@ -5,28 +5,59 @@ import copy
 import random
 
 from hatsunebot.utils import only_admin
+from hatsunebot.utils import common_help
 # from hatsunebot import keyboards
 from hatsunebot import messages
 from hatsunebot import config
 from hatsunebot import sql
+from hatsunebot import error_log
 
 # from telegram import MessageEntity
 from telegram import ParseMode
 # from telegram import constants as t_consts
 from telegram.ext.dispatcher import run_async
+from telegram import error
+
+
+@run_async
+def common_help_show(bot, update):
+
+    common_help(bot, update)
+    text = (
+        "<b>PicBot Guide:</b>."
+        "\n<i>See the titswiki random photo from begin to now.</i>\n\n"
+    )
+    # update.message.reply_text(
+    #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
+    update.message.reply_text(
+        text=text, parse_mode=ParseMode.HTML)
 
 
 @run_async
 def random_pic(bot, update):
 
+    # we have to
+    if update.message.from_user.is_bot == True:
+        return
     db = sql.connect_mysql()
 
     sql.get_max_tables()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
     try:
-        mid = sql.random_pick_mid(db, table_name)
-    except Exception:
+        r_rows = -1
+        mid, r_rows = sql.random_pick_mid(db, table_name)
+    except Exception as e:
+        if r_rows != -1:
+            e = 'random_pic() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
+            error_log.write_it(e)
+        else:
+            e = 'random_pic() get mid failed: ' + str(e.args)
+            error_log.write_it(e)
+        try:
+            sql.close_mysql(db)
+        except Exception:
+            pass
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
@@ -35,7 +66,13 @@ def random_pic(bot, update):
 
     try:
         fid = sql.select_fid(db, table_name, mid)
-    except Exception:
+    except Exception as e:
+        e = 'random_pic() get fid failed: ' + str(e.args)
+        error_log.write_it(e)
+        try:
+            sql.close_mysql(db)
+        except Exception:
+            pass
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
@@ -44,12 +81,23 @@ def random_pic(bot, update):
 
     # print("++++++++++++++++++++{}".format(mid))
     # print("++++++++++++++++++++{}".format(fid))
-    for cid in config.CHAT_ID:
+    # for cid in config.CHAT_ID:
         # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+    cid = update.message.chat.id
+    try:
+        # print(fid)
+        # print(mid)
         bot.forwardMessage(
             chat_id=cid, from_chat_id=fid, message_id=mid)
+    except Exception as e:
+        e = 'random_pic() ForwardMessage failed: ' + str(e.args)
+        error_log.write_it(e)
+        pass
 
-    sql.close_mysql(db)
+    try:
+        sql.close_mysql(db)
+    except Exception:
+        pass
 
 
 @run_async
@@ -65,12 +113,13 @@ def help_command(bot, update):
         "{0}\n"
         "<b>Forward Status:</b>\n"
         "{1}\n"
-        "\n<b>Supported commands(Only for admin):</b>\n"
-        "/turn_off_sql\n"
-        "/turn_on_sql\n"
-        "/stop_forward\n"
-        "/start_forward\n".format(str(config.SQL_STATUS),
-                                  str(config.FORWARD_STATUS))
+        "\n<b>Supported commands(Only for admin):</b>\n\n"
+        "/show\n\n"
+        "/turn_off_sql\n\n"
+        "/turn_on_sql\n\n"
+        "/stop_forward\n\n"
+        "/start_forward\n\n".format(str(config.SQL_STATUS),
+                                    str(config.FORWARD_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
@@ -84,6 +133,9 @@ def callback_sql(bot, job):
     # deep copy the list of SQL_LIST
     # then we delete is one by one
     # COPY_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
+    if config.SQL_STATUS == False:
+        return
+
     COPY_LIST = copy.deepcopy(config.SQL_LIST)
     if len(COPY_LIST) == 0:
         return
@@ -100,22 +152,42 @@ def callback_sql(bot, job):
 @run_async
 def callback_minute_send(bot, job):
 
+    if config.FORWARD_STATUS == False:
+        config.FIVE_TYPE_LIST = []
+        return
+
     try:
-        three_type = config.FIVE_TYPE_LIST[0]
+        COPY_LIST = copy.deepcopy(config.FIVE_TYPE_LIST)
         # file_id = config.PHOTO_FILE_ID[0]
     except IndexError:
         return
-    mid = three_type[0]
-    fid = three_type[1]
-    for cid in config.CHAT_ID:
-        # only send one pic once
-        if config.FORWARD_STATUS == True:
-            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
-            bot.forwardMessage(
-                chat_id=cid, from_chat_id=fid, message_id=mid)
 
-    # del config.PHOTO_FILE_ID[0]
-    del config.FIVE_TYPE_LIST[0]
+    if COPY_LIST is None:
+        return
+
+    for five_type in COPY_LIST:
+        mid = five_type[0]
+        fid = five_type[1]
+        for cid in config.CHAT_ID:
+            # only send one pic once
+            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+            try:
+                bot.forwardMessage(
+                    chat_id=cid, from_chat_id=fid, message_id=mid)
+            except Exception as e:
+                e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
+                    ' ---> ' + str(fid) + ', ' + str(mid)
+                error_log.write_it(e)
+                pass
+        # del config.PHOTO_FILE_ID[0]
+        try:
+            error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
+            del config.FIVE_TYPE_LIST[0]
+        except Exception as e:
+            e = 'callback_minute_send() del failed: ' + str(e.args) + \
+                ' ---> ' + str(error_config_list)
+            error_log.write_it(e)
+            pass
 
     # try:
     #     mid = config.MESSAGE_ID_LIST[0]

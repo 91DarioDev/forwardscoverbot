@@ -30,6 +30,8 @@ ADMINS_GROUP = conf["admins_group"]
 CHAT_ID = conf["chat_id"]
 #logging.info("CHAT ID: {}".format(CHAT_ID))
 
+ERROR_LOG = conf["error_log_location"]
+
 # MESSAGE_ID_LIST = []
 # FROM_CHAT_ID_LIST = []
 # FIVE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
