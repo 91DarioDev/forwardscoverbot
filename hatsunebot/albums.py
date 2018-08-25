@@ -126,7 +126,7 @@ def collect_album_items(bot, update, job_queue):
         try:
             tmp_list = full_list(tmp_list)
         except Exception as e:
-            e = 'collect_album_items tmp_list failed: ' + e.args
+            e = 'collect_album_items tmp_list failed: ' + str(e.args)
             error_log.write_it(e)
             return
         config.SQL_LIST.append(tmp_list)

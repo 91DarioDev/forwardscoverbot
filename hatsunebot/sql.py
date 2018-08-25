@@ -102,7 +102,7 @@ def create_new_tables(db, table_name):
         else:
             return 1
     except Exception as e:
-        e = 'create_new_tables() execute failed: ' + e.args
+        e = 'create_new_tables() execute failed: ' + str(e.args)
         error_log.write_it(e)
         return 1
 
@@ -177,7 +177,7 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
                 cursor.execute("INSERT INTO %s(message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (
                     table_name, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date))
             except Exception as e:
-                e = 'insert_mysql() execute-1 failed: ' + e.args
+                e = 'insert_mysql() execute-1 failed: ' + str(e.args)
                 error_log.write_it(e)
                 return 1
 
@@ -189,7 +189,7 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
             cursor.execute("INSERT INTO %s(message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (
                 table_name, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date))
         except Exception as e:
-            e = 'insert_mysql() execute-2 failed: ' + e.args
+            e = 'insert_mysql() execute-2 failed: ' + str(e.args)
             error_log.write_it(e)
             return 1
     return 0
@@ -223,6 +223,6 @@ def process_sql(db, in_list):
             rollback_mysql(db)
     except Exception as e:
         # IndexError and TypeError
-        e = 'process_sql() failed: ' + e.args
+        e = 'process_sql() failed: ' + str(e.args)
         error_log.write_it(e)
         pass

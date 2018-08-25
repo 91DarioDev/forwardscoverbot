@@ -152,7 +152,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
             try:
                 tmp_list = full_list(tmp_list)
             except Exception as e:
-                e = 'process_message() tmp_list failed: ' + e.args
+                e = 'process_message() tmp_list failed: ' + str(e.args)
                 error_log.write_it(e)
                 return
             config.SQL_LIST.append(tmp_list)

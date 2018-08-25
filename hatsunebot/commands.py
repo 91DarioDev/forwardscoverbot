@@ -47,7 +47,7 @@ def random_pic(bot, update):
     try:
         mid = sql.random_pick_mid(db, table_name)
     except Exception as e:
-        e = 'random_pic() get mid failed: ' + e.args + ' ---> ' + mid
+        e = 'random_pic() get mid failed: ' + str(e.args) + ' ---> ' + str(mid)
         error_log.write_it(e)
         random_pic(bot, update)
         # text = "..."
@@ -58,7 +58,7 @@ def random_pic(bot, update):
     try:
         fid = sql.select_fid(db, table_name, mid)
     except Exception as e:
-        e = 'random_pic() get fid failed: ' + e.args + ' ---> ' + fid
+        e = 'random_pic() get fid failed: ' + str(e.args) + ' ---> ' + str(fid)
         error_log.write_it(e)
         random_pic(bot, update)
         # text = "..."
@@ -77,7 +77,7 @@ def random_pic(bot, update):
         bot.forwardMessage(
             chat_id=cid, from_chat_id=fid, message_id=mid)
     except Exception as e:
-        e = 'random_pic() ForwardMessage failed: ' + e.args
+        e = 'random_pic() ForwardMessage failed: ' + str(e.args)
         error_log.write_it(e)
         pass
 
@@ -159,7 +159,8 @@ def callback_minute_send(bot, job):
                 bot.forwardMessage(
                     chat_id=cid, from_chat_id=fid, message_id=mid)
             except Exception as e:
-                e = 'callback_minute_send() ForwardMessage failed: ' + e + ' ---> ' + fid + ', ' + mid
+                e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
+                    ' ---> ' + str(fid) + ', ' + str(mid)
                 error_log.write_it(e)
                 pass
         # del config.PHOTO_FILE_ID[0]
@@ -167,7 +168,7 @@ def callback_minute_send(bot, job):
             error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
             del config.FIVE_TYPE_LIST[0]
         except Exception as e:
-            e = 'callback_minute_send() del failed: ' + e.args + \
+            e = 'callback_minute_send() del failed: ' + str(e.args) + \
                 ' ---> ' + str(error_config_list)
             error_log.write_it(e)
             pass
