@@ -39,6 +39,7 @@ def random_pick_mid(db, table_name):
 
     cursor_0 = db.cursor()
     cursor_1 = db.cursor()
+    mid = -1
     while True:
         cursor_0.execute(
             "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
@@ -50,11 +51,15 @@ def random_pick_mid(db, table_name):
 
         mid = cursor_1.fetchall()[random_rows][0]
         if mid:
-            print(mid)
+            # print(mid)
             break
 
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
-    return (mid, random_rows)
+
+    if mid != -1:
+        return (mid, random_rows)
+    else:
+        raise Exception('We can NOT get the mid')
 
 
 def get_mysql_version(db):
