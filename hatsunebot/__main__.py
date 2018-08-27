@@ -53,9 +53,9 @@ def main():
     # commands
     dp.add_handler(CommandHandler('show', commands.help_command), 2)
     # turn series
-    dp.add_handler(CommandHandler(
-        'turn_off_mysql', commands.turn_off_sql), 2)
-    dp.add_handler(CommandHandler('turn_on_mysql', commands.turn_on_sql), 2)
+    # dp.add_handler(CommandHandler(
+    #     'turn_off_mysql', commands.turn_off_sql), 2)
+    # dp.add_handler(CommandHandler('turn_on_mysql', commands.turn_on_sql), 2)
     # stop series
     dp.add_handler(CommandHandler('stop_forward', commands.stop_forward), 2)
     dp.add_handler(CommandHandler('start_forward', commands.start_forward), 2)

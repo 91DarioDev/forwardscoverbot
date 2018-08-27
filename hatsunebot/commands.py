@@ -231,6 +231,7 @@ def callback_minute_send(bot, job):
     # del config.FROM_CHAT_ID_LIST[0]
 
 
+'''
 @run_async
 @only_admin
 def turn_off_sql(bot, update):
@@ -255,6 +256,7 @@ def turn_on_sql(bot, update):
         text = ("Turn on sql record done")
         update.message.reply_text(text=text)
     return
+'''
 
 
 @run_async
