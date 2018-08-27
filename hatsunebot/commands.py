@@ -170,8 +170,8 @@ def callback_minute_send(bot, job):
         fid = five_type[1]
 
         # init the LAST_MESSAGE_ID
-        if len(config.LAST_MESSAGE_ID) == 0:
-            config.LAST_MESSAGE_ID = mid
+        if config.LAST_MESSAGE_ID == 0:
+            config.LAST_MESSAGE_ID = int(mid)
 
             for cid in config.CHAT_ID:
                 # only send one pic once
@@ -202,7 +202,7 @@ def callback_minute_send(bot, job):
                     try:
                         bot.forwardMessage(
                             chat_id=cid, from_chat_id=fid, message_id=mid)
-                        config.LAST_MESSAGE_ID = mid
+                        config.LAST_MESSAGE_ID = int(mid)
                     except Exception as e:
                         e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
                             ' ---> ' + str(fid) + ', ' + str(mid)
