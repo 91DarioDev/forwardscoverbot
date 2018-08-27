@@ -88,8 +88,9 @@ def collect_album_items(bot, update, job_queue):
         - add update to the list of that media_group_id
     """
     # now we append every file_id into list and sql
-    # THREE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID]]
+    # FIVE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID_1, FILE_ID_2, FILE_ID_3]]
     """
+    MESSAGE_ID, FROM_CHAT_ID
     [
         [3991, 366039180, 'AgADBQADHqgxG6docVevwzHBji_opA801TIABAqGbUg-S8HFP8ECAAEC'],
         [3991, 366039180, 'AgADBQADHqgxG6docVevwzHBji_opA801TIABFLydOubQv-6QMECAAEC'],

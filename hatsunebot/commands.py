@@ -168,26 +168,55 @@ def callback_minute_send(bot, job):
     for five_type in COPY_LIST:
         mid = five_type[0]
         fid = five_type[1]
-        for cid in config.CHAT_ID:
-            # only send one pic once
-            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+
+        # init the LAST_MESSAGE_ID
+        if len(config.LAST_MESSAGE_ID) == 0:
+            config.LAST_MESSAGE_ID = mid
+
+            for cid in config.CHAT_ID:
+                # only send one pic once
+                # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+                try:
+                    bot.forwardMessage(
+                        chat_id=cid, from_chat_id=fid, message_id=mid)
+                except Exception as e:
+                    e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
+                        ' ---> ' + str(fid) + ', ' + str(mid)
+                    error_log.write_it(e)
+                    pass
+            # del config.PHOTO_FILE_ID[0]
             try:
-                bot.forwardMessage(
-                    chat_id=cid, from_chat_id=fid, message_id=mid)
+                error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
+                del config.FIVE_TYPE_LIST[0]
             except Exception as e:
-                e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
-                    ' ---> ' + str(fid) + ', ' + str(mid)
+                e = 'callback_minute_send() del failed: ' + str(e.args) + \
+                    ' ---> ' + str(error_config_list)
                 error_log.write_it(e)
                 pass
-        # del config.PHOTO_FILE_ID[0]
-        try:
-            error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
-            del config.FIVE_TYPE_LIST[0]
-        except Exception as e:
-            e = 'callback_minute_send() del failed: ' + str(e.args) + \
-                ' ---> ' + str(error_config_list)
-            error_log.write_it(e)
-            pass
+        # check the same message_id and pass
+        else:
+            if config.LAST_MESSAGE_ID != mid:
+                for cid in config.CHAT_ID:
+                    # only send one pic once
+                    # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+                    try:
+                        bot.forwardMessage(
+                            chat_id=cid, from_chat_id=fid, message_id=mid)
+                        config.LAST_MESSAGE_ID = mid
+                    except Exception as e:
+                        e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
+                            ' ---> ' + str(fid) + ', ' + str(mid)
+                        error_log.write_it(e)
+                        pass
+            # del config.PHOTO_FILE_ID[0]
+                try:
+                    error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
+                    del config.FIVE_TYPE_LIST[0]
+                except Exception as e:
+                    e = 'callback_minute_send() del failed: ' + str(e.args) + \
+                        ' ---> ' + str(error_config_list)
+                    error_log.write_it(e)
+                    pass
 
     # try:
     #     mid = config.MESSAGE_ID_LIST[0]

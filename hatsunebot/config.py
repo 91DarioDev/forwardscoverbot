@@ -60,5 +60,6 @@ MAX_ROWS = int(conf["max_rows"])
 #logging.info("MYSQL MAX ROWS: {}".format(MAX_ROWS))
 
 NU_RANDOM = 0
+LAST_MESSAGE_ID = ''
 # ALBUM_DICT = {}
 # CONFLICT_LIST = []
