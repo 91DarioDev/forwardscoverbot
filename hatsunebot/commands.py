@@ -115,8 +115,8 @@ def help_command(bot, update):
         "{1}\n"
         "\n<b>Supported commands(Only for admin):</b>\n\n"
         "/show\n\n"
-        "/turn_off_sql\n\n"
-        "/turn_on_sql\n\n"
+        # "/turn_off_sql\n\n"
+        # "/turn_on_sql\n\n"
         "/stop_forward\n\n"
         "/start_forward\n\n".format(str(config.SQL_STATUS),
                                     str(config.FORWARD_STATUS))
