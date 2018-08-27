@@ -115,8 +115,8 @@ def help_command(bot, update):
         "{1}\n"
         "\n<b>Supported commands(Only for admin):</b>\n\n"
         "/show\n\n"
-        "/turn_off_sql\n\n"
-        "/turn_on_sql\n\n"
+        # "/turn_off_sql\n\n"
+        # "/turn_on_sql\n\n"
         "/stop_forward\n\n"
         "/start_forward\n\n".format(str(config.SQL_STATUS),
                                     str(config.FORWARD_STATUS))
@@ -146,9 +146,14 @@ def callback_sql(bot, job):
     sql.commit_mysql(db)
     sql.close_mysql(db)
 
+
+def clean_up():
+
+    # print(config.LAST_MESSAGE_ID_LIST)
+    config.LAST_MESSAGE_ID_LIST = []
+
+
 # send here
-
-
 @run_async
 def callback_minute_send(bot, job):
 
@@ -168,26 +173,57 @@ def callback_minute_send(bot, job):
     for five_type in COPY_LIST:
         mid = five_type[0]
         fid = five_type[1]
-        for cid in config.CHAT_ID:
-            # only send one pic once
-            # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+
+        # init the LAST_MESSAGE_ID
+        if len(config.LAST_MESSAGE_ID_LIST) == 0:
+            config.LAST_MESSAGE_ID_LIST.append(str(mid))
+
+            for cid in config.CHAT_ID:
+                # only send one pic once
+                # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+                try:
+                    bot.forwardMessage(
+                        chat_id=cid, from_chat_id=fid, message_id=mid)
+                except Exception as e:
+                    e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
+                        ' ---> ' + str(fid) + ', ' + str(mid)
+                    error_log.write_it(e)
+                    pass
+            # del config.PHOTO_FILE_ID[0]
             try:
-                bot.forwardMessage(
-                    chat_id=cid, from_chat_id=fid, message_id=mid)
+                error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
+                del config.FIVE_TYPE_LIST[0]
             except Exception as e:
-                e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
-                    ' ---> ' + str(fid) + ', ' + str(mid)
+                e = 'callback_minute_send() del failed: ' + str(e.args) + \
+                    ' ---> ' + str(error_config_list)
                 error_log.write_it(e)
                 pass
-        # del config.PHOTO_FILE_ID[0]
-        try:
-            error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
-            del config.FIVE_TYPE_LIST[0]
-        except Exception as e:
-            e = 'callback_minute_send() del failed: ' + str(e.args) + \
-                ' ---> ' + str(error_config_list)
-            error_log.write_it(e)
-            pass
+        # check the same message_id and pass
+        else:
+            if mid not in config.LAST_MESSAGE_ID_LIST:
+                for cid in config.CHAT_ID:
+                    # only send one pic once
+                    # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
+                    try:
+                        bot.forwardMessage(
+                            chat_id=cid, from_chat_id=fid, message_id=mid)
+                        config.LAST_MESSAGE_ID_LIST.append(str(mid))
+                    except Exception as e:
+                        e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
+                            ' ---> ' + str(fid) + ', ' + str(mid)
+                        error_log.write_it(e)
+                        pass
+            # del config.PHOTO_FILE_ID[0]
+                try:
+                    error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
+                    del config.FIVE_TYPE_LIST[0]
+                except Exception as e:
+                    e = 'callback_minute_send() del failed: ' + str(e.args) + \
+                        ' ---> ' + str(error_config_list)
+                    error_log.write_it(e)
+                    pass
+
+    clean_up()
 
     # try:
     #     mid = config.MESSAGE_ID_LIST[0]
@@ -202,6 +238,7 @@ def callback_minute_send(bot, job):
     # del config.FROM_CHAT_ID_LIST[0]
 
 
+'''
 @run_async
 @only_admin
 def turn_off_sql(bot, update):
@@ -226,6 +263,7 @@ def turn_on_sql(bot, update):
         text = ("Turn on sql record done")
         update.message.reply_text(text=text)
     return
+'''
 
 
 @run_async
