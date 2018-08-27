@@ -39,10 +39,10 @@ def main():
     # define jobs
     job = updater.job_queue
     job.run_repeating(
-        commands.callback_minute_send, interval=3, first=0)
+        commands.callback_minute_send, interval=6, first=0)
     # sql jobs
     job.run_repeating(
-        commands.callback_sql, interval=3, first=0)
+        commands.callback_sql, interval=1, first=0)
     # albums
     # many picture here
     dp.add_handler(MessageHandler(custom_filters.album,
