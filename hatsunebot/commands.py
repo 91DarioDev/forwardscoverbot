@@ -149,6 +149,7 @@ def callback_sql(bot, job):
 
 def clean_up():
 
+    print(config.LAST_MESSAGE_ID_LIST)
     config.LAST_MESSAGE_ID_LIST = []
 
 
