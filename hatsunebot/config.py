@@ -60,6 +60,7 @@ MAX_ROWS = int(conf["max_rows"])
 #logging.info("MYSQL MAX ROWS: {}".format(MAX_ROWS))
 
 NU_RANDOM = 0
-LAST_MESSAGE_ID = 0
+# every 5 minutes clean up this list avoid sends the same photos once
+LAST_MESSAGE_ID_LIST = []
 # ALBUM_DICT = {}
 # CONFLICT_LIST = []

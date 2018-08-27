@@ -146,9 +146,13 @@ def callback_sql(bot, job):
     sql.commit_mysql(db)
     sql.close_mysql(db)
 
+
+def clean_up():
+
+    config.LAST_MESSAGE_ID_LIST = []
+
+
 # send here
-
-
 @run_async
 def callback_minute_send(bot, job):
 
@@ -170,8 +174,8 @@ def callback_minute_send(bot, job):
         fid = five_type[1]
 
         # init the LAST_MESSAGE_ID
-        if config.LAST_MESSAGE_ID == 0:
-            config.LAST_MESSAGE_ID = int(mid)
+        if len(config.LAST_MESSAGE_ID_LIST) == 0:
+            config.LAST_MESSAGE_ID_LIST.append(float(mid))
 
             for cid in config.CHAT_ID:
                 # only send one pic once
@@ -195,14 +199,14 @@ def callback_minute_send(bot, job):
                 pass
         # check the same message_id and pass
         else:
-            if config.LAST_MESSAGE_ID != mid:
+            if mid not in config.LAST_MESSAGE_ID_LIST:
                 for cid in config.CHAT_ID:
                     # only send one pic once
                     # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
                     try:
                         bot.forwardMessage(
                             chat_id=cid, from_chat_id=fid, message_id=mid)
-                        config.LAST_MESSAGE_ID = int(mid)
+                        config.LAST_MESSAGE_ID_LIST.append(float(mid))
                     except Exception as e:
                         e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
                             ' ---> ' + str(fid) + ', ' + str(mid)
@@ -217,6 +221,8 @@ def callback_minute_send(bot, job):
                         ' ---> ' + str(error_config_list)
                     error_log.write_it(e)
                     pass
+
+    clean_up()
 
     # try:
     #     mid = config.MESSAGE_ID_LIST[0]
