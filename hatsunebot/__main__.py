@@ -39,7 +39,7 @@ def main():
     # define jobs
     job = updater.job_queue
     job.run_repeating(
-        commands.callback_minute_send, interval=6, first=0)
+        commands.callback_minute_send, interval=24, first=0)
     # sql jobs
     job.run_repeating(
         commands.callback_sql, interval=1, first=0)
@@ -66,7 +66,7 @@ def main():
     dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
 
     # handle errors
-    dp.add_error_handler(error)
+    dp.add_error_handler(error
 
     updater.start_polling()
     updater.idle()
