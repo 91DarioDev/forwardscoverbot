@@ -7,6 +7,7 @@ from telegram.ext.dispatcher import run_async
 from telegram import ReplyKeyboardMarkup
 from telegram import InlineKeyboardMarkup
 from telegram import InlineKeyboardButton
+from telegram import ParseMode
 
 
 def sep(num, none_is_zero=False):
@@ -33,6 +34,16 @@ def common_help(bot, update):
     # bot.send_message(chat_id=cid, text="Please se this",
     #                  reply_markup=reply_markup)
     bot.send_message(chat_id=cid, text="So", reply_markup=reply_markup)
+
+
+def delete_command(bot, update):
+
+    text = (
+        "<b>Do you want to delete the same value?</b>\n"
+        "/delete_same\n")
+
+    update.message.reply_text(
+        text=text, parse_mode=ParseMode.HTML)
 
 
 def full_list(in_list):

@@ -9,8 +9,9 @@ from hatsunebot import keyboards
 from hatsunebot import config
 from hatsunebot.utils import only_admin
 from hatsunebot.utils import full_list
+from hatsunebot.utils import delete_command
 from hatsunebot import error_log
-# from hatsunebot import sql
+from hatsunebot import sql
 
 
 @run_async
@@ -155,6 +156,55 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                 e = 'process_message() tmp_list failed: ' + str(e.args)
                 error_log.write_it(e)
                 return
-            config.SQL_LIST.append(tmp_list)
-            config.FIVE_TYPE_LIST.append(tmp_list)
+            if config.CHECK_STATUS == True:
+                # config.CHECK_LIST.append(tmp_list)
+                # mid = tmp_list[0]
+                file_id_1 = tmp_list[2]
+                file_id_2 = tmp_list[3]
+                file_id_3 = tmp_list[4]
+
+                result_list = sql.check_sql_existed(
+                    file_id_1, file_id_2, file_id_3)
+
+                '''
+                text = 'message_id:\n{0}:{1}\nfile_id_1:\n{2}:{3}\nfile_id_2:\n{4}:{5}\nfile_id_3:\n{6}:{7}\n'.format(
+                    mid, result_list[0], file_id_1, result_list[1], file_id_2, result_list[2], file_id_3, result_list[3])
+                text = 'message_id:\n{0}\nfile_id_1:\n{1}\nfile_id_2:\n{2}\nfile_id_3:\n{3}\n'.format(
+                    result_list[0], result_list[1], result_list[2], result_list[3])
+                '''
+                # text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                #     result_list[0], result_list[1], result_list[2])
+                # update.message.reply_text(text=text, quote=True)
+
+                if config.CHECK_SHOW == True:
+
+                    # more information
+                    text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                        result_list[0], result_list[1], result_list[2])
+                    update.message.reply_text(text=text, quote=True)
+
+                if result_list[0] == 0 and result_list[1] == 0 and result_list[2] == 0:
+
+                    config.SQL_LIST.append(tmp_list)
+                    text = 'This message is not include in MySQL, inserting...'
+                    update.message.reply_text(text=text, quote=True)
+
+                    # result_list = sql.check_sql_existed(
+                    #     file_id_1, file_id_2, file_id_3)
+                    # text = 'New: file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                    #     result_list[0], result_list[1], result_list[2])
+                    # update.message.reply_text(text=text, quote=True)
+                elif result_list[0] > 1:
+
+                    text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                        result_list[0], result_list[1], result_list[2])
+                    update.message.reply_text(text=text, quote=True)
+                    config.CHECK_FILE_ID_LIST.append(file_id_1)
+                    delete_command(bot, update)
+
+            else:
+
+                config.SQL_LIST.append(tmp_list)
+                config.FIVE_TYPE_LIST.append(tmp_list)
+
             process_message_subdivision(bot, update, message, caption)

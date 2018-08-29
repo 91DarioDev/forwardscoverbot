@@ -105,26 +105,108 @@ def random_pic(bot, update):
 def help_command(bot, update):
 
     # keyboard = keyboards.github_link_kb()
+
+    sql_status_list = sql.show_sql_status()
+    # now we make the string about the sql status
+    sql_status_str = ''
+    if len(sql_status_list) != 0:
+        for s in sql_status_list:
+            # [table_name(char), rows(int)]
+            sql_status_str = sql_status_str + \
+                str(s[0]) + ': ' + str(s[1]) + '\n'
+
     text = (
         "<b>Hatsune' Telegram Bot Guide:</b>."
         "\n<i>It works also if you edit messages or forward messages. "
         "It also keeps the same text formatting style.</i>\n\n"
         "<b>MySQL Status:</b>\n"
         "{0}\n"
-        "<b>Forward Status:</b>\n"
+        "<b>MySQL Tables Detail:</b>\n"
         "{1}\n"
+        "<b>Forward Status:</b>\n"
+        "{2}\n"
+        "<b>Check Status:</b>\n"
+        "{3}\n"
         "\n<b>Supported commands(Only for admin):</b>\n\n"
         "/show\n\n"
         # "/turn_off_sql\n\n"
         # "/turn_on_sql\n\n"
         "/stop_forward\n\n"
-        "/start_forward\n\n".format(str(config.SQL_STATUS),
-                                    str(config.FORWARD_STATUS))
+        "/start_forward\n\n"
+        "/check_existed\n\n"
+        "/check_result_show\n\n".format(str(config.SQL_STATUS),
+                                        sql_status_str,
+                                        str(config.FORWARD_STATUS),
+                                        str(config.CHECK_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
     update.message.reply_text(
         text=text, parse_mode=ParseMode.HTML)
+
+
+@run_async
+@only_admin
+def delete_same(bot, update):
+
+    if config.CHECK_STATUS == False:
+
+        text = "Error, you are not in check status\n"
+        update.message.reply_text(text=text, quote=True)
+
+    else:
+
+        COPY_LIST = copy.deepcopy(config.CHECK_FILE_ID_LIST)
+        for d in COPY_LIST:
+            sql.delete_same_value(d)
+            try:
+                del config.CHECK_FILE_ID_LIST[0]
+            except IndexError as e:
+                e = 'callback_sql() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
+                error_log.write_it(e)
+
+        text = "OK, deleting the same value now\n"
+        update.message.reply_text(text=text, quote=True)
+
+
+@run_async
+@only_admin
+def check_result_show(bot, update):
+
+    if config.CHECK_SHOW == True:
+
+        config.CHECK_SHOW = False
+        text = "OK, stop show\n"
+        update.message.reply_text(text=text, quote=True)
+
+    else:
+
+        config.CHECK_SHOW = True
+        text = "OK, start show\n"
+        update.message.reply_text(text=text, quote=True)
+
+
+@run_async
+@only_admin
+def check_existed(bot, update):
+
+    # if the config.CHECK_STATUS is True
+    # bot will not processed the photo message and insert into MySQL
+    if config.CHECK_STATUS == False:
+
+        config.CHECK_STATUS = True
+
+        # remember this is cid
+        # config.CHECK_REPLY_CID = update.message.chat.id
+
+        text = "OK, send me a photo to check existed or not\n"
+        update.message.reply_text(text=text, quote=True)
+
+    else:
+
+        config.CHECK_STATUS = False
+        text = "OK, turn off the check"
+        update.message.reply_text(text=text, quote=True)
 
 
 @run_async
@@ -142,7 +224,11 @@ def callback_sql(bot, job):
     db = sql.connect_mysql()
     for c in COPY_LIST:
         sql.process_sql(db, c)
-        del config.SQL_LIST[0]
+        try:
+            del config.SQL_LIST[0]
+        except IndexError as e:
+            e = 'callback_sql() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
+            error_log.write_it(e)
     sql.commit_mysql(db)
     sql.close_mysql(db)
 
@@ -157,6 +243,11 @@ def clean_up():
 @run_async
 def callback_minute_send(bot, job):
 
+    if config.CHECK_STATUS == True:
+        # if that
+        # we do something here then just return
+        return
+
     if config.FORWARD_STATUS == False:
         config.FIVE_TYPE_LIST = []
         return
@@ -170,9 +261,9 @@ def callback_minute_send(bot, job):
     if COPY_LIST is None:
         return
 
-    for five_type in COPY_LIST:
-        mid = five_type[0]
-        fid = five_type[1]
+    for five_type_list in COPY_LIST:
+        mid = five_type_list[0]
+        fid = five_type_list[1]
 
         # init the LAST_MESSAGE_ID
         if len(config.LAST_MESSAGE_ID_LIST) == 0:
