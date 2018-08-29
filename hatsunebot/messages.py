@@ -183,6 +183,12 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                     text = 'This message is not include in MySQL, inserting...'
                     update.message.reply_text(text=text, quote=True)
 
+                    result_list = sql.check_sql_existed(
+                        file_id_1, file_id_2, file_id_3)
+                    text = 'New: file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                        result_list[0], result_list[1], result_list[2])
+                    update.message.reply_text(text=text, quote=True)
+
             else:
 
                 config.SQL_LIST.append(tmp_list)
