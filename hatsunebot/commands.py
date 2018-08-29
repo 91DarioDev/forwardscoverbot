@@ -112,7 +112,7 @@ def help_command(bot, update):
     if len(sql_status_list) != 0:
         for s in sql_status_list:
             # [table_name(char), rows(int)]
-            sql_status_str = sql_status_str + s[0] + ': ' + s[1] + '\n'
+            sql_status_str = sql_status_str + str(s[0]) + ': ' + str(s[1]) + '\n'
 
     text = (
         "<b>Hatsune' Telegram Bot Guide:</b>."
