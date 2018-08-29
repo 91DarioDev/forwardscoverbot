@@ -194,6 +194,9 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                     # update.message.reply_text(text=text, quote=True)
                 elif result_list[0] > 1:
 
+                    text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                    file_id_1, file_id_2, file_id_3)
+                    update.message.reply_text(text=text, quote=True)
                     config.CHECK_FILE_ID_LIST.append(file_id_1)
                     delete_command(bot, update)
 
