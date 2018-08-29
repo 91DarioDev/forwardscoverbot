@@ -78,7 +78,9 @@ def check_same_value(db, file_id):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         cursor.execute("SELECT * FROM %s WHERE file_id_1='%s' limit 1" %
                        (table_name, file_id))
-        if cursor.fetchone() != None:
+        if len(cursor.fetchone()) != 0:
+            # we have the same value in MySQL
+            # so we return 1
             return 1
     return 0
 
@@ -188,8 +190,11 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
         # we check all the database is full or not
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         if check_table_full(db, table_name) == 1:
+            # rows > config.MAX_ROWS
             continue
         else:
+            # rows <= config.MAX_ROWS
+            # we will insert data into this table
             all_full = False
             # message_id, from_chat_id， file_id_1, file_id_2, file_id_3
             try:
@@ -201,6 +206,8 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
                 return 1
 
     if all_full == True:
+        # we will create new table here
+        # config.NU_RANDOM is the count of tables
         table_name = "{0}pic_{1}".format(
             config.SQL_FORMAT, config.NU_RANDOM)
         create_new_tables(db, table_name)
@@ -265,3 +272,89 @@ def show_sql_status():
         return_list.append(tmp_list)
 
     return return_list
+
+
+def check_sql_existed(mid, file_id_1, file_id_2, file_id_3):
+
+    get_max_tables()
+    db = connect_mysql()
+
+    mid_result = check_mid_existed(db, mid)
+    file_1_result = check_file_id_1_existed(db, file_id_1)
+    file_2_result = check_file_id_2_existed(db, file_id_2)
+    file_3_result = check_file_id_3_existed(db, file_id_3)
+
+    tmp_list = []
+    tmp_list.append(mid_result)
+    tmp_list.append(file_1_result)
+    tmp_list.append(file_2_result)
+    tmp_list.append(file_3_result)
+    return tmp_list
+
+
+def check_mid_existed(db, mid):
+
+    cursor = db.cursor()
+    same_count = 0
+
+    for i in range(0, config.NU_RANDOM):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        cursor.execute("SELECT * FROM %s WHERE message_id='%s'" %
+                       (table_name, mid))
+
+        result_length = len(cursor.fetchall())
+        # we have the same value in MySQL
+        same_count = same_count + result_length
+
+    return same_count
+
+
+def check_file_id_1_existed(db, file_id):
+
+    cursor = db.cursor()
+    same_count = 0
+
+    for i in range(0, config.NU_RANDOM):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        cursor.execute("SELECT * FROM %s WHERE file_id_1='%s'" %
+                       (table_name, file_id))
+
+        result_length = len(cursor.fetchall())
+        # we have the same value in MySQL
+        same_count = same_count + result_length
+
+    return same_count
+
+
+def check_file_id_2_existed(db, file_id):
+
+    cursor = db.cursor()
+    same_count = 0
+
+    for i in range(0, config.NU_RANDOM):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        cursor.execute("SELECT * FROM %s WHERE file_id_2='%s'" %
+                       (table_name, file_id))
+
+        result_length = len(cursor.fetchall())
+        # we have the same value in MySQL
+        same_count = same_count + result_length
+
+    return same_count
+
+
+def check_file_id_3_existed(db, file_id):
+
+    cursor = db.cursor()
+    same_count = 0
+
+    for i in range(0, config.NU_RANDOM):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        cursor.execute("SELECT * FROM %s WHERE file_id_3='%s' limit 1" %
+                       (table_name, file_id))
+
+        result_length = len(cursor.fetchall())
+        # we have the same value in MySQL
+        same_count = same_count + result_length
+
+    return same_count

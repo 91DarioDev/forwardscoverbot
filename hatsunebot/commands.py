@@ -112,7 +112,8 @@ def help_command(bot, update):
     if len(sql_status_list) != 0:
         for s in sql_status_list:
             # [table_name(char), rows(int)]
-            sql_status_str = sql_status_str + str(s[0]) + ': ' + str(s[1]) + '\n'
+            sql_status_str = sql_status_str + \
+                str(s[0]) + ': ' + str(s[1]) + '\n'
 
     text = (
         "<b>Hatsune' Telegram Bot Guide:</b>."
@@ -120,23 +121,50 @@ def help_command(bot, update):
         "It also keeps the same text formatting style.</i>\n\n"
         "<b>MySQL Status:</b>\n"
         "{0}\n"
-        "<b>MySQL Details:</b>"
+        "<b>MySQL Tables Detail:</b>\n"
         "{1}\n"
         "<b>Forward Status:</b>\n"
         "{2}\n"
+        "<b>Check Status:</b>\n"
+        "{3}\n"
         "\n<b>Supported commands(Only for admin):</b>\n\n"
         "/show\n\n"
         # "/turn_off_sql\n\n"
         # "/turn_on_sql\n\n"
+        "/check_existed\n\n"
         "/stop_forward\n\n"
         "/start_forward\n\n".format(str(config.SQL_STATUS),
                                     sql_status_str,
-                                    str(config.FORWARD_STATUS))
+                                    str(config.FORWARD_STATUS),
+                                    str(config.CHECK_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
     update.message.reply_text(
         text=text, parse_mode=ParseMode.HTML)
+
+
+@run_async
+@only_admin
+def check_existed(bot, update):
+
+    # if the config.CHECK_STATUS is True
+    # bot will not processed the photo message and insert into MySQL
+    if config.CHECK_STATUS == False:
+
+        config.CHECK_STATUS = True
+
+        # remember this is cid
+        # config.CHECK_REPLY_CID = update.message.chat.id
+
+        text = "OK, send me a photo to check existed or not\n"
+        update.message.reply_text(text=text, quote=True)
+
+    else:
+
+        config.CHECK_STATUS = False
+        text = "OK, turn off the check"
+        update.message.reply_text(text=text, quote=True)
 
 
 @run_async
@@ -169,6 +197,11 @@ def clean_up():
 @run_async
 def callback_minute_send(bot, job):
 
+    if config.CHECK_STATUS == True:
+        # if that
+        # we do something here then just return
+        return
+
     if config.FORWARD_STATUS == False:
         config.FIVE_TYPE_LIST = []
         return
@@ -182,9 +215,9 @@ def callback_minute_send(bot, job):
     if COPY_LIST is None:
         return
 
-    for five_type in COPY_LIST:
-        mid = five_type[0]
-        fid = five_type[1]
+    for five_type_list in COPY_LIST:
+        mid = five_type_list[0]
+        fid = five_type_list[1]
 
         # init the LAST_MESSAGE_ID
         if len(config.LAST_MESSAGE_ID_LIST) == 0:

@@ -10,7 +10,7 @@ from hatsunebot import config
 from hatsunebot.utils import only_admin
 from hatsunebot.utils import full_list
 from hatsunebot import error_log
-# from hatsunebot import sql
+from hatsunebot import sql
 
 
 @run_async
@@ -155,6 +155,23 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                 e = 'process_message() tmp_list failed: ' + str(e.args)
                 error_log.write_it(e)
                 return
-            config.SQL_LIST.append(tmp_list)
-            config.FIVE_TYPE_LIST.append(tmp_list)
+            if config.CHECK_STATUS == True:
+                # config.CHECK_LIST.append(tmp_list)
+                mid = tmp_list[0]
+                file_id_1 = tmp_list[2]
+                file_id_2 = tmp_list[3]
+                file_id_3 = tmp_list[4]
+
+                result_list = sql.check_sql_existed(
+                    mid, file_id_1, file_id_2, file_id_3)
+
+                text = 'message_id:\n{0}\nfile_id_1:\n{1}\nfile_id_2:\n{2}\nfile_id_3:\n{3}\n'.format(
+                    result_list[0], result_list[1], result_list[2], result_list[3])
+                update.message.reply_text(text=text, quote=True)
+
+            else:
+
+                config.SQL_LIST.append(tmp_list)
+                config.FIVE_TYPE_LIST.append(tmp_list)
+
             process_message_subdivision(bot, update, message, caption)

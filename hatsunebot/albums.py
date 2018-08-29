@@ -8,7 +8,7 @@ from telegram import ParseMode
 from hatsunebot import config
 from hatsunebot.utils import full_list
 from hatsunebot import error_log
-# from hatsunebot import sql
+from hatsunebot import sql
 
 """
 {
@@ -130,8 +130,23 @@ def collect_album_items(bot, update, job_queue):
             e = 'collect_album_items tmp_list failed: ' + str(e.args)
             error_log.write_it(e)
             return
-        config.SQL_LIST.append(tmp_list)
-        config.FIVE_TYPE_LIST.append(tmp_list)
+
+        if config.CHECK_STATUS == True:
+            # config.CHECK_LIST.append(tmp_list)
+            mid = tmp_list[0]
+            file_id_1 = tmp_list[2]
+            file_id_2 = tmp_list[3]
+            file_id_3 = tmp_list[4]
+
+            result_list = sql.check_sql_existed(
+                mid, file_id_1, file_id_2, file_id_3)
+
+            text = 'message_id:\n{0}\nfile_id_1:\n{1}\nfile_id_2:\n{2}\nfile_id_3:\n{3}\n'.format(
+                result_list[0], result_list[1], result_list[2], result_list[3])
+            update.message.reply_text(text=text, quote=True)
+        else:
+            config.SQL_LIST.append(tmp_list)
+            config.FIVE_TYPE_LIST.append(tmp_list)
 
     # sql.process_sql(db, tmp_list)
     # sql.commit_mysql(db)

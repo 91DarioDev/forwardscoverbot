@@ -59,6 +59,8 @@ def main():
     # stop series
     dp.add_handler(CommandHandler('stop_forward', commands.stop_forward), 2)
     dp.add_handler(CommandHandler('start_forward', commands.start_forward), 2)
+    # check existed in MySQL or not
+    dp.add_handler(CommandHandler('check_existed', commands.check_existed), 2)
     # random
     dp.add_handler(CommandHandler('random', commands.random_pic), 2)
     dp.add_handler(CommandHandler('help', commands.common_help_show), 2)
