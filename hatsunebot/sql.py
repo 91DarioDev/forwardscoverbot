@@ -14,6 +14,7 @@ def get_max_tables():
 
     db = connect_mysql()
     cursor = db.cursor()
+    # get how many tables we have in the database
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_schema='%s'" % config.SQL_DATABASE)
     rows = cursor.fetchall()
@@ -126,11 +127,12 @@ def connect_mysql():
         sys.exit(1)
 
 
-def check_table_full(db, table_name):
+def return_table_rows(db, table_name):
 
     cursor = db.cursor()
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s' AND table_schema='%s'" % (table_name, config.SQL_DATABASE))
+
     rows = cursor.fetchone()
     # logging.debug(">>>>>>>>>>>>>>>>>>>>>")
     # logging.debug(rows)
@@ -138,6 +140,13 @@ def check_table_full(db, table_name):
         rows = 0
     else:
         rows = rows[0]
+
+    return rows
+
+
+def check_table_full(db, table_name):
+
+    rows = return_table_rows(db, table_name)
 
     if rows >= config.MAX_ROWS:
         return 1
@@ -163,8 +172,12 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
 
     if insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) == 1:
         return
+
     cursor = db.cursor()
+
+    # init the config.NU_RANDOM
     get_max_tables()
+
     all_full = True
     # Here we use the file_id_1 to check the same in mysql
     if check_same_value(db, file_id_1) == 1:
@@ -232,3 +245,23 @@ def process_sql(db, in_list):
         e = 'process_sql() failed: ' + str(e.args)
         error_log.write_it(e)
         pass
+
+
+def show_sql_status():
+
+    db = connect_mysql()
+
+    get_max_tables()
+    return_list = []
+
+    for i in range(0, config.NU_RANDOM):
+        # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>{}".format(i))
+        # we check all the database is full or not
+        tmp_list = []
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        rows = return_table_rows(db, table_name)
+        tmp_list.append(table_name)
+        tmp_list.append(int(rows))
+        return_list.append(tmp_list)
+
+    return return_list

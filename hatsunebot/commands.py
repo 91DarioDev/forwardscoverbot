@@ -105,20 +105,31 @@ def random_pic(bot, update):
 def help_command(bot, update):
 
     # keyboard = keyboards.github_link_kb()
+
+    sql_status_list = sql.show_sql_status()
+    # now we make the string about the sql status
+    sql_status_str = ''
+    if len(sql_status_list) != 0:
+        for s in sql_status_list:
+            # [table_name(char), rows(int)]
+            sql_status_str = sql_status_str + s[0] + ': ' + s[1] + '\n'
+
     text = (
         "<b>Hatsune' Telegram Bot Guide:</b>."
         "\n<i>It works also if you edit messages or forward messages. "
         "It also keeps the same text formatting style.</i>\n\n"
         "<b>MySQL Status:</b>\n"
         "{0}\n"
-        "<b>Forward Status:</b>\n"
         "{1}\n"
+        "<b>Forward Status:</b>\n"
+        "{2}\n"
         "\n<b>Supported commands(Only for admin):</b>\n\n"
         "/show\n\n"
         # "/turn_off_sql\n\n"
         # "/turn_on_sql\n\n"
         "/stop_forward\n\n"
         "/start_forward\n\n".format(str(config.SQL_STATUS),
+                                    sql_status_str,
                                     str(config.FORWARD_STATUS))
     )
     # update.message.reply_text(
