@@ -131,13 +131,13 @@ def help_command(bot, update):
         "/show\n\n"
         # "/turn_off_sql\n\n"
         # "/turn_on_sql\n\n"
-        "/check_existed\n\n"
         "/stop_forward\n\n"
         "/start_forward\n\n"
+        "/check_existed\n\n"
         "/check_result_show\n\n".format(str(config.SQL_STATUS),
-                                    sql_status_str,
-                                    str(config.FORWARD_STATUS),
-                                    str(config.CHECK_STATUS))
+                                        sql_status_str,
+                                        str(config.FORWARD_STATUS),
+                                        str(config.CHECK_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
