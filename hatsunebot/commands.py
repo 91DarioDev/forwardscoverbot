@@ -120,6 +120,7 @@ def help_command(bot, update):
         "It also keeps the same text formatting style.</i>\n\n"
         "<b>MySQL Status:</b>\n"
         "{0}\n"
+        "<b>MySQL Details:</b>"
         "{1}\n"
         "<b>Forward Status:</b>\n"
         "{2}\n"
