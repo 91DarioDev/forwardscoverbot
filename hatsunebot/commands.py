@@ -182,7 +182,11 @@ def callback_sql(bot, job):
     db = sql.connect_mysql()
     for c in COPY_LIST:
         sql.process_sql(db, c)
-        del config.SQL_LIST[0]
+        try:
+            del config.SQL_LIST[0]
+        except IndexError as e:
+            e = e + ' ---> ' + str(COPY_LIST)
+            error_log.write_it(e)
     sql.commit_mysql(db)
     sql.close_mysql(db)
 
