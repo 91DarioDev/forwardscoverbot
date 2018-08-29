@@ -78,7 +78,7 @@ def check_same_value(db, file_id):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         cursor.execute("SELECT * FROM %s WHERE file_id_1='%s' limit 1" %
                        (table_name, file_id))
-        if len(cursor.fetchone()) != 0:
+        if cursor.fetchone() != None:
             # we have the same value in MySQL
             # so we return 1
             return 1
