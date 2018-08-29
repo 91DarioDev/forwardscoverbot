@@ -9,6 +9,7 @@ from hatsunebot import config
 from hatsunebot.utils import full_list
 from hatsunebot import error_log
 from hatsunebot import sql
+from hatsunebot import commands
 
 """
 {
@@ -166,6 +167,7 @@ def collect_album_items(bot, update, job_queue):
             else:
 
                 config.CHECK_FILE_ID_LIST.append(file_id_1)
+                commands.delete_command(bot, update)
 
         else:
             config.SQL_LIST.append(tmp_list)

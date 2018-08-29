@@ -11,6 +11,7 @@ from hatsunebot.utils import only_admin
 from hatsunebot.utils import full_list
 from hatsunebot import error_log
 from hatsunebot import sql
+from hatsunebot import commands
 
 
 @run_async
@@ -194,6 +195,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                 else:
 
                     config.CHECK_FILE_ID_LIST.append(file_id_1)
+                    commands.delete_command(bot, update)
 
             else:
 

@@ -100,6 +100,16 @@ def random_pic(bot, update):
         pass
 
 
+def delete_command(bot, update):
+
+    text = (
+        "<b>Do you want to delete the same value?</b>\n"
+        "/delete_same\n")
+
+    update.message.reply_text(
+            text=text, parse_mode=ParseMode.HTML)
+
+
 @run_async
 @only_admin
 def help_command(bot, update):
@@ -143,6 +153,7 @@ def help_command(bot, update):
     update.message.reply_text(
         text=text, parse_mode=ParseMode.HTML)
 
+
 @run_async
 @only_admin
 def delete_same(bot, update):
@@ -151,13 +162,14 @@ def delete_same(bot, update):
 
         text = "Error, you are not in check status\n"
         update.message.reply_text(text=text, quote=True)
-        
+
     else:
         for d in config.CHECK_FILE_ID_LIST:
             sql.delete_same_value(d)
-    
+
         text = "OK, deleting the same value now\n"
         update.message.reply_text(text=text, quote=True)
+
 
 @run_async
 @only_admin
