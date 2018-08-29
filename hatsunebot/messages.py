@@ -12,7 +12,6 @@ from hatsunebot.utils import full_list
 from hatsunebot.utils import delete_command
 from hatsunebot import error_log
 from hatsunebot import sql
-from hatsunebot import commands
 
 
 @run_async
