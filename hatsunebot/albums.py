@@ -150,6 +150,13 @@ def collect_album_items(bot, update, job_queue):
             text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
                 result_list[0], result_list[1], result_list[2])
             update.message.reply_text(text=text, quote=True)
+
+            if result_list[0] == 0 and result_list[1] == 0 and result_list[2] == 0:
+
+                config.SQL_LIST.append(tmp_list)
+                text = 'This message is not include in MySQL, inserting...'
+                update.message.reply_text(text=text, quote=True)
+
         else:
             config.SQL_LIST.append(tmp_list)
             config.FIVE_TYPE_LIST.append(tmp_list)
