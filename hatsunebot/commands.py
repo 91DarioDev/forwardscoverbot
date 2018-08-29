@@ -154,8 +154,16 @@ def delete_same(bot, update):
         update.message.reply_text(text=text, quote=True)
 
     else:
-        for d in config.CHECK_FILE_ID_LIST:
+
+        COPY_LIST = copy.deepcopy(config.CHECK_FILE_ID_LIST)
+        for d in COPY_LIST:
             sql.delete_same_value(d)
+            try:
+                del config.CHECK_FILE_ID_LIST[0]
+            except IndexError as e:
+                e = 'callback_sql() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
+                error_log.write_it(e)
+
 
         text = "OK, deleting the same value now\n"
         update.message.reply_text(text=text, quote=True)
