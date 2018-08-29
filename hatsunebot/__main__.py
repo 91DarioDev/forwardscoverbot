@@ -63,6 +63,9 @@ def main():
     dp.add_handler(CommandHandler('check_existed', commands.check_existed), 2)
     # delete the same value in MySQL
     dp.add_handler(CommandHandler('delete_same', commands.delete_same), 2)
+    # show check result
+    dp.add_handler(CommandHandler('check_result_show',
+                                  commands.check_result_show), 2)
     # random
     dp.add_handler(CommandHandler('random', commands.random_pic), 2)
     dp.add_handler(CommandHandler('help', commands.common_help_show), 2)

@@ -133,7 +133,8 @@ def help_command(bot, update):
         # "/turn_on_sql\n\n"
         "/check_existed\n\n"
         "/stop_forward\n\n"
-        "/start_forward\n\n".format(str(config.SQL_STATUS),
+        "/start_forward\n\n"
+        "/check_result_show\n\n".format(str(config.SQL_STATUS),
                                     sql_status_str,
                                     str(config.FORWARD_STATUS),
                                     str(config.CHECK_STATUS))
@@ -164,8 +165,24 @@ def delete_same(bot, update):
                 e = 'callback_sql() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
                 error_log.write_it(e)
 
-
         text = "OK, deleting the same value now\n"
+        update.message.reply_text(text=text, quote=True)
+
+
+@run_async
+@only_admin
+def check_result_show(bot, update):
+
+    if config.CHECK_SHOW == True:
+
+        config.CHECK_SHOW = False
+        text = "OK, stop show\n"
+        update.message.reply_text(text=text, quote=True)
+
+    else:
+
+        config.CHECK_SHOW = True
+        text = "OK, start show\n"
         update.message.reply_text(text=text, quote=True)
 
 
