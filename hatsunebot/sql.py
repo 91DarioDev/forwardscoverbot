@@ -183,7 +183,7 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
     all_full = True
     # Here we use the file_id_1 to check the same in mysql
     if check_same_value(db, file_id_1) == 1:
-        print('There is full')
+        # print('There is full')
         return 0
 
     for i in range(0, config.NU_RANDOM):
