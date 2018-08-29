@@ -7,6 +7,7 @@ from telegram.ext.dispatcher import run_async
 from telegram import ReplyKeyboardMarkup
 from telegram import InlineKeyboardMarkup
 from telegram import InlineKeyboardButton
+from telegram import ParseMode
 
 
 def sep(num, none_is_zero=False):
