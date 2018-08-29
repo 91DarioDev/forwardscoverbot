@@ -379,7 +379,8 @@ def delete_same_value(file_id):
     for i in range(0, config.NU_RANDOM):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
         while check_file_id_1_existed(db, file_id) > 1:
-            print('delete')
+            # print('delete')
             delete_one(cursor, table_name, file_id)
 
+    commit_mysql(db)
     close_mysql(db)
