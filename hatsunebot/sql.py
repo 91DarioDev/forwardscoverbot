@@ -274,18 +274,18 @@ def show_sql_status():
     return return_list
 
 
-def check_sql_existed(mid, file_id_1, file_id_2, file_id_3):
+def check_sql_existed(file_id_1, file_id_2, file_id_3):
 
     get_max_tables()
     db = connect_mysql()
 
-    mid_result = check_mid_existed(db, mid)
+    # mid_result = check_mid_existed(db, mid)
     file_1_result = check_file_id_1_existed(db, file_id_1)
     file_2_result = check_file_id_2_existed(db, file_id_2)
     file_3_result = check_file_id_3_existed(db, file_id_3)
 
     tmp_list = []
-    tmp_list.append(mid_result)
+    # tmp_list.append(mid_result)
     tmp_list.append(file_1_result)
     tmp_list.append(file_2_result)
     tmp_list.append(file_3_result)

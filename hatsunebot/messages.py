@@ -157,16 +157,25 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                 return
             if config.CHECK_STATUS == True:
                 # config.CHECK_LIST.append(tmp_list)
-                mid = tmp_list[0]
+                # mid = tmp_list[0]
                 file_id_1 = tmp_list[2]
                 file_id_2 = tmp_list[3]
                 file_id_3 = tmp_list[4]
 
                 result_list = sql.check_sql_existed(
-                    mid, file_id_1, file_id_2, file_id_3)
+                    file_id_1, file_id_2, file_id_3)
 
+                '''
                 text = 'message_id:\n{0}:{1}\nfile_id_1:\n{2}:{3}\nfile_id_2:\n{4}:{5}\nfile_id_3:\n{6}:{7}\n'.format(
                     mid, result_list[0], file_id_1, result_list[1], file_id_2, result_list[2], file_id_3, result_list[3])
+                text = 'message_id:\n{0}\nfile_id_1:\n{1}\nfile_id_2:\n{2}\nfile_id_3:\n{3}\n'.format(
+                    result_list[0], result_list[1], result_list[2], result_list[3])
+                '''
+                text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                    result_list[0], result_list[1], result_list[2])
+                update.message.reply_text(text=text, quote=True)
+                text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                    file_id_1, file_id_2, file_id_3)
                 update.message.reply_text(text=text, quote=True)
 
             else:
