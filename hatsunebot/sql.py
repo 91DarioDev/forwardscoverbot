@@ -76,7 +76,7 @@ def check_same_value(db, file_id):
     cursor = db.cursor()
     for i in range(0, config.NU_RANDOM):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
-        cursor.execute("SELECT * FROM %s WHERE file_id_1='%s' limit 1" %
+        cursor.execute("SELECT * FROM %s WHERE file_id_1='%s' LIMIT 1" %
                        (table_name, file_id))
         if cursor.fetchone() != None:
             # we have the same value in MySQL
@@ -290,6 +290,8 @@ def check_sql_existed(file_id_1, file_id_2, file_id_3):
     tmp_list.append(file_1_result)
     tmp_list.append(file_2_result)
     tmp_list.append(file_3_result)
+
+    close_mysql(db)
     return tmp_list
 
 
@@ -351,7 +353,7 @@ def check_file_id_3_existed(db, file_id):
 
     for i in range(0, config.NU_RANDOM):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
-        cursor.execute("SELECT * FROM %s WHERE file_id_3='%s' limit 1" %
+        cursor.execute("SELECT * FROM %s WHERE file_id_3='%s'" %
                        (table_name, file_id))
 
         result_length = len(cursor.fetchall())
@@ -359,3 +361,24 @@ def check_file_id_3_existed(db, file_id):
         same_count = same_count + result_length
 
     return same_count
+
+
+def delete_one(cursor, table_name, file_id):
+
+    cursor.execute("DELETE FROM %s WHERE file_id_1='%s' LIMIT 1" %
+                   (table_name, file_id))
+
+
+def delete_same_value(file_id):
+
+    get_max_tables()
+
+    db = connect_mysql()
+    cursor = db.cursor()
+
+    for i in range(0, config.NU_RANDOM):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        while check_file_id_1_existed(db, file_id) > 1:
+            delete_one(cursor, table_name, file_id)
+
+    close_mysql(db)

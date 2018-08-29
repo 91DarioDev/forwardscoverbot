@@ -163,6 +163,10 @@ def collect_album_items(bot, update, job_queue):
                 #     result_list[0], result_list[1], result_list[2])
                 # update.message.reply_text(text=text, quote=True)
 
+            else:
+
+                config.CHECK_FILE_ID_LIST.append(file_id_1)
+
         else:
             config.SQL_LIST.append(tmp_list)
             config.FIVE_TYPE_LIST.append(tmp_list)

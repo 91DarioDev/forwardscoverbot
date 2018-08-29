@@ -191,6 +191,9 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                     # text = 'New: file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
                     #     result_list[0], result_list[1], result_list[2])
                     # update.message.reply_text(text=text, quote=True)
+                else:
+
+                    config.CHECK_FILE_ID_LIST.append(file_id_1)
 
             else:
 

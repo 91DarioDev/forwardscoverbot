@@ -143,6 +143,21 @@ def help_command(bot, update):
     update.message.reply_text(
         text=text, parse_mode=ParseMode.HTML)
 
+@run_async
+@only_admin
+def delete_same(bot, update):
+
+    if config.CHECK_STATUS == False:
+
+        text = "Error, you are not in check status\n"
+        update.message.reply_text(text=text, quote=True)
+        
+    else:
+        for d in config.CHECK_FILE_ID_LIST:
+            sql.delete_same_value(d)
+    
+        text = "OK, deleting the same value now\n"
+        update.message.reply_text(text=text, quote=True)
 
 @run_async
 @only_admin
