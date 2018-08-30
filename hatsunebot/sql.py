@@ -70,21 +70,6 @@ def get_mysql_version(db):
     return cursor.fetchone()[0]
 
 
-def check_same_value(db, file_id):
-
-    get_max_tables()
-    cursor = db.cursor()
-    for i in range(0, config.NU_RANDOM):
-        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
-        cursor.execute("SELECT * FROM %s WHERE file_id_1='%s' LIMIT 1" %
-                       (table_name, file_id))
-        if cursor.fetchone() != None:
-            # we have the same value in MySQL
-            # so we return 1
-            return 1
-    return 0
-
-
 def create_new_tables(db, table_name):
 
     cursor = db.cursor()
@@ -170,6 +155,21 @@ def insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
     return 1
 
 
+def check_same_value(db, file_id):
+
+    get_max_tables()
+    cursor = db.cursor()
+    for i in range(0, config.NU_RANDOM):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
+        cursor.execute("SELECT * FROM %s WHERE file_id_1='%s' LIMIT 1" %
+                       (table_name, file_id))
+        if cursor.fetchone() != None:
+            # we have the same value in MySQL
+            # so we return 1
+            return 1
+    return 0
+
+
 def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
 
     if insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) == 1:
@@ -183,7 +183,8 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
     all_full = True
     # Here we use the file_id_1 to check the same in mysql
     if check_same_value(db, file_id_1) == 1:
-        # print('There is full')
+        print('same value')
+        # we have the same value in MySQL
         return 0
 
     for i in range(0, config.NU_RANDOM):
