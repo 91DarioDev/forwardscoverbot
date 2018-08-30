@@ -284,11 +284,12 @@ def callback_minute_send(bot, job):
                     pass
             # del config.PHOTO_FILE_ID[0]
             try:
-                error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
-                del config.FIVE_TYPE_LIST[0]
+                # error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
+                # del config.FIVE_TYPE_LIST[0]
+                config.FIVE_TYPE_LIST.pop(0)
             except Exception as e:
                 e = 'callback_minute_send() del failed: ' + str(e.args) + \
-                    ' ---> ' + str(error_config_list)
+                    ' ---> ' + str(config.FIVE_TYPE_LIST)
                 error_log.write_it(e)
                 pass
         # check the same message_id and pass
@@ -306,29 +307,17 @@ def callback_minute_send(bot, job):
                             ' ---> ' + str(fid) + ', ' + str(mid)
                         error_log.write_it(e)
                         pass
-            # del config.PHOTO_FILE_ID[0]
                 try:
-                    error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
-                    del config.FIVE_TYPE_LIST[0]
+                    # error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
+                    # del config.FIVE_TYPE_LIST[0]
+                    config.FIVE_TYPE_LIST.pop(0)
                 except Exception as e:
                     e = 'callback_minute_send() del failed: ' + str(e.args) + \
-                        ' ---> ' + str(error_config_list)
+                        ' ---> ' + str(config.FIVE_TYPE_LIST)
                     error_log.write_it(e)
                     pass
 
     clean_up()
-
-    # try:
-    #     mid = config.MESSAGE_ID_LIST[0]
-    #     fid = config.FROM_CHAT_ID_LIST[0]
-    # except IndexError:
-    #     return
-    # bot.send_message(chat_id=config.CHAT_ID, text=send_message)
-    # for c in config.CHAT_ID:
-    #     bot.forwardMessage(chat_id=c, from_chat_id=fid, message_id=mid)
-
-    # del config.MESSAGE_ID_LIST[0]
-    # del config.FROM_CHAT_ID_LIST[0]
 
 
 '''
