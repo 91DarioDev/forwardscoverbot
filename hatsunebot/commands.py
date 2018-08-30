@@ -225,9 +225,11 @@ def callback_sql(bot, job):
     for c in COPY_LIST:
         sql.process_sql(db, c)
         try:
-            del config.SQL_LIST[0]
+            # del config.SQL_LIST[0]
+            config.SQL_LIST.pop(0)
         except IndexError as e:
-            e = 'callback_sql() del failed' + str(e.args) + ' ---> \n' + str(COPY_LIST) + ' ---> \n' + str(config.SQL_LIST)
+            e = 'callback_sql() del failed' + str(e.args) + ' ---> \n' + \
+                str(COPY_LIST) + ' ---> \n' + str(config.SQL_LIST)
             error_log.write_it(e)
     sql.commit_mysql(db)
     sql.close_mysql(db)
