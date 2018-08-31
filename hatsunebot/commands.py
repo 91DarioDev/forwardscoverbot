@@ -40,6 +40,9 @@ def check_all_data(bot, update):
     check all the data in MySQL and delete the same value
     '''
 
+    text = "<b>Start Checking...</b>"
+    update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
+
     # check all the data in mysql
     db = sql.connect_mysql()
 
