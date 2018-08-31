@@ -64,11 +64,12 @@ def iteration_all_data(db, table_name, update):
             i += 1
 
         # every rows will here
+        print(data_tuple[r])
         file_id_1 = data_tuple[r][2]
         count_1 = check_file_id_1_existed(db, file_id_1)
         file_id_2 = data_tuple[r][3]
         count_2 = check_file_id_2_existed(db, file_id_2)
-        file_id_3 = data_tuple[r][3]
+        file_id_3 = data_tuple[r][4]
         count_3 = check_file_id_3_existed(db, file_id_3)
 
         if count_1 == count_2 and count_2 == count_3:
