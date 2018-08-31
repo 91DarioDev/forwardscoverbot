@@ -51,7 +51,7 @@ def iteration_all_data(db, table_name, update):
 
     rows = cursor.fetchone()[0]
     print(rows)
-    cursor.execute("SELECT message_id FROM %s" % table_name)
+    cursor.execute("SELECT * FROM %s" % table_name)
     data_tuple = cursor.fetchall()
     #print(data_tuple)
     show_time = 1000
