@@ -92,6 +92,7 @@ def check_all_data(bot, update):
 
     text = "<b>OK</b>"
     update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
+    sql.close_mysql(db)
 
 
 @run_async
