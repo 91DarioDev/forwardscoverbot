@@ -9,6 +9,8 @@ from datetime import datetime
 from hatsunebot import config
 from hatsunebot import error_log
 
+from telegram import ParseMode
+
 
 def get_max_tables():
 
@@ -36,7 +38,7 @@ def select_fid(db, table_name, mid):
     return fid
 
 
-def iteration_all_data(db, table_name):
+def iteration_all_data(db, table_name, update):
     '''
     here we work
     '''
@@ -44,30 +46,39 @@ def iteration_all_data(db, table_name):
     cursor = db.cursor()
     count_list = []
 
-    while True:
-        cursor.execute(
-            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+    cursor.execute(
+        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
-        rows = cursor.fetchone()[0]
-        cursor.execute("SELECT message_id FROM %s" % table_name)
-        data_tuple = cursor.fetchall()
+    rows = cursor.fetchone()[0]
+    cursor.execute("SELECT message_id FROM %s" % table_name)
+    data_tuple = cursor.fetchall()
+    show_time = 1000
+    i = 1
 
-        for r in range(0, rows):
+    for r in range(0, rows):
 
-            # every rows will here
-            file_id_1 = data_tuple[r][2]
-            count_1 = check_file_id_1_existed(db, file_id_1)
-            file_id_2 = data_tuple[r][3]
-            count_2 = check_file_id_2_existed(db, file_id_2)
-            file_id_3 = data_tuple[r][3]
-            count_3 = check_file_id_3_existed(db, file_id_3)
+        if show_time < 1:
+            show_time = 1000
+            text = '<b>Checking the %d down</b>' % (i * 1000)
+            update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
+            i += 1
 
-            if count_1 == count_2 and count_2 == count_3:
-                if count_1 > 1:
-                    config.CHECK_FILE_ID_LIST.append(file_id_1)
-                    count_list.append(count_1)
-            else:
-                pass
+        # every rows will here
+        file_id_1 = data_tuple[r][2]
+        count_1 = check_file_id_1_existed(db, file_id_1)
+        file_id_2 = data_tuple[r][3]
+        count_2 = check_file_id_2_existed(db, file_id_2)
+        file_id_3 = data_tuple[r][3]
+        count_3 = check_file_id_3_existed(db, file_id_3)
+
+        if count_1 == count_2 and count_2 == count_3:
+            if count_1 > 1:
+                config.CHECK_FILE_ID_LIST.append(file_id_1)
+                count_list.append(count_1)
+        else:
+            pass
+
+        show_time -= 1
 
     return count_list
 
