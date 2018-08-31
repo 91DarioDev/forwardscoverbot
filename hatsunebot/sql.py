@@ -50,6 +50,7 @@ def iteration_all_data(db, table_name, update):
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
     rows = cursor.fetchone()[0]
+    print(rows)
     cursor.execute("SELECT message_id FROM %s" % table_name)
     data_tuple = cursor.fetchall()
     print(data_tuple)
