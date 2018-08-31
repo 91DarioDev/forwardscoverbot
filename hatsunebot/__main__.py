@@ -42,7 +42,7 @@ def main():
         commands.callback_minute_send, interval=24, first=0)
     # sql jobs
     job.run_repeating(
-        commands.callback_sql, interval=1, first=0)
+        commands.callback_sql, interval=6, first=0)
     # albums
     # many picture here
     dp.add_handler(MessageHandler(custom_filters.album,
