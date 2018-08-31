@@ -50,7 +50,7 @@ def iteration_all_data(db, table_name, update):
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
     rows = cursor.fetchone()[0]
-    print(rows)
+    # print(rows)
     cursor.execute("SELECT * FROM %s" % table_name)
     data_tuple = cursor.fetchall()
     #print(data_tuple)
@@ -66,7 +66,7 @@ def iteration_all_data(db, table_name, update):
             i += 1
 
         # every rows will here
-        print(data_tuple[r])
+        # print(data_tuple[r])
         file_id_1 = data_tuple[r][2]
         count_1 = check_file_id_1_existed(db, file_id_1)
         file_id_2 = data_tuple[r][3]
