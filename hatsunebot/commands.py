@@ -34,16 +34,79 @@ def common_help_show(bot, update):
 
 
 @run_async
+@only_admin
+def check_all_data(bot, update):
+    '''
+    check all the data in MySQL and delete the same value
+    '''
+
+    # check all the data in mysql
+    db = sql.connect_mysql()
+
+    sql.get_max_tables()
+
+    for table_id in range(0, config.NU_RANDOM):
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
+
+        try:
+            r_rows = -1
+            same_file_id_value_list = sql.iteration_all_data(
+                db, table_name)
+        except Exception as e:
+            if r_rows != -1:
+                e = 'check_all_data() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
+                error_log.write_it(e)
+            else:
+                e = 'check_all_data() get mid failed: ' + str(e.args)
+                error_log.write_it(e)
+
+            return
+
+    i_text = '\n\n'
+    i = 0
+    for s in config.CHECK_FILE_ID_LIST:
+        i_text = i_text + str(s) + ': ' + \
+            str(same_file_id_value_list[i]) + '\n'
+        i += 1
+
+    text = (
+        "<b>Check Result:</b>."
+        "\n<i>Found:</i>\n\n"
+        "SameFileID: %s"
+        "<i>Now this program will auto delete the same value...</i>" % (i_text)
+    )
+    # update.message.reply_text(
+    #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
+    update.message.reply_text(
+        text=text, parse_mode=ParseMode.HTML)
+
+    COPY_LIST = copy.deepcopy(config.CHECK_FILE_ID_LIST)
+
+    for f in COPY_LIST:
+        sql.delete_same_value(f)
+        try:
+            config.CHECK_FILE_ID_LIST.pop(0)
+        except IndexError as e:
+            e = 'check_all_data() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
+            error_log.write_it(e)
+
+    text = "<b>OK</b>"
+    update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
+
+
+@run_async
 def random_pic(bot, update):
 
     # we have to
     if update.message.from_user.is_bot == True:
         return
+
     db = sql.connect_mysql()
 
     sql.get_max_tables()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
+
     try:
         r_rows = -1
         mid, r_rows = sql.random_pick_mid(db, table_name)
@@ -54,10 +117,8 @@ def random_pic(bot, update):
         else:
             e = 'random_pic() get mid failed: ' + str(e.args)
             error_log.write_it(e)
-        try:
-            sql.close_mysql(db)
-        except Exception:
-            pass
+
+        sql.close_mysql(db)
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
@@ -154,13 +215,14 @@ def delete_same(bot, update):
         for d in COPY_LIST:
             sql.delete_same_value(d)
             try:
-                del config.CHECK_FILE_ID_LIST[0]
+                # del config.CHECK_FILE_ID_LIST[0]
+                config.CHECK_FILE_ID_LIST.pop(0)
             except IndexError as e:
                 e = 'callback_sql() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
                 error_log.write_it(e)
 
-        text = "OK, deleting the same value now\n"
-        update.message.reply_text(text=text, quote=True)
+        text = "<b>OK, deleting the same value now</b>"
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
 
 
 @run_async
@@ -170,14 +232,14 @@ def check_result_show(bot, update):
     if config.CHECK_SHOW == True:
 
         config.CHECK_SHOW = False
-        text = "OK, stop show\n"
-        update.message.reply_text(text=text, quote=True)
+        text = "<b>OK, stop show</b>"
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
 
     else:
 
         config.CHECK_SHOW = True
-        text = "OK, start show\n"
-        update.message.reply_text(text=text, quote=True)
+        text = "<b>OK, start show</b>"
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTMLquote=True)
 
 
 @run_async
@@ -193,14 +255,14 @@ def check_existed(bot, update):
         # remember this is cid
         # config.CHECK_REPLY_CID = update.message.chat.id
 
-        text = "OK, send me a photo to check existed or not\n"
-        update.message.reply_text(text=text, quote=True)
+        text = "<b>OK, send me a photo to check existed or not</b>"
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTMLquote=True)
 
     else:
 
         config.CHECK_STATUS = False
-        text = "OK, turn off the check"
-        update.message.reply_text(text=text, quote=True)
+        text = "<b>OK, turn off the check</b>"
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTMLquote=True)
 
 
 @run_async
@@ -230,6 +292,9 @@ def callback_sql(bot, job):
 
 
 def clean_up():
+    '''
+    make the LAST_MESSAGE_ID_LIST none
+    '''
 
     # print(config.LAST_MESSAGE_ID_LIST)
     config.LAST_MESSAGE_ID_LIST = []
@@ -238,6 +303,9 @@ def clean_up():
 # send here
 @run_async
 def callback_minute_send(bot, job):
+    '''
+    send the photo by timeI
+    '''
 
     if config.CHECK_STATUS == True:
         # if that
@@ -351,8 +419,8 @@ def stop_forward(bot, update):
         pass
     else:
         config.FORWARD_STATUS = False
-        text = ("Stop forward now")
-        update.message.reply_text(text=text)
+        text = "<b>Stop forward now</b>"
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
     return
 
 
@@ -364,6 +432,6 @@ def start_forward(bot, update):
         pass
     else:
         config.FORWARD_STATUS = True
-        text = ("Start forward now")
-        update.message.reply_text(text=text)
+        text = "<b>Start forward now</b>"
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
     return

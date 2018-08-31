@@ -36,31 +36,63 @@ def select_fid(db, table_name, mid):
     return fid
 
 
-def random_pick_mid(db, table_name):
+def iteration_all_data(db, table_name):
+    '''
+    here we work
+    '''
 
-    cursor_0 = db.cursor()
-    cursor_1 = db.cursor()
-    mid = -1
+    cursor = db.cursor()
+    count_list = []
+
     while True:
-        cursor_0.execute(
+        cursor.execute(
             "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
-        rows = cursor_0.fetchone()[0]
+        rows = cursor.fetchone()[0]
+        cursor.execute("SELECT message_id FROM %s" % table_name)
+        data_tuple = cursor.fetchall()
+
+        for r in range(0, rows):
+
+            # every rows will here
+            file_id_1 = data_tuple[r][2]
+            count_1 = check_file_id_1_existed(db, file_id_1)
+            file_id_2 = data_tuple[r][3]
+            count_2 = check_file_id_2_existed(db, file_id_2)
+            file_id_3 = data_tuple[r][3]
+            count_3 = check_file_id_3_existed(db, file_id_3)
+
+            if count_1 == count_2 and count_2 == count_3:
+                if count_1 > 1:
+                    config.CHECK_FILE_ID_LIST.append(file_id_1)
+                    count_list.append(count_1)
+            else:
+                pass
+
+    return count_list
+
+
+def random_pick_mid(db, table_name):
+
+    cursor = db.cursor()
+    mid = -1
+
+    while True:
+        cursor.execute(
+            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+
+        rows = cursor.fetchone()[0]
         random_rows = random.randint(0, rows)
 
-        cursor_1.execute("SELECT message_id FROM %s" % table_name)
+        cursor.execute("SELECT message_id FROM %s" % table_name)
 
-        mid = cursor_1.fetchall()[random_rows][0]
-        if mid:
+        mid = cursor.fetchall()[random_rows][0]
+        if mid != -1:
             # print(mid)
             break
 
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
-
-    if mid != -1:
-        return (mid, random_rows)
-    else:
-        raise Exception('We can NOT get the mid')
+    return (mid, random_rows)
 
 
 def get_mysql_version(db):

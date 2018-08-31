@@ -57,15 +57,18 @@ def main():
     #     'turn_off_mysql', commands.turn_off_sql), 2)
     # dp.add_handler(CommandHandler('turn_on_mysql', commands.turn_on_sql), 2)
     # stop series
-    dp.add_handler(CommandHandler('stop_forward', commands.stop_forward), 2)
-    dp.add_handler(CommandHandler('start_forward', commands.start_forward), 2)
+    dp.add_handler(CommandHandler('StopForward', commands.stop_forward), 2)
+    dp.add_handler(CommandHandler('StartForward', commands.start_forward), 2)
     # check existed in MySQL or not
-    dp.add_handler(CommandHandler('check_existed', commands.check_existed), 2)
+    dp.add_handler(CommandHandler('CheckExistedOrNot', commands.check_existed), 2)
     # delete the same value in MySQL
-    dp.add_handler(CommandHandler('delete_same', commands.delete_same), 2)
+    dp.add_handler(CommandHandler('DeleteSame', commands.delete_same), 2)
     # show check result
-    dp.add_handler(CommandHandler('check_result_show',
+    dp.add_handler(CommandHandler('CheckResultShow',
                                   commands.check_result_show), 2)
+    # check the MySQL same value all
+    dp.add_handler(CommandHandler('CheckAllData',
+                                  commands.check_all_data), 2)
     # random
     dp.add_handler(CommandHandler('random', commands.random_pic), 2)
     dp.add_handler(CommandHandler('help', commands.common_help_show), 2)
