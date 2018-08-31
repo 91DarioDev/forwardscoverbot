@@ -187,10 +187,11 @@ def help_command(bot, update):
         "/show\n\n"
         # "/turn_off_sql\n\n"
         # "/turn_on_sql\n\n"
-        "/stop_forward\n\n"
-        "/start_forward\n\n"
-        "/check_existed\n\n"
-        "/check_result_show\n\n".format(str(config.SQL_STATUS),
+        "/StopForward\n\n"
+        "/StartForward\n\n"
+        "/CheckExistedOrNot\n\n"
+        "/CheckResultShow"
+        "/CheckAllData\n\n".format(str(config.SQL_STATUS),
                                         sql_status_str,
                                         str(config.FORWARD_STATUS),
                                         str(config.CHECK_STATUS))
