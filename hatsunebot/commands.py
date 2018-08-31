@@ -190,11 +190,11 @@ def help_command(bot, update):
         "/StopForward\n\n"
         "/StartForward\n\n"
         "/CheckExistedOrNot\n\n"
-        "/CheckResultShow"
+        "/CheckResultShow\n\n"
         "/CheckAllData\n\n".format(str(config.SQL_STATUS),
-                                        sql_status_str,
-                                        str(config.FORWARD_STATUS),
-                                        str(config.CHECK_STATUS))
+                                   sql_status_str,
+                                   str(config.FORWARD_STATUS),
+                                   str(config.CHECK_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
