@@ -54,7 +54,7 @@ def check_all_data(bot, update):
         try:
             r_rows = -1
             same_file_id_value_list = sql.iteration_all_data(
-                db, table_name)
+                db, table_name, update)
         except Exception as e:
             if r_rows != -1:
                 e = 'check_all_data() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
