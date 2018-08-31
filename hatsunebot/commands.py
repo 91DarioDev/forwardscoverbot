@@ -16,7 +16,7 @@ from hatsunebot import error_log
 from telegram import ParseMode
 # from telegram import constants as t_consts
 from telegram.ext.dispatcher import run_async
-from telegram import error
+from telegram import TelegramError
 
 
 @run_async
@@ -69,10 +69,7 @@ def random_pic(bot, update):
     except Exception as e:
         e = 'random_pic() get fid failed: ' + str(e.args)
         error_log.write_it(e)
-        try:
-            sql.close_mysql(db)
-        except Exception:
-            pass
+        sql.close_mysql(db)
         random_pic(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
@@ -89,15 +86,12 @@ def random_pic(bot, update):
         # print(mid)
         bot.forwardMessage(
             chat_id=cid, from_chat_id=fid, message_id=mid)
-    except Exception as e:
+    except TelegramError as e:
         e = 'random_pic() ForwardMessage failed: ' + str(e.args)
         error_log.write_it(e)
-        pass
+        # pass
 
-    try:
-        sql.close_mysql(db)
-    except Exception:
-        pass
+    sql.close_mysql(db)
 
 
 @run_async
@@ -268,7 +262,8 @@ def callback_minute_send(bot, job):
         fid = five_type_list[1]
 
         # init the LAST_MESSAGE_ID
-        if len(config.LAST_MESSAGE_ID_LIST) == 0:
+        # the same as if len(list) == 0 but below is better
+        if not config.LAST_MESSAGE_ID_LIST:
             config.LAST_MESSAGE_ID_LIST.append(str(mid))
 
             for cid in config.CHAT_ID:
@@ -277,21 +272,21 @@ def callback_minute_send(bot, job):
                 try:
                     bot.forwardMessage(
                         chat_id=cid, from_chat_id=fid, message_id=mid)
-                except Exception as e:
+                except TelegramError as e:
                     e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
                         ' ---> ' + str(fid) + ', ' + str(mid)
                     error_log.write_it(e)
-                    pass
+                    # pass
             # del config.PHOTO_FILE_ID[0]
             try:
                 # error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
                 # del config.FIVE_TYPE_LIST[0]
                 config.FIVE_TYPE_LIST.pop(0)
-            except Exception as e:
+            except IndexError as e:
                 e = 'callback_minute_send() del failed: ' + str(e.args) + \
                     ' ---> ' + str(config.FIVE_TYPE_LIST)
                 error_log.write_it(e)
-                pass
+                # pass
         # check the same message_id and pass
         else:
             if mid not in config.LAST_MESSAGE_ID_LIST:

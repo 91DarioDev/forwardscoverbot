@@ -198,10 +198,11 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
             # rows <= config.MAX_ROWS
             # we will insert data into this table
             all_full = False
-            # message_id, from_chat_id， file_id_1, file_id_2, file_id_3
+            # message_id, from_chat_id, file_id_1, file_id_2, file_id_3
             try:
                 cursor.execute("INSERT INTO %s(message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (
                     table_name, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date))
+                commit_mysql(db)
             except Exception as e:
                 e = 'insert_mysql() execute-1 failed: ' + str(e.args)
                 error_log.write_it(e)

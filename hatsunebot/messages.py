@@ -179,7 +179,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
                 if config.CHECK_SHOW == True:
 
                     # more information
-                    text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                    text = 'Extra show:\nfile_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
                         result_list[0], result_list[1], result_list[2])
                     update.message.reply_text(text=text, quote=True)
 
