@@ -240,7 +240,7 @@ def check_result_show(bot, update):
 
         config.CHECK_SHOW = True
         text = "<b>OK, start show</b>"
-        update.message.reply_text(text=text, parse_mode=ParseMode.HTMLquote=True)
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
 
 
 @run_async
@@ -257,13 +257,13 @@ def check_existed(bot, update):
         # config.CHECK_REPLY_CID = update.message.chat.id
 
         text = "<b>OK, send me a photo to check existed or not</b>"
-        update.message.reply_text(text=text, parse_mode=ParseMode.HTMLquote=True)
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
 
     else:
 
         config.CHECK_STATUS = False
         text = "<b>OK, turn off the check</b>"
-        update.message.reply_text(text=text, parse_mode=ParseMode.HTMLquote=True)
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
 
 
 @run_async
