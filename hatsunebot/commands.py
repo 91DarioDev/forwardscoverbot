@@ -49,7 +49,7 @@ def check_all_data(bot, update):
     sql.get_max_tables()
 
     for table_id in range(0, config.NU_RANDOM):
-        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id, update)
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
 
         try:
             r_rows = -1
