@@ -25,8 +25,8 @@ def admin_help(bot, update):
     "/CheckResultShow\n\n"
     "/CheckAllData
     '''
-    custom_keyboard = [["/Show", "/ForwardStateTransition",
-                        "/CheckExistedOrNot", "/CheckResultShow", "/CheckAllData"]]
+    custom_keyboard = [["/Show", "/ForwardStateTransition"],
+                       ["/CheckExistedOrNot", "/CheckResultShow"], ["/CheckAllData"]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
 
     cid = update.message.chat.id
