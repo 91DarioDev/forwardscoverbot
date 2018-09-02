@@ -6,6 +6,7 @@ import random
 
 from hatsunebot.utils import only_admin
 from hatsunebot.utils import common_help
+from hatsunebot.utils import admin_help
 # from hatsunebot import keyboards
 from hatsunebot import messages
 from hatsunebot import config
@@ -17,6 +18,55 @@ from telegram import ParseMode
 # from telegram import constants as t_consts
 from telegram.ext.dispatcher import run_async
 from telegram import TelegramError
+
+
+@run_async
+@only_admin
+def help_command(bot, update):
+
+    # keyboard = keyboards.github_link_kb()
+
+    admin_help(bot, update)
+
+    sql_status_list = sql.show_sql_status()
+    # now we make the string about the sql status
+    sql_status_str = ''
+    if len(sql_status_list) != 0:
+        for s in sql_status_list:
+            # [table_name(char), rows(int)]
+            sql_status_str = sql_status_str + \
+                str(s[0]) + ': ' + str(s[1]) + '\n'
+
+    text = (
+        "<b>Hatsune' Telegram Bot Guide:</b>."
+        "\n<i>It works also if you edit messages or forward messages. "
+        "It also keeps the same text formatting style.</i>\n\n"
+        "<b>MySQL Status:</b>\n"
+        "{0}\n"
+        "<b>MySQL Tables Detail:</b>\n"
+        "{1}\n"
+        "<b>Forward Status:</b>\n"
+        "{2}\n"
+        "<b>Check Status:</b>\n"
+        "{3}\n"
+        "\n<b>Supported commands(Only for admin):</b>\n\n"
+        "/Show\n\n"
+        # "/turn_off_sql\n\n"
+        # "/turn_on_sql\n\n"
+        # "/StopForward\n\n"
+        # "/StartForward\n\n"
+        "/ForwardStateTransition\n\n"
+        "/CheckExistedOrNot\n\n"
+        "/CheckResultShow\n\n"
+        "/CheckAllData\n\n".format(str(config.SQL_STATUS),
+                                   sql_status_str,
+                                   str(config.FORWARD_STATUS),
+                                   str(config.CHECK_STATUS))
+    )
+    # update.message.reply_text(
+    #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
+    update.message.reply_text(
+        text=text, parse_mode=ParseMode.HTML)
 
 
 @run_async
@@ -157,52 +207,6 @@ def random_pic(bot, update):
         # pass
 
     sql.close_mysql(db)
-
-
-@run_async
-@only_admin
-def help_command(bot, update):
-
-    # keyboard = keyboards.github_link_kb()
-
-    sql_status_list = sql.show_sql_status()
-    # now we make the string about the sql status
-    sql_status_str = ''
-    if len(sql_status_list) != 0:
-        for s in sql_status_list:
-            # [table_name(char), rows(int)]
-            sql_status_str = sql_status_str + \
-                str(s[0]) + ': ' + str(s[1]) + '\n'
-
-    text = (
-        "<b>Hatsune' Telegram Bot Guide:</b>."
-        "\n<i>It works also if you edit messages or forward messages. "
-        "It also keeps the same text formatting style.</i>\n\n"
-        "<b>MySQL Status:</b>\n"
-        "{0}\n"
-        "<b>MySQL Tables Detail:</b>\n"
-        "{1}\n"
-        "<b>Forward Status:</b>\n"
-        "{2}\n"
-        "<b>Check Status:</b>\n"
-        "{3}\n"
-        "\n<b>Supported commands(Only for admin):</b>\n\n"
-        "/show\n\n"
-        # "/turn_off_sql\n\n"
-        # "/turn_on_sql\n\n"
-        "/StopForward\n\n"
-        "/StartForward\n\n"
-        "/CheckExistedOrNot\n\n"
-        "/CheckResultShow\n\n"
-        "/CheckAllData\n\n".format(str(config.SQL_STATUS),
-                                   sql_status_str,
-                                   str(config.FORWARD_STATUS),
-                                   str(config.CHECK_STATUS))
-    )
-    # update.message.reply_text(
-    #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
-    update.message.reply_text(
-        text=text, parse_mode=ParseMode.HTML)
 
 
 @run_async
@@ -418,17 +422,20 @@ def turn_on_sql(bot, update):
 
 @run_async
 @only_admin
-def stop_forward(bot, update):
+def forward_state_transition(bot, update):
 
     if config.FORWARD_STATUS == False:
-        pass
-    else:
-        config.FORWARD_STATUS = False
-        text = "<b>Stop forward now</b>"
+        config.FORWARD_STATUS = True
+        text = "<b>Forward enabled</b>"
         update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
-    return
+
+    elif config.FORWARD_STATUS == True:
+        config.FORWARD_STATUS = False
+        text = "<b>Forward disabled</b>"
+        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
 
 
+'''
 @run_async
 @only_admin
 def start_forward(bot, update):
@@ -440,3 +447,4 @@ def start_forward(bot, update):
         text = "<b>Start forward now</b>"
         update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
     return
+'''

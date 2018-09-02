@@ -51,16 +51,17 @@ def main():
     dp.add_handler(MessageHandler(
         Filters.all, messages.process_message, edited_updates=True), 1)
     # commands
-    dp.add_handler(CommandHandler('show', commands.help_command), 2)
+    dp.add_handler(CommandHandler('Show', commands.help_command), 2)
     # turn series
     # dp.add_handler(CommandHandler(
     #     'turn_off_mysql', commands.turn_off_sql), 2)
     # dp.add_handler(CommandHandler('turn_on_mysql', commands.turn_on_sql), 2)
     # stop series
-    dp.add_handler(CommandHandler('StopForward', commands.stop_forward), 2)
-    dp.add_handler(CommandHandler('StartForward', commands.start_forward), 2)
+    dp.add_handler(CommandHandler('ForwardStateTransition',
+                                  commands.forward_state_transition), 2)
     # check existed in MySQL or not
-    dp.add_handler(CommandHandler('CheckExistedOrNot', commands.check_existed), 2)
+    dp.add_handler(CommandHandler(
+        'CheckExistedOrNot', commands.check_existed), 2)
     # delete the same value in MySQL
     dp.add_handler(CommandHandler('DeleteSame', commands.delete_same), 2)
     # show check result
