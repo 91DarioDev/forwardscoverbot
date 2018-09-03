@@ -25,7 +25,7 @@ def admin_help(bot, update):
     "/CheckResultShow\n\n"
     "/CheckAllData
     '''
-    custom_keyboard = [["/Show", "/ForwardStateTransition"],
+    custom_keyboard = [["/Show"], ["/ForwardStateTransition"],
                        ["/CheckExistedOrNot", "/CheckResultShow"], ["/CheckAllData"]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
 
@@ -47,7 +47,7 @@ def common_help(bot, update):
     # reply_markup = InlineKeyboardMarkup(update.build_menu(button_list, n_cols=2))
     # bot.send_message("help menu", reply_markup=reply_markup)
 
-    custom_keyboard = [["/help", "/random"]]
+    custom_keyboard = [["/help"], ["/random"]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
 
     cid = update.message.chat.id
