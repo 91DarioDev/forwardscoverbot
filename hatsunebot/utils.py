@@ -55,7 +55,7 @@ def common_help(bot, update):
     # bot.send_message(chat_id=cid, text="Please se this",
     #                  reply_markup=reply_markup)
 
-    text = "What's your choice?"
+    # text = "What's your choice?"
     # bot.send_message(chat_id=cid, text=text, reply_markup=reply_markup)
     bot.send_message(chat_id=cid, reply_markup=reply_markup)
 
