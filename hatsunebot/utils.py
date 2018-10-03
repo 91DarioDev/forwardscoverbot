@@ -54,8 +54,10 @@ def common_help(bot, update):
     cid = update.message.chat.id
     # bot.send_message(chat_id=cid, text="Please se this",
     #                  reply_markup=reply_markup)
+
     text = "What's your choice?"
-    bot.send_message(chat_id=cid, text=text, reply_markup=reply_markup)
+    # bot.send_message(chat_id=cid, text=text, reply_markup=reply_markup)
+    bot.send_message(chat_id=cid, reply_markup=reply_markup)
 
 
 def delete_command(bot, update):
