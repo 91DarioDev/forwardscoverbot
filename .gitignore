@@ -1,6 +1,4 @@
 *.pyc
-.idea/
-/config/configfile.py
-/database/database.db
 /config/config.yaml
-forwardscoverbot.egg-info/
+/.vscode
+/.vscode/settings.json

@@ -17,6 +17,27 @@ def sep(num, none_is_zero=False):
 
 
 @run_async
+def admin_help(bot, update):
+    '''
+    show the help icon for admin
+
+    "/CheckExistedOrNot\n\n"
+    "/CheckResultShow\n\n"
+
+    delete the "/CheckAllData"
+    '''
+    custom_keyboard = [["/Show"], ["/ForwardStateTransition"],
+                       ["/CheckExistedOrNot", "/CheckResultShow"]]
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+
+    cid = update.message.chat.id
+    # bot.send_message(chat_id=cid, text="Please se this",
+    #                  reply_markup=reply_markup)
+    text = "What's your choice?"
+    bot.send_message(chat_id=cid, text=text, reply_markup=reply_markup)
+
+
+@run_async
 def common_help(bot, update):
 
     # button_list = [
@@ -27,13 +48,14 @@ def common_help(bot, update):
     # reply_markup = InlineKeyboardMarkup(update.build_menu(button_list, n_cols=2))
     # bot.send_message("help menu", reply_markup=reply_markup)
 
-    custom_keyboard = [["/help", "/random"]]
+    custom_keyboard = [["/help"], ["/random"]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
 
     cid = update.message.chat.id
     # bot.send_message(chat_id=cid, text="Please se this",
     #                  reply_markup=reply_markup)
-    bot.send_message(chat_id=cid, text="So", reply_markup=reply_markup)
+    text = "What's your choice?"
+    bot.send_message(chat_id=cid, text=text, reply_markup=reply_markup)
 
 
 def delete_command(bot, update):
