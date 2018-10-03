@@ -48,8 +48,11 @@ def help_command(bot, update):
         "<b>Forward Status:</b>\n"
         "{2}\n"
         "<b>Check Status:</b>\n"
-        "{3}\n"
-        "\n<b>Supported commands(Only for admin):</b>\n\n"
+        "{3}\n".format(str(config.SQL_STATUS),
+                       sql_status_str,
+                       str(config.FORWARD_STATUS),
+                       str(config.CHECK_STATUS))
+        # "\n<b>Supported commands(Only for admin):</b>\n\n"
         # "/Show\n\n"
         # "/turn_off_sql\n\n"
         # "/turn_on_sql\n\n"
@@ -59,10 +62,6 @@ def help_command(bot, update):
         # "/CheckExistedOrNot\n\n"
         # "/CheckResultShow\n\n"
         # "/CheckAllData\n\n"
-        .format(str(config.SQL_STATUS),
-                sql_status_str,
-                str(config.FORWARD_STATUS),
-                str(config.CHECK_STATUS))
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
