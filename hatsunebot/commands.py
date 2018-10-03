@@ -393,34 +393,6 @@ def callback_minute_send(bot, job):
     clean_up()
 
 
-'''
-@run_async
-@only_admin
-def turn_off_sql(bot, update):
-
-    if config.SQL_STATUS == False:
-        pass
-    else:
-        config.SQL_STATUS = False
-        text = ("Turn off sql record done")
-        update.message.reply_text(text=text)
-    return
-
-
-@run_async
-@only_admin
-def turn_on_sql(bot, update):
-
-    if config.SQL_STATUS == True:
-        pass
-    else:
-        config.SQL_STATUS = True
-        text = ("Turn on sql record done")
-        update.message.reply_text(text=text)
-    return
-'''
-
-
 @run_async
 @only_admin
 def forward_state_transition(bot, update):
@@ -434,18 +406,3 @@ def forward_state_transition(bot, update):
         config.FORWARD_STATUS = False
         text = "<b>Forward disabled</b>"
         update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
-
-
-'''
-@run_async
-@only_admin
-def start_forward(bot, update):
-
-    if config.FORWARD_STATUS == True:
-        pass
-    else:
-        config.FORWARD_STATUS = True
-        text = "<b>Start forward now</b>"
-        update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
-    return
-'''
