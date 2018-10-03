@@ -44,7 +44,8 @@ SQL_LIST = []
 
 # set the sql status
 SQL_STATUS = True
-FORWARD_STATUS = True
+# make this false as defalut
+FORWARD_STATUS = False
 
 SQL_SERVER = conf["sql_server"]
 #logging.info("MYSQL SERVER ADDRESS: {}".format(SQL_SERVER))

@@ -22,7 +22,7 @@ from telegram import TelegramError
 
 @run_async
 @only_admin
-def help_command(bot, update):
+def show_command(bot, update):
 
     # keyboard = keyboards.github_link_kb()
 
@@ -49,7 +49,7 @@ def help_command(bot, update):
         "{2}\n"
         "<b>Check Status:</b>\n"
         "{3}\n".format(str(config.SQL_STATUS),
-                       sql_status_str,
+                       str(sql_status_str),
                        str(config.FORWARD_STATUS),
                        str(config.CHECK_STATUS))
         # "\n<b>Supported commands(Only for admin):</b>\n\n"
