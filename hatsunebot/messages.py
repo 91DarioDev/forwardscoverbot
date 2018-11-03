@@ -19,7 +19,9 @@ def process_message_subdivision(bot, update, message, caption):
 
     # then use the message
     if message.text:
-        # message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        # here we add the reply same words
+        #message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        message.reply_text(text=message.text, parse_mode=ParseMode.HTML)
         pass
 
     elif message.voice:

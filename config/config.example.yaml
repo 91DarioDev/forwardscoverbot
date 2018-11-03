@@ -17,7 +17,7 @@ admins_group:
 chat_id: "id"
 
 # set the log file to store the error message
-error_log_location: "/var/log/hatsunebot_error.log"
+error_log_location: "/var/log/bot_error.log"
 
 # sql setting
 sql_server: "localhost"
