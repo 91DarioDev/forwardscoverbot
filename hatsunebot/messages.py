@@ -20,7 +20,11 @@ def process_message_subdivision(bot, update, message, caption):
     # then use the message
     if message.text:
         # here we add the reply same words
-        message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        re_text = message.text_html
+        if re_text[0] != r'/':
+            message.reply_text(text=message.text_html,
+                               parse_mode=ParseMode.HTML)
+
         pass
 
     elif message.voice:
@@ -208,4 +212,5 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
             config.SQL_LIST.append(tmp_list)
             config.FIVE_TYPE_LIST.append(tmp_list)
 
+# here we will handle other type message
     process_message_subdivision(bot, update, message, caption)
