@@ -208,4 +208,4 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
             config.SQL_LIST.append(tmp_list)
             config.FIVE_TYPE_LIST.append(tmp_list)
 
-        process_message_subdivision(bot, update, message, caption)
+    process_message_subdivision(bot, update, message, caption)
