@@ -36,7 +36,7 @@ def process_message_group(bot, update, message, caption):
         #message.reply_voice(voice=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
 
         re_text = '听不懂啦~\(≧▽≦)/~'
-        message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.photo:
         # This is what the bot do now
@@ -49,7 +49,7 @@ def process_message_group(bot, update, message, caption):
         #config.MESSAGE_ID_LIST.append(message_id)
         #message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
         re_text = '好看~~ o(*￣▽￣*)ブ'
-        message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.sticker:
         media = message.sticker.file_id
@@ -60,7 +60,7 @@ def process_message_group(bot, update, message, caption):
         #filename = message.document.file_name
         #message.reply_document(document=media, filename=filename, caption=caption, parse_mode=ParseMode.HTML)
         re_text = '这是什么?_?'
-        message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.audio:
         # media = message.audio.file_id
@@ -69,14 +69,14 @@ def process_message_group(bot, update, message, caption):
         # title = message.audio.title
         # message.reply_audio(audio=media, duration=duration, performer=performer, title=title, caption=caption, parse_mode=ParseMode.HTML)
         re_text = '这是什么?_?'
-        message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.video:
         # media = message.video.file_id
         # duration = message.video.duration
         # message.reply_video(video=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
         re_text = '好看~~ o(*￣▽￣*)ブ'
-        message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.contact:
         # phone_number = message.contact.phone_number
@@ -84,7 +84,7 @@ def process_message_group(bot, update, message, caption):
         # last_name = message.contact.last_name
         # message.reply_contact(phone_number=phone_number, first_name=first_name, last_name=last_name)
         re_text = '这是什么?_?'
-        message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.venue:
         # longitude = message.venue.location.longitude
