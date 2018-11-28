@@ -27,7 +27,7 @@ def process_message_group(bot, update, message, caption):
         # split the command message
         if re_text[0] != r'/':
             re_text = re_text + '?'
-            message.reply_text(text=message.text_html,
+            message.reply_text(text=re_text,
                                parse_mode=ParseMode.HTML)
 
     elif message.voice:
