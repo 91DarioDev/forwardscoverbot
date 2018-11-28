@@ -132,7 +132,7 @@ def process_message_admin(bot, update, message, caption):
     except Exception as e:
         return
     
-    if groupname != config.ADMINS_GROUP:
+    if groupname not in config.ADMINS_GROUP:
         return
 
     if message.photo:
