@@ -32,7 +32,6 @@ def process_message_group(bot, update, message, caption):
         re_text = message.text_html
         # split the command message
         if re_text[0] != r'/':
-            if()
             re_text = re_text + '?'
             message.reply_text(text=re_text,
                                parse_mode=ParseMode.HTML)
