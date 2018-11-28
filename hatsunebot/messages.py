@@ -126,7 +126,7 @@ def process_message_admin(bot, update, message, caption):
     '''
     for admin use
     '''
-
+    '''
     try:
         groupname = message.forward_from_chat.username
     except Exception as e:
@@ -134,6 +134,7 @@ def process_message_admin(bot, update, message, caption):
     
     if groupname not in config.ADMINS_GROUP:
         return
+    '''
 
     if message.photo:
 
