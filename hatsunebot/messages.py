@@ -121,7 +121,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
             # print(update.message.forward_from_chat.username)
             # print(config.ADMINS_GROUP)
             return
-        # here get the message
+    # here get the message
     if update.edited_message:
         message = update.edited_message
     elif remove_caption:
@@ -137,6 +137,8 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
             message.caption and remove_caption is False) else None
     else:
         caption = custom_caption
+    
+    print(message)
 
     if message.photo:
 
