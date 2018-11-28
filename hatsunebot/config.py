@@ -70,3 +70,6 @@ CHECK_STATUS = False
 # CHECK_REPLY_CID = 0
 CHECK_FILE_ID_LIST = []
 CHECK_SHOW = False
+
+# fake praise use
+PRAISE_LIST = []

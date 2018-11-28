@@ -43,6 +43,9 @@ def main():
     # sql jobs
     job.run_repeating(
         commands.callback_sql, interval=6, first=0)
+    # fake praise list delete
+    job.run_repeating(
+        commands.delete_one_praise, interval=500, first=0)
     # albums
     # many picture here
     dp.add_handler(MessageHandler(custom_filters.album,

@@ -308,6 +308,14 @@ def clean_up():
     # print(config.LAST_MESSAGE_ID_LIST)
     config.LAST_MESSAGE_ID_LIST = []
 
+@run_async
+def delete_one_praise(bot, job):
+
+    '''
+    delete one in the praise
+    '''
+
+    config.PRAISE_LIST.pop(0)
 
 # send here
 @run_async

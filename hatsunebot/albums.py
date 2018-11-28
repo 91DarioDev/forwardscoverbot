@@ -64,12 +64,6 @@ def collect_album_items(bot, update, job_queue):
         result_list = sql.check_sql_existed(
             file_id_1, file_id_2, file_id_3)
 
-        '''
-        text = 'message_id:\n{0}\nfile_id_1:\n{1}\nfile_id_2:\n{2}\nfile_id_3:\n{3}\n'.format(
-            result_list[0], result_list[1], result_list[2], result_list[3])
-        text = 'message_id:\n{0}:{1}\nfile_id_1:\n{2}:{3}\nfile_id_2:\n{4}:{5}\nfile_id_3:\n{6}:{7}\n'.format(
-                mid, result_list[0], file_id_1, result_list[1], file_id_2, result_list[2], file_id_3, result_list[3])
-        '''
         # text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
         #     result_list[0], result_list[1], result_list[2])
         # update.message.reply_text(text=text, quote=True)
@@ -104,52 +98,3 @@ def collect_album_items(bot, update, job_queue):
     else:
         config.SQL_LIST.append(tmp_list)
         config.FIVE_TYPE_LIST.append(tmp_list)
-
-#     sql.process_sql(db, tmp_list)
-#     sql.commit_mysql(db)
-#     sql.close_mysql(db)
-#     media_group_id = update.message.media_group_id
-#     if media_group_i not in config.ALBUM_DICT:
-#         bot.sendChatAction(
-#             chat_id=update.message.from_user.id,
-#             action=ChatAction.UPLOAD_PHOTO if update.message.photo else ChatAction.UPLOAD_VIDEO
-#         )
-#         config.ALBUM_DICT[media_group_id] = [update]
-#         # schedule the job
-#         job_queue.run_once(send_album, 1, context=[media_group_id])
-#     else:
-#         config.ALBUM_DICT[media_group_id].append(update)
-#
-#
-# def send_album(bot, job):
-#     media_group_id = job.context[0]
-#     updates = config.ALBUM_DICT[media_group_id]
-#
-#     # delete from ALBUM_DICT
-#     del config.ALBUM_DICT[media_group_id]
-#
-#     # ordering album updates
-#     updates.sort(key=lambda x: x.message.message_id)
-#
-#     media = []
-#     for update in updates:
-#         if update.message.photo:
-#             media.append(
-#                 InputMediaPhoto(
-#                     media=update.message.photo[-1].file_id,
-#                     caption='' if update.message.caption is None else update.message.caption_html,
-#                     parse_mode=ParseMode.HTML
-#                 )
-#             )
-#         elif update.message.video:
-#             media.append(
-#                 InputMediaVideo(
-#                     media=update.message.video.file_id,
-#                     caption='' if update.message.caption is None else update.message.caption_html,
-#                     parse_mode=ParseMode.HTML
-#                 )
-#             )
-#     bot.sendMediaGroup(
-#         chat_id=updates[0].message.from_user.id,
-#         media=media
-#     )

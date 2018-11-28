@@ -20,12 +20,19 @@ def process_message_group(bot, update, message, caption):
     for normal user use
     '''
 
+    user_id = update.message.from_user.id
+    if user_id not in config.PRAISE_LIST:
+        config.PRAISE_LIST.append(user_id)
+    else:
+        return
+
     # then use the message
     if message.text:
         # here we add the reply same words
         re_text = message.text_html
         # split the command message
         if re_text[0] != r'/':
+            if()
             re_text = re_text + '?'
             message.reply_text(text=re_text,
                                parse_mode=ParseMode.HTML)
