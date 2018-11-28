@@ -1,4 +1,6 @@
 *.pyc
-/config/config.yaml
-/.vscode
-/.vscode/settings.json
+./config/config.yaml
+./.vscode
+./.vscode/settings.json
+
+./test/test.json

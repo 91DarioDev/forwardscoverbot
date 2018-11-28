@@ -1,0 +1,48 @@
+
+Group chat: {'photo': [], 
+ 'group_chat_created': False, 
+ 'new_chat_members': [], 
+ 'date': 1543388508, 
+ 'new_chat_photo': [], 
+ 'channel_chat_created': False, 
+ 'caption_entities': [], 
+ 'chat': {'type': 'supergroup', 'title': '奶子百科交流群�~', 'username': 'titswikigroup', 'id': -1001262711683
+   }, 'from': {'first_name': 'Riko', 'language_code': 'en', 'is_bot': False, 'username': 'rikonaka', 'id': 366039180
+   }, 'entities': [], 'message_id': 44756, 'delete_chat_photo': False, 'supergroup_chat_created': False, 'text': 'test'
+}
+
+Self chat: {'photo': [], 
+ 'group_chat_created': False, 
+ 'new_chat_members': [], 
+ 'date': 1543388555, 
+ 'new_chat_photo': [], 
+ 'channel_chat_created': False, 
+ 'caption_entities': [], 
+ 'chat': {'first_name': 'Riko', 'type': 'private', 'username': 'rikonaka', 'id': 366039180
+   }, 'from': {'first_name': 'Riko', 'language_code': 'en', 'is_bot': False, 'username': 'rikonaka', 'id': 366039180
+   }, 'entities': [], 'message_id': 36149, 'delete_chat_photo': False, 'supergroup_chat_created': False, 'text': 'test'
+}
+
+Group send photo: {'photo': [
+      {'file_id': 'AgADBQADZagxG67u8VcYnBVTNBh7GQ1t3jIABD0IMRJfkqFvussAAgI', 'width': 60, 'height': 90, 'file_size': 1208
+      },
+      {'file_id': 'AgADBQADZagxG67u8VcYnBVTNBh7GQ1t3jIABAMImIz_n3uzu8sAAgI', 'width': 214, 'height': 320, 'file_size': 15125
+      },
+      {'file_id': 'AgADBQADZagxG67u8VcYnBVTNBh7GQ1t3jIABBPt9iet1d5VvMsAAgI', 'width': 502, 'height': 750, 'file_size': 58742
+      }
+   ], 'group_chat_created': False, 'new_chat_members': [], 'date': 1543388609, 'new_chat_photo': [], 'channel_chat_created': False, 'caption_entities': [], 'chat': {'type': 'supergroup', 'title': '奶子百科交流群�~', 'username': 'titswikigroup', 'id': -1001262711683
+   }, 'entities': [], 'message_id': 44758, 'delete_chat_photo': False, 'supergroup_chat_created': False, 'from': {'first_name': 'Riko', 'language_code': 'en', 'is_bot': False, 'username': 'rikonaka', 'id': 366039180
+   }
+}
+
+Self send photo: {'photo': [
+      {'file_id': 'AgADBQADZagxG67u8VcYnBVTNBh7GQ1t3jIABD0IMRJfkqFvussAAgI', 'width': 60, 'height': 90, 'file_size': 1208
+      },
+      {'file_id': 'AgADBQADZagxG67u8VcYnBVTNBh7GQ1t3jIABAMImIz_n3uzu8sAAgI', 'width': 214, 'height': 320, 'file_size': 15125
+      },
+      {'file_id': 'AgADBQADZagxG67u8VcYnBVTNBh7GQ1t3jIABBPt9iet1d5VvMsAAgI', 'width': 502, 'height': 750, 'file_size': 58742
+      }
+   ], 'group_chat_created': False, 'new_chat_members': [], 'date': 1543388656, 'new_chat_photo': [], 'channel_chat_created': False, 'caption_entities': [], 'chat': {'first_name': 'Riko', 'type': 'private', 'username': 'rikonaka', 'id': 366039180
+   }, 'entities': [], 'message_id': 36151, 'delete_chat_photo': False, 'supergroup_chat_created': False, 'from': {'first_name': 'Riko', 'language_code': 'en', 'is_bot': False, 'username': 'rikonaka', 'id': 366039180
+   }
+}
