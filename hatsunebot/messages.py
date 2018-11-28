@@ -127,6 +127,14 @@ def process_message_admin(bot, update, message, caption):
     for admin use
     '''
 
+    try:
+        groupname = message.forward_from_chat.username
+    except Exception as e:
+        return
+    
+    if groupname != config.ADMINS_GROUP:
+        return
+
     if message.photo:
 
         # FIVE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
@@ -160,21 +168,18 @@ def process_message_admin(bot, update, message, caption):
             result_list = sql.check_sql_existed(
                 file_id_1, file_id_2, file_id_3)
 
-            '''
-            text = 'message_id:\n{0}:{1}\nfile_id_1:\n{2}:{3}\nfile_id_2:\n{4}:{5}\nfile_id_3:\n{6}:{7}\n'.format(
-                mid, result_list[0], file_id_1, result_list[1], file_id_2, result_list[2], file_id_3, result_list[3])
-            text = 'message_id:\n{0}\nfile_id_1:\n{1}\nfile_id_2:\n{2}\nfile_id_3:\n{3}\n'.format(
-                result_list[0], result_list[1], result_list[2], result_list[3])
-            '''
             # text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
             #     result_list[0], result_list[1], result_list[2])
             # update.message.reply_text(text=text, quote=True)
+            text = 'Result:\nfile_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
+                result_list[0], result_list[1], result_list[2])
+            update.message.reply_text(text=text, quote=True)
 
             if config.CHECK_SHOW == True:
-
                 # more information
-                text = 'Extra show:\nfile_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
-                    result_list[0], result_list[1], result_list[2])
+                text = 'file_id_1: %s\n' % file_id_1
+                text = text + 'file_id_2: %s\n' % file_id_2
+                text = text + 'file_id_3 %s\n' % file_id_3
                 update.message.reply_text(text=text, quote=True)
 
             if result_list[0] == 0 and result_list[1] == 0 and result_list[2] == 0:
@@ -205,11 +210,6 @@ def process_message_admin(bot, update, message, caption):
 @run_async
 def process_message(bot, update, remove_caption=False, custom_caption=None):
 
-    if update.message.forward_from_chat:
-        if update.message.forward_from_chat.username not in config.ADMINS_GROUP:
-            # print(update.message.forward_from_chat.username)
-            # print(config.ADMINS_GROUP)
-            return
     # here get the message
     if update.edited_message:
         message = update.edited_message
@@ -227,11 +227,11 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     else:
         caption = custom_caption
 
-    print(message)
+    #print(message)
 
     # here we will handle other type message
-    if(message.chat.type == 'private'):
+    if message.chat.type == 'private':
         # only the admin allow the use the private chat
         process_message_admin(bot, update, message, caption)
-    elif(message.chat.type == 'supergroup'):
+    elif message.chat.type == 'supergroup':
         process_message_group(bot, update, message, caption)
