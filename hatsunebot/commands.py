@@ -315,7 +315,8 @@ def delete_one_praise(bot, job):
     delete one in the praise
     '''
 
-    config.PRAISE_LIST.pop(0)
+    if len(config.PRAISE_LIST) != 0:
+        config.PRAISE_LIST.pop(0)
 
 # send here
 @run_async
