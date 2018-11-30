@@ -14,17 +14,21 @@ from hatsunebot import error_log
 from hatsunebot import sql
 
 
+def processed(update):
+
+    user_id = update.message.from_user.id
+    if user_id not in config.PRAISE_LIST:
+        config.PRAISE_LIST.append(user_id)
+        return 0
+    else:
+        return 1
+
+
 @run_async
 def process_message_group(bot, update, message, caption):
     '''
     for normal user use
     '''
-
-    user_id = update.message.from_user.id
-    if user_id not in config.PRAISE_LIST:
-        config.PRAISE_LIST.append(user_id)
-    else:
-        return
 
     # then use the message
     if message.text:
@@ -32,39 +36,53 @@ def process_message_group(bot, update, message, caption):
         re_text = message.text_html
         # split the command message
         if re_text[0] != r'/':
+            if processed(update) == 1:
+                return
             re_text = re_text + '?'
             message.reply_text(text=re_text,
                                parse_mode=ParseMode.HTML)
+        elif 'http' in re_text:
+            re_text = '看过了，不好看o(>﹏<)o'
+            message.reply_text(text=re_text,
+                               parse_mode=ParseMode.HTML)
+
 
     elif message.voice:
-        #media = message.voice.file_id
-        #duration = message.voice.duration
-        #message.reply_voice(voice=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
-
-        re_text = '听不懂啦~\(≧▽≦)/~'
+        # media = message.voice.file_id
+        # duration = message.voice.duration
+        # message.reply_voice(voice=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
+        if processed(update) == 1:
+            return
+        re_text = r'听不懂啦~\(≧▽≦)/~'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.photo:
         # This is what the bot do now
         # we will send all the message
-        #media = message.photo[-1].file_id
-        #from_chat_id = message.chat.id
-        #config.FROM_CHAT_ID_LIST.append(from_chat_id)
+        # media = message.photo[-1].file_id
+        # from_chat_id = message.chat.id
+        # config.FROM_CHAT_ID_LIST.append(from_chat_id)
 
-        #message_id = message.message_id
-        #config.MESSAGE_ID_LIST.append(message_id)
-        #message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
+        # message_id = message.message_id
+        # config.MESSAGE_ID_LIST.append(message_id)
+        # message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
+        if processed(update) == 1:
+            return
         re_text = '好看~~ o(*￣▽￣*)ブ'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.sticker:
+        if processed(update) == 1:
+            return
         media = message.sticker.file_id
         message.reply_sticker(sticker=media)
 
     elif message.document:
-        #media = message.document.file_id
-        #filename = message.document.file_name
-        #message.reply_document(document=media, filename=filename, caption=caption, parse_mode=ParseMode.HTML)
+        # media = message.document.file_id
+        # filename = message.document.file_name
+        # message.reply_document(document=media, filename=filename, caption=caption, parse_mode=ParseMode.HTML)
+        if processed(update) == 1:
+            return
         re_text = '这是什么?_?'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
@@ -74,6 +92,8 @@ def process_message_group(bot, update, message, caption):
         # performer = message.audio.performer
         # title = message.audio.title
         # message.reply_audio(audio=media, duration=duration, performer=performer, title=title, caption=caption, parse_mode=ParseMode.HTML)
+        if processed(update) == 1:
+            return
         re_text = '这是什么?_?'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
@@ -81,6 +101,8 @@ def process_message_group(bot, update, message, caption):
         # media = message.video.file_id
         # duration = message.video.duration
         # message.reply_video(video=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
+        if processed(update) == 1:
+            return
         re_text = '好看~~ o(*￣▽￣*)ブ'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
@@ -89,6 +111,8 @@ def process_message_group(bot, update, message, caption):
         # first_name = message.contact.first_name
         # last_name = message.contact.last_name
         # message.reply_contact(phone_number=phone_number, first_name=first_name, last_name=last_name)
+        if processed(update) == 1:
+            return
         re_text = '这是什么?_?'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
@@ -137,7 +161,7 @@ def process_message_admin(bot, update, message, caption):
         groupname = message.forward_from_chat.username
     except Exception as e:
         return
-    
+
     if groupname not in config.ADMINS_GROUP:
         return
 
@@ -233,7 +257,7 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     else:
         caption = custom_caption
 
-    #print(message)
+    # print(message)
 
     # here we will handle other type message
     if message.chat.type == 'private':
