@@ -52,16 +52,6 @@ def show_command(bot, update):
                        str(sql_status_str),
                        str(config.FORWARD_STATUS),
                        str(config.CHECK_STATUS))
-        # "\n<b>Supported commands(Only for admin):</b>\n\n"
-        # "/Show\n\n"
-        # "/turn_off_sql\n\n"
-        # "/turn_on_sql\n\n"
-        # "/StopForward\n\n"
-        # "/StartForward\n\n"
-        # "/ForwardStateTransition\n\n"
-        # "/CheckExistedOrNot\n\n"
-        # "/CheckResultShow\n\n"
-        # "/CheckAllData\n\n"
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
@@ -73,9 +63,16 @@ def show_command(bot, update):
 def common_help_show(bot, update):
 
     common_help(bot, update)
+    if messages.processed(update) == 1:
+        text = "_(√ ζ ε:)_"
+        update.message.reply_text(
+            text=text, parse_mode=ParseMode.HTML)
+        return
     text = (
-        "<b>PicBot Guide:</b>."
+        "<b>PicBot:</b>."
         "\n<i>See the titswiki random photo from begin to now.</i>\n\n"
+        "Use command:\n"
+        "-> /random\n"
     )
     # update.message.reply_text(
     #     text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
@@ -308,9 +305,9 @@ def clean_up():
     # print(config.LAST_MESSAGE_ID_LIST)
     config.LAST_MESSAGE_ID_LIST = []
 
+
 @run_async
 def delete_one_praise(bot, job):
-
     '''
     delete one in the praise
     '''
@@ -319,6 +316,8 @@ def delete_one_praise(bot, job):
         config.PRAISE_LIST.pop(0)
 
 # send here
+
+
 @run_async
 def callback_minute_send(bot, job):
     '''
