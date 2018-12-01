@@ -108,8 +108,7 @@ def SQL_RandomGetMid(db, table_name):
     # random_rows = random.randint(
     #     random_limit_row_min, random_limit_row_max)
 
-    cursor.execute("SELECT message_id FROM %s LIMIT %d, %d" %
-                   table_name, random_limit_row_min, random_limit_row_max)
+    cursor.execute("SELECT message_id FROM %s LIMIT %d, %d" % (table_name, random_limit_row_min, random_limit_row_max))
 
     config.MID_LIST.append(cursor.fetchall())
 
