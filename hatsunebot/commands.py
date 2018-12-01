@@ -150,7 +150,7 @@ def Command_CheckAllData(bot, update):
 def Command_CallBackQueryMid(bot, job):
 
     sql.SQL_GetMaxTableCount()
-    table_id = random.randint(0, config.NU_RANDOM)
+    table_id = random.randint(0, config.NU_RANDOM - 1)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
     print(table_name)
     status = -1
@@ -161,7 +161,7 @@ def Command_CallBackQueryMid(bot, job):
 
 def Command_CallBackQueryMid_Fix():
 
-    table_id = random.randint(0, config.NU_RANDOM)
+    table_id = random.randint(0, config.NU_RANDOM - 1)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
     status = -1
     while status == -1:
@@ -179,7 +179,7 @@ def Command_RandomPicShow(bot, update):
     table_id = 0
     fid = None
 
-    mid_random = random.randint(0, config.MAX_MID_LIST)
+    mid_random = random.randint(0, config.MAX_MID_LIST - 1)
     while len(config.MID_LIST) == 0:
         error_log.RecordError("RandomPicShow() mid")
         Command_CallBackQueryMid_Fix()
