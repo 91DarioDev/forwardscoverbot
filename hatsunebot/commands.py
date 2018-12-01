@@ -169,7 +169,7 @@ def Command_RandomPicShow(bot, update):
     if update.message.from_user.is_bot == 'True':
         return
 
-    # print(config.MID_LIST)
+    error_log.RecordError("RandomPicShow()")
     table_id = 0
     fid = None
 
@@ -179,19 +179,20 @@ def Command_RandomPicShow(bot, update):
     while len(config.MID_LIST) == 0:
         Command_CallBackQueryMid_Fix()
     mid = config.MID_LIST[0][mid_random][0]
+    error_log.RecordError("RandomPicShow() mid [%s]" % mid)
 
     while fid == None and table_id <= config.NU_RANDOM and table_id >= 0:
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
         try:
             fid = sql.SQL_GetFid(table_name, mid)
-            error_log.RecordError("RandomPicShow() fid[%s]" % fid)
+            error_log.RecordError("RandomPicShow() fid [%s]" % fid)
             table_id += 1
         except err.InterfaceError:
             error_log.RecordError(
                 "RandomPicShow() err.InterfaceError - table name [%s] fid[%s]" % (table_name, fid))
 
     #print(mid, fid)
-    error_log.RecordError("RandomPicShow() now mid[%s] - fid[%s]" % (mid, fid))
+    error_log.RecordError("RandomPicShow() mid[%s] - fid[%s]" % (mid, fid))
 
     cid = update.message.chat.id
     try:
