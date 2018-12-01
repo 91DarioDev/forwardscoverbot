@@ -195,7 +195,7 @@ def Command_RandomPicShow(bot, update):
         table_id += 1
 
     #print(mid, fid)
-    error_log.RecordError("Now mid[%d] - fid[%s]" % (mid, fid))
+    error_log.RecordError("Now mid[%s] - fid[%s]" % (mid, fid))
 
     cid = update.message.chat.id
     try:
