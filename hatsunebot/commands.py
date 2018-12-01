@@ -190,12 +190,11 @@ def Command_RandomPicShow(bot, update):
         try:
             fid = sql.SQL_GetFid(db, table_name, mid)
             error_log.RecordError("RandomPicShow() fid[%s]" % fid)
+            table_id += 1
         except err.InterfaceError:
             error_log.RecordError("RandomPicShow() err.InterfaceError - table name [%s] fid[%s]" % (table_name, fid))
+            sql.SQL_Close(db)
             db = sql.SQL_ConnectMysql()
-            # keep the table_id same
-            table_id -= 1
-        table_id += 1
 
     #print(mid, fid)
     error_log.RecordError("RandomPicShow() now mid[%s] - fid[%s]" % (mid, fid))
