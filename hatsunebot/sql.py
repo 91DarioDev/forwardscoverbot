@@ -86,13 +86,14 @@ def SQL_IterationAllData(db, table_name, update):
     return count_list
 
 
-def SQL_RandomGetMid(db, table_name):
+def SQL_GetMidLimited(db, table_name):
 
     cursor = db.cursor()
     #mid = -1
     # clear the list
     config.MID_LIST = []
     rows = None
+    fall = None
 
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
@@ -110,15 +111,13 @@ def SQL_RandomGetMid(db, table_name):
         random_limit_row_min = random_limit_row_max
         random_limit_row_max = random_limit_row_max + config.MAX_MID_LIST
 
-    # random_rows = random.randint(
-    #     random_limit_row_min, random_limit_row_max)
-
     cursor.execute("SELECT message_id FROM %s LIMIT %d, %d" %
                    (table_name, random_limit_row_min, random_limit_row_max))
 
-    config.MID_LIST.append(cursor.fetchall())
-    print(config.MID_LIST)
-
+    while fall == None:
+        fall = cursor.fetchall()
+    config.MID_LIST.append(fall)
+    # print(config.MID_LIST)
     # mid = cursor.fetchall()[random_rows][0]
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
     # return (mid, random_rows)

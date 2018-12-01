@@ -152,7 +152,7 @@ def Command_CallBackQueryMid(bot, job):
     sql.SQL_GetMaxTableCount()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    sql.SQL_RandomGetMid(db, table_name)
+    sql.SQL_GetMidLimited(db, table_name)
     sql.SQL_Close(db)
 
 
@@ -163,53 +163,29 @@ def Command_RandomPicShow(bot, update):
     if update.message.from_user.is_bot == 'True':
         return
 
-    print(config.MID_LIST)
+    # print(config.MID_LIST)
+    table_id = 0
+    fid = None
 
     db = sql.SQL_ConnectMysql()
 
     sql.SQL_GetMaxTableCount()
-    table_id = random.randint(0, config.NU_RANDOM)
-    table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
 
-    try:
-        # r_rows = -1
-        # mid, r_rows = sql.SQL_RandomGetMid(db, table_name)
-        mid_random = random.randint(0, config.MAX_MID_LIST)
-        mid = config.MID_LIST[0][mid_random][0]
-        print(mid)
+    mid_random = random.randint(0, config.MAX_MID_LIST)
+    mid = config.MID_LIST[0][mid_random][0]
 
-    except Exception as e:
-        sql.SQL_Close(db)
-        Command_RandomPicShow(bot, update)
-        return
-
-    try:
+    while fid == None and table_id <= config.NU_RANDOM:
+        table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
         fid = sql.SQL_GetFid(db, table_name, mid)
-    except Exception as e:
-        e = 'RandomPicShow() get fid failed: ' + str(e.args)
-        error_log.RecordError(e)
-        sql.SQL_Close(db)
-        Command_RandomPicShow(bot, update)
-        # text = "..."
-        # update.message.reply_text(text=text, quote=True)
-        # sql.close_mysql(db)
-        return
+        table_id += 1
 
-    # print("++++++++++++++++++++{}".format(mid))
-    # print("++++++++++++++++++++{}".format(fid))
-    # for cid in config.CHAT_ID:
-        # bot.send_photo(chat_id=cid, photo=file_id, caption=None)
     cid = update.message.chat.id
     try:
-        # print(fid)
-        # print(mid)
         bot.forwardMessage(
             chat_id=cid, from_chat_id=fid, message_id=mid)
     except TelegramError as e:
         e = 'RandomPicShow() ForwardMessage failed: ' + str(e.args)
         error_log.RecordError(e)
-        # pass
-
     sql.SQL_Close(db)
 
 
