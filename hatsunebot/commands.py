@@ -13,6 +13,7 @@ from hatsunebot import utils
 from hatsunebot import config
 from hatsunebot import sql
 from hatsunebot import error_log
+from pymysql import err
 
 # from telegram import MessageEntity
 from telegram import ParseMode
@@ -189,7 +190,11 @@ def Command_RandomPicShow(bot, update):
 
     while fid == None and table_id <= config.NU_RANDOM:
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-        fid = sql.SQL_GetFid(db, table_name, mid)
+        try:
+            fid = sql.SQL_GetFid(db, table_name, mid)
+            break
+        except err.InterfaceError:
+            continue
         table_id += 1
 
     cid = update.message.chat.id
