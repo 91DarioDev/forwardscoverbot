@@ -48,7 +48,7 @@ def main():
         commands.Command_DeleteOnePraiseListItem, interval=500, first=0)
     # from mysql query
     job.run_repeating(
-        commands.Command_CallBackQueryMid, interval=6, first=0)
+        commands.Command_CallBackQueryMid, interval=60, first=0)
     # albums
     # many picture here
     dp.add_handler(MessageHandler(custom_filters.album,
