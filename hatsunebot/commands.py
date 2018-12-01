@@ -151,7 +151,7 @@ def Command_CallBackQueryMid(bot, job):
 
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    sql.SQL_GetMidLimited(db, table_name)
+    sql.SQL_GetMidLimited(table_name)
 
 
 def Command_CallBackQueryMid_Fix():
@@ -159,7 +159,7 @@ def Command_CallBackQueryMid_Fix():
     sql.SQL_GetMaxTableCount()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    sql.SQL_GetMidLimited(db, table_name)
+    sql.SQL_GetMidLimited(table_name)
 
 
 @run_async
