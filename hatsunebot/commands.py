@@ -149,15 +149,12 @@ def Command_CheckAllData(bot, update):
 @run_async
 def Command_CallBackQueryMid(bot, job):
 
-    db = sql.SQL_ConnectMysql()
-    sql.SQL_GetMaxTableCount()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
     sql.SQL_GetMidLimited(db, table_name)
-    sql.SQL_Close(db)
 
 
-def Command_CallBackQueryMid_Fix(db):
+def Command_CallBackQueryMid_Fix():
 
     sql.SQL_GetMaxTableCount()
     table_id = random.randint(0, config.NU_RANDOM)
@@ -176,26 +173,22 @@ def Command_RandomPicShow(bot, update):
     table_id = 0
     fid = None
 
-    db = sql.SQL_ConnectMysql()
-
     sql.SQL_GetMaxTableCount()
 
     mid_random = random.randint(0, config.MAX_MID_LIST)
     while len(config.MID_LIST) == 0:
-        Command_CallBackQueryMid_Fix(db)
+        Command_CallBackQueryMid_Fix()
     mid = config.MID_LIST[0][mid_random][0]
 
     while fid == None and table_id <= config.NU_RANDOM and table_id >= 0:
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
         try:
-            fid = sql.SQL_GetFid(db, table_name, mid)
+            fid = sql.SQL_GetFid(table_name, mid)
             error_log.RecordError("RandomPicShow() fid[%s]" % fid)
             table_id += 1
         except err.InterfaceError:
             error_log.RecordError(
                 "RandomPicShow() err.InterfaceError - table name [%s] fid[%s]" % (table_name, fid))
-            sql.SQL_Close(db)
-            db = sql.SQL_ConnectMysql()
 
     #print(mid, fid)
     error_log.RecordError("RandomPicShow() now mid[%s] - fid[%s]" % (mid, fid))
@@ -207,8 +200,6 @@ def Command_RandomPicShow(bot, update):
     except TelegramError as e:
         e = 'RandomPicShow() ForwardMessage failed: ' + str(e.args)
         error_log.RecordError(e)
-
-    sql.SQL_Close(db)
 
 
 @run_async

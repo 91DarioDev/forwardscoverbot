@@ -24,8 +24,9 @@ def SQL_GetMaxTableCount():
     SQL_Close(db)
 
 
-def SQL_GetFid(db, table_name, mid):
+def SQL_GetFid(table_name, mid):
 
+    db = SQL_ConnectMysql()
     cursor = db.cursor()
     fid = None
     while fid == None:
@@ -34,6 +35,7 @@ def SQL_GetFid(db, table_name, mid):
         fid = cursor.fetchone()[0]
 
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(fid))
+    SQL_Close(db)
     return fid
 
 
@@ -85,8 +87,9 @@ def SQL_IterationAllData(db, table_name, update):
     return count_list
 
 
-def SQL_GetMidLimited(db, table_name):
+def SQL_GetMidLimited(table_name):
 
+    db = SQL_ConnectMysql()
     cursor = db.cursor()
     #mid = -1
     # clear the list
@@ -119,7 +122,9 @@ def SQL_GetMidLimited(db, table_name):
     config.MID_LIST.append(fall)
 
     while len(config.MID_LIST) == 0:
-        SQL_GetMidLimited(db, table_name)
+        SQL_GetMidLimited(table_name)
+
+    SQL_Close(db)
 
     # print(len(config.MID_LIST))
     # mid = cursor.fetchall()[random_rows][0]
