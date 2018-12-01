@@ -187,6 +187,7 @@ def Command_RandomPicShow(bot, update):
 
     while fid == None and table_id < config.NU_RANDOM and table_id >= 0:
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
+        print(table_name)
         try:
             fid = sql.SQL_GetFid(table_name, mid)
             error_log.RecordError("RandomPicShow() fid [%s]" % fid)
