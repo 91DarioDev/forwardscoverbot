@@ -152,7 +152,6 @@ def Command_CallBackQueryMid(bot, job):
     sql.SQL_GetMaxTableCount()
     table_id = random.randint(0, config.NU_RANDOM - 1)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
-    print(table_name)
     status = -1
     while status == -1:
         status = sql.SQL_GetMidLimited(table_name)
