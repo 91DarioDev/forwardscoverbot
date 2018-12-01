@@ -92,13 +92,13 @@ def SQL_RandomGetMid(db, table_name):
     #mid = -1
     # clear the list
     config.MID_LIST = []
+    rows = None
 
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-    while True:
+    while rows == None:
         try:
             rows = cursor.fetchone()
-            break
         except TypeError:
             pass
     random_limit_row_max = random.randint(0, rows)
