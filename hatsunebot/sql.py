@@ -117,6 +117,7 @@ def SQL_RandomGetMid(db, table_name):
                    (table_name, random_limit_row_min, random_limit_row_max))
 
     config.MID_LIST.append(cursor.fetchall())
+    print(config.MID_LIST)
 
     # mid = cursor.fetchall()[random_rows][0]
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
