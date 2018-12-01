@@ -194,6 +194,8 @@ def Command_RandomPicShow(bot, update):
             table_id -= 1
         table_id += 1
 
+    print(mid, cid)
+
     cid = update.message.chat.id
     try:
         bot.forwardMessage(
