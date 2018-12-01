@@ -160,8 +160,10 @@ def Command_CallBackQueryMid(bot, job):
 def Command_RandomPicShow(bot, update):
 
     # we have to
-    if update.message.from_user.is_bot == True:
+    if update.message.from_user.is_bot == 'True':
         return
+
+    print(config.MID_LIST)
 
     db = sql.SQL_ConnectMysql()
 
