@@ -101,7 +101,8 @@ def SQL_RandomGetMid(db, table_name):
             rows = cursor.fetchone()
         except TypeError:
             pass
-    random_limit_row_max = random.randint(0, rows)
+    print(rows)
+    random_limit_row_max = random.randint(0, int(rows))
     # pick up 1000 items from mysql
     if random_limit_row_max - config.MAX_MID_LIST > 0:
         random_limit_row_min = random_limit_row_max - config.MAX_MID_LIST
