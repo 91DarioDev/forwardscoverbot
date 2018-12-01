@@ -100,6 +100,7 @@ def SQL_GetMidLimited(table_name):
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
     while rows == None:
+        error_log.RecordError("SQL_GetMidLimited() rows loop")
         try:
             rows = cursor.fetchone()[0]
         except TypeError:
@@ -117,6 +118,7 @@ def SQL_GetMidLimited(table_name):
                    (table_name, random_limit_row_min, random_limit_row_max))
 
     while fall == None:
+        error_log.RecordError("SQL_GetMidLimited() fall loop")
         fall = cursor.fetchall()
 
     config.MID_LIST.append(fall)
