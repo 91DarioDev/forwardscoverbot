@@ -100,12 +100,13 @@ def SQL_GetMidLimited(table_name):
     while rows == None:
         error_log.RecordError("SQL_GetMidLimited() rows loop")
         try:
-            cursor = db.cursor()
             cursor.execute(
                 "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
             rows = cursor.fetchone()[0]
         except TypeError as e:
             error_log.RecordError("SQL_GetMidLimited() rows loop error: %s" % e)
+            SQL_GetMidLimited(table_name)
+            return 0
 
     random_limit_row_max = random.randint(0, int(rows))
     # pick up 1000 items from mysql
