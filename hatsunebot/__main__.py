@@ -39,16 +39,16 @@ def main():
     # define jobs
     job = updater.job_queue
     job.run_repeating(
-        commands.Command_CallBackAutoSend, interval=24, first=0)
+        commands.Command_CallBackAutoSend, interval=6, first=0)
     # sql jobs
     job.run_repeating(
         commands.Command_CallBackSQL, interval=6, first=0)
     # fake praise list delete
     job.run_repeating(
-        commands.Command_DeleteOnePraiseListItem, interval=500, first=0)
+        commands.Command_DeleteOnePraiseListItem, interval=6000, first=0)
     # from mysql query
     job.run_repeating(
-        commands.Command_CallBackQueryMid, interval=60, first=0)
+        commands.Command_CallBackQueryMid, interval=600, first=0)
     # albums
     # many picture here
     dp.add_handler(MessageHandler(custom_filters.album,
