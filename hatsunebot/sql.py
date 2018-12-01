@@ -121,7 +121,7 @@ def SQL_GetMidLimited(db, table_name):
 
     while len(config.MID_LIST) == 0:
         SQL_GetMidLimited(db, table_name)
-    # print(config.MID_LIST)
+    print(config.MID_LIST)
     # mid = cursor.fetchall()[random_rows][0]
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
     # return (mid, random_rows)
