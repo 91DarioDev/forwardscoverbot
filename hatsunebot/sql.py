@@ -97,16 +97,17 @@ def SQL_GetMidLimited(table_name):
     rows = None
     fall = None
 
-    while rows == None:
-        error_log.RecordError("SQL_GetMidLimited() rows loop")
-        try:
-            cursor.execute(
-                "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-            rows = cursor.fetchone()[0]
-        except TypeError as e:
-            error_log.RecordError("SQL_GetMidLimited() rows loop error: %s" % e)
-            SQL_GetMidLimited(table_name)
-            return 0
+    error_log.RecordError("SQL_GetMidLimited() rows loop table_name [%s]" % table_name)
+    try:
+        cursor.execute(
+            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+        rows = cursor.fetchone()[0]
+    except TypeError as e:
+        error_log.RecordError("SQL_GetMidLimited() rows loop error: %s" % e)
+        return -1
+
+    if rows == None:
+        return -1
 
     random_limit_row_max = random.randint(0, int(rows))
     # pick up 1000 items from mysql
@@ -119,16 +120,17 @@ def SQL_GetMidLimited(table_name):
     cursor.execute("SELECT message_id FROM %s LIMIT %d, %d" %
                    (table_name, random_limit_row_min, random_limit_row_max))
 
-    while fall == None:
+    if fall == None:
         error_log.RecordError("SQL_GetMidLimited() fall loop")
-        fall = cursor.fetchall()
+        return -1
 
     config.MID_LIST.append(fall)
 
-    while len(config.MID_LIST) == 0:
-        SQL_GetMidLimited(table_name)
+    if len(config.MID_LIST) == 0:
+        return -1
 
     SQL_Close(db)
+    return 0
 
     # print(len(config.MID_LIST))
     # mid = cursor.fetchall()[random_rows][0]
