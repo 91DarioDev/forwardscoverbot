@@ -194,7 +194,7 @@ def Command_RandomPicShow(bot, update):
             table_id -= 1
         table_id += 1
 
-    print(mid, cid)
+    print(mid, fid)
 
     cid = update.message.chat.id
     try:
