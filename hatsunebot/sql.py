@@ -95,7 +95,8 @@ def SQL_RandomGetMid(db, table_name):
 
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
-
+    while (!cursor.fetchone()):
+        cursor.fetchone()
     rows = cursor.fetchone()[0]
     random_limit_row_max = random.randint(0, rows)
     # pick up 1000 items from mysql
@@ -108,7 +109,8 @@ def SQL_RandomGetMid(db, table_name):
     # random_rows = random.randint(
     #     random_limit_row_min, random_limit_row_max)
 
-    cursor.execute("SELECT message_id FROM %s LIMIT %d, %d" % (table_name, random_limit_row_min, random_limit_row_max))
+    cursor.execute("SELECT message_id FROM %s LIMIT %d, %d" %
+                   (table_name, random_limit_row_min, random_limit_row_max))
 
     config.MID_LIST.append(cursor.fetchall())
 
