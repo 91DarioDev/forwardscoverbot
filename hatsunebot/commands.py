@@ -190,7 +190,7 @@ def Command_RandomPicShow(bot, update):
         try:
             fid = sql.SQL_GetFid(db, table_name, mid)
         except err.InterfaceError:
-            error_log.RecordError("RandomPicShow() err.InterfaceError - [%s]" % fid)
+            error_log.RecordError("RandomPicShow() err.InterfaceError - table name [%s] fid[%s]" % (table_name, fid))
             # keep the table_id same
             table_id -= 1
         table_id += 1
