@@ -8,24 +8,15 @@ from telegram.ext.dispatcher import run_async
 from hatsunebot import keyboards
 from hatsunebot import config
 from hatsunebot.utils import only_admin
-from hatsunebot.utils import full_list
-from hatsunebot.utils import delete_command
+from hatsunebot.utils import FillList
+from hatsunebot.utils import DeleteSameValueOrNot
+from hatsunebot.utils import PraiseListDelay
 from hatsunebot import error_log
 from hatsunebot import sql
 
 
-def processed(update):
-
-    user_id = update.message.from_user.id
-    if user_id not in config.PRAISE_LIST:
-        config.PRAISE_LIST.append(user_id)
-        return 0
-    else:
-        return 1
-
-
 @run_async
-def process_message_group(bot, update, message, caption):
+def ProcessMessage_Group(bot, update, message, caption):
     '''
     for normal user use
     '''
@@ -36,7 +27,7 @@ def process_message_group(bot, update, message, caption):
         re_text = message.text_html
         # split the command message
         if re_text[0] != r'/':
-            if processed(update) == 1:
+            if PraiseListDelay(update) == 1:
                 return
             re_text = re_text + '?'
             message.reply_text(text=re_text,
@@ -46,12 +37,11 @@ def process_message_group(bot, update, message, caption):
             message.reply_text(text=re_text,
                                parse_mode=ParseMode.HTML)
 
-
     elif message.voice:
         # media = message.voice.file_id
         # duration = message.voice.duration
         # message.reply_voice(voice=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
-        if processed(update) == 1:
+        if PraiseListDelay(update) == 1:
             return
         re_text = r'听不懂啦~\(≧▽≦)/~'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
@@ -66,13 +56,13 @@ def process_message_group(bot, update, message, caption):
         # message_id = message.message_id
         # config.MESSAGE_ID_LIST.append(message_id)
         # message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
-        if processed(update) == 1:
+        if PraiseListDelay(update) == 1:
             return
         re_text = '好看~~ o(*￣▽￣*)ブ'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
 
     elif message.sticker:
-        if processed(update) == 1:
+        if PraiseListDelay(update) == 1:
             return
         media = message.sticker.file_id
         message.reply_sticker(sticker=media)
@@ -81,7 +71,7 @@ def process_message_group(bot, update, message, caption):
         # media = message.document.file_id
         # filename = message.document.file_name
         # message.reply_document(document=media, filename=filename, caption=caption, parse_mode=ParseMode.HTML)
-        if processed(update) == 1:
+        if PraiseListDelay(update) == 1:
             return
         re_text = '这是什么?_?'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
@@ -92,7 +82,7 @@ def process_message_group(bot, update, message, caption):
         # performer = message.audio.performer
         # title = message.audio.title
         # message.reply_audio(audio=media, duration=duration, performer=performer, title=title, caption=caption, parse_mode=ParseMode.HTML)
-        if processed(update) == 1:
+        if PraiseListDelay(update) == 1:
             return
         re_text = '这是什么?_?'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
@@ -101,7 +91,7 @@ def process_message_group(bot, update, message, caption):
         # media = message.video.file_id
         # duration = message.video.duration
         # message.reply_video(video=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
-        if processed(update) == 1:
+        if PraiseListDelay(update) == 1:
             return
         re_text = '好看~~ o(*￣▽￣*)ブ'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
@@ -111,7 +101,7 @@ def process_message_group(bot, update, message, caption):
         # first_name = message.contact.first_name
         # last_name = message.contact.last_name
         # message.reply_contact(phone_number=phone_number, first_name=first_name, last_name=last_name)
-        if processed(update) == 1:
+        if PraiseListDelay(update) == 1:
             return
         re_text = '这是什么?_?'
         message.reply_text(text=re_text, parse_mode=ParseMode.HTML)
@@ -152,7 +142,7 @@ def process_message_group(bot, update, message, caption):
 
 @run_async
 @only_admin
-def process_message_admin(bot, update, message, caption):
+def ProcessMessage_Admin(bot, update, message, caption):
     '''
     for admin use
     '''
@@ -166,41 +156,31 @@ def process_message_admin(bot, update, message, caption):
         return
 
     if message.photo:
-
-        # FIVE_TYPE_LIST = [[MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3], [MESSAGE_ID, FROM_CHAT_ID, FILE_ID, FILE_ID_2, FILE_ID_3]]
         tmp_list = []
         message_id = message.message_id
         tmp_list.append(message_id)
-        # config.MESSAGE_ID_LIST.append(message_id)
         from_chat_id = message.chat.id
         tmp_list.append(from_chat_id)
-        # config.FROM_CHAT_ID_LIST.append(from_chat_id)
 
         # now we get them all
         for f in message.photo:
             file_id = f.file_id
             tmp_list.append(file_id)
-            # config.PHOTO_FILE_ID.append(file_id)
 
         try:
-            tmp_list = full_list(tmp_list)
+            tmp_list = FillList(tmp_list)
         except Exception as e:
-            e = 'process_message() tmp_list failed: ' + str(e.args)
-            error_log.write_it(e)
+            e = 'ProcessMessage() tmp_list failed: ' + str(e.args)
+            error_log.RecordError(e)
             return
         if config.CHECK_STATUS == True:
-            # config.CHECK_LIST.append(tmp_list)
-            # mid = tmp_list[0]
             file_id_1 = tmp_list[2]
             file_id_2 = tmp_list[3]
             file_id_3 = tmp_list[4]
 
-            result_list = sql.check_sql_existed(
+            result_list = sql.SQL_CheckExisted(
                 file_id_1, file_id_2, file_id_3)
 
-            # text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
-            #     result_list[0], result_list[1], result_list[2])
-            # update.message.reply_text(text=text, quote=True)
             text = 'Result:\nfile_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
                 result_list[0], result_list[1], result_list[2])
             update.message.reply_text(text=text, quote=True)
@@ -213,32 +193,24 @@ def process_message_admin(bot, update, message, caption):
                 update.message.reply_text(text=text, quote=True)
 
             if result_list[0] == 0 and result_list[1] == 0 and result_list[2] == 0:
-
                 config.SQL_LIST.append(tmp_list)
                 text = 'This message is not include in MySQL, inserting...'
                 update.message.reply_text(text=text, quote=True)
 
-                # result_list = sql.check_sql_existed(
-                #     file_id_1, file_id_2, file_id_3)
-                # text = 'New: file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
-                #     result_list[0], result_list[1], result_list[2])
-                # update.message.reply_text(text=text, quote=True)
             elif result_list[0] > 1:
-
                 text = 'file_id_1:\n{0}\nfile_id_2:\n{1}\nfile_id_3:\n{2}\n'.format(
                     result_list[0], result_list[1], result_list[2])
                 update.message.reply_text(text=text, quote=True)
                 config.CHECK_FILE_ID_LIST.append(file_id_1)
-                delete_command(bot, update)
+                DeleteSameValueOrNot(bot, update)
 
         else:
-
             config.SQL_LIST.append(tmp_list)
             config.FIVE_TYPE_LIST.append(tmp_list)
 
 
 @run_async
-def process_message(bot, update, remove_caption=False, custom_caption=None):
+def ProcessMessage(bot, update, remove_caption=False, custom_caption=None):
 
     # here get the message
     if update.edited_message:
@@ -262,6 +234,6 @@ def process_message(bot, update, remove_caption=False, custom_caption=None):
     # here we will handle other type message
     if message.chat.type == 'private':
         # only the admin allow the use the private chat
-        process_message_admin(bot, update, message, caption)
+        ProcessMessage_Admin(bot, update, message, caption)
     elif message.chat.type == 'supergroup':
-        process_message_group(bot, update, message, caption)
+        ProcessMessage_Group(bot, update, message, caption)

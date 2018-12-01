@@ -39,43 +39,44 @@ def main():
     # define jobs
     job = updater.job_queue
     job.run_repeating(
-        commands.callback_minute_send, interval=24, first=0)
+        commands.Command_CallBackAutoSend, interval=24, first=0)
     # sql jobs
     job.run_repeating(
-        commands.callback_sql, interval=6, first=0)
+        commands.Command_CallBackSQL, interval=6, first=0)
     # fake praise list delete
     job.run_repeating(
-        commands.delete_one_praise, interval=500, first=0)
+        commands.Command_DeleteOnePraiseListItem, interval=500, first=0)
     # albums
     # many picture here
     dp.add_handler(MessageHandler(custom_filters.album,
-                                  albums.collect_album_items, pass_job_queue=True), 1)
+                                  albums.CollectAlbum, pass_job_queue=True), 1)
     # messages
     dp.add_handler(MessageHandler(
-        Filters.all, messages.process_message, edited_updates=True), 1)
+        Filters.all, messages.ProcessMessage, edited_updates=True), 1)
     # commands
-    dp.add_handler(CommandHandler('Show', commands.show_command), 2)
+    dp.add_handler(CommandHandler('Show', commands.Command_Show), 2)
     # turn series
     # dp.add_handler(CommandHandler(
     #     'turn_off_mysql', commands.turn_off_sql), 2)
     # dp.add_handler(CommandHandler('turn_on_mysql', commands.turn_on_sql), 2)
     # stop series
     dp.add_handler(CommandHandler('ForwardStateTransition',
-                                  commands.forward_state_transition), 2)
+                                  commands.Command_ForwardStateTransition), 2)
     # check existed in MySQL or not
     dp.add_handler(CommandHandler(
-        'CheckExistedOrNot', commands.check_existed), 2)
+        'CheckExistedOrNot', commands.Command_CheckExistedOrNot), 2)
     # delete the same value in MySQL
-    dp.add_handler(CommandHandler('DeleteSame', commands.delete_same), 2)
+    dp.add_handler(CommandHandler(
+        'DeleteSame', commands.Command_DeleteSame), 2)
     # show check result
     dp.add_handler(CommandHandler('CheckResultShow',
-                                  commands.check_result_show), 2)
+                                  commands.Command_ShowCheckResult), 2)
     # check the MySQL same value all
     dp.add_handler(CommandHandler('CheckAllData',
-                                  commands.check_all_data), 2)
+                                  commands.Command_CheckAllData), 2)
     # random
-    dp.add_handler(CommandHandler('random', commands.random_pic), 2)
-    dp.add_handler(CommandHandler('help', commands.common_help_show), 2)
+    dp.add_handler(CommandHandler('random', commands.Command_RandomPicShow), 2)
+    dp.add_handler(CommandHandler('help', commands.Command_UserHelpShow), 2)
     # invalid_command
     dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
 

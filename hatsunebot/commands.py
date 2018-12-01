@@ -5,10 +5,11 @@ import copy
 import random
 
 from hatsunebot.utils import only_admin
-from hatsunebot.utils import common_help
-from hatsunebot.utils import admin_help
+from hatsunebot.utils import UserKeyboard
+from hatsunebot.utils import AdminKeyboard
 # from hatsunebot import keyboards
 from hatsunebot import messages
+from hatsunebot import utils
 from hatsunebot import config
 from hatsunebot import sql
 from hatsunebot import error_log
@@ -22,18 +23,17 @@ from telegram import TelegramError
 
 @run_async
 @only_admin
-def show_command(bot, update):
+def Command_Show(bot, update):
 
     # keyboard = keyboards.github_link_kb()
 
-    admin_help(bot, update)
+    AdminKeyboard(bot, update)
 
-    sql_status_list = sql.show_sql_status()
+    sql_status_list = sql.SQL_ShowStatus()
     # now we make the string about the sql status
     sql_status_str = ''
     if len(sql_status_list) != 0:
         for s in sql_status_list:
-            # [table_name(char), rows(int)]
             sql_status_str = sql_status_str + \
                 str(s[0]) + ': ' + str(s[1]) + '\n'
 
@@ -60,10 +60,10 @@ def show_command(bot, update):
 
 
 @run_async
-def common_help_show(bot, update):
+def Command_UserHelpShow(bot, update):
 
-    common_help(bot, update)
-    if messages.processed(update) == 1:
+    UserKeyboard(bot, update)
+    if utils.PraiseListDelay(update) == 1:
         text = "_(√ ζ ε:)_"
         update.message.reply_text(
             text=text, parse_mode=ParseMode.HTML)
@@ -82,7 +82,7 @@ def common_help_show(bot, update):
 
 @run_async
 @only_admin
-def check_all_data(bot, update):
+def Command_CheckAllData(bot, update):
     '''
     check all the data in MySQL and delete the same value
     '''
@@ -91,24 +91,24 @@ def check_all_data(bot, update):
     update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
 
     # check all the data in mysql
-    db = sql.connect_mysql()
+    db = sql.SQL_ConnectMysql()
 
-    sql.get_max_tables()
+    sql.SQL_GetMaxTableCount()
 
     for table_id in range(0, config.NU_RANDOM):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
 
         try:
             r_rows = -1
-            same_file_id_value_list = sql.iteration_all_data(
+            same_file_id_value_list = sql.SQL_IterationAllData(
                 db, table_name, update)
         except Exception as e:
             if r_rows != -1:
-                e = 'check_all_data() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
-                error_log.write_it(e)
+                e = 'CheckAllData() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
+                error_log.RecordError(e)
             else:
-                e = 'check_all_data() get mid failed: ' + str(e.args)
-                error_log.write_it(e)
+                e = 'CheckAllData() get mid failed: ' + str(e.args)
+                error_log.RecordError(e)
 
             return
 
@@ -133,56 +133,56 @@ def check_all_data(bot, update):
     COPY_LIST = copy.deepcopy(config.CHECK_FILE_ID_LIST)
 
     for f in COPY_LIST:
-        sql.delete_same_value(f)
+        sql.SQL_DeleteSameValue(f)
         try:
             config.CHECK_FILE_ID_LIST.pop(0)
         except IndexError as e:
-            e = 'check_all_data() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
-            error_log.write_it(e)
+            e = 'CheckAllData() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
+            error_log.RecordError(e)
 
     text = "<b>OK</b>"
     update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
-    sql.close_mysql(db)
+    sql.SQL_Close(db)
 
 
 @run_async
-def random_pic(bot, update):
+def Command_RandomPicShow(bot, update):
 
     # we have to
     if update.message.from_user.is_bot == True:
         return
 
-    db = sql.connect_mysql()
+    db = sql.SQL_ConnectMysql()
 
-    sql.get_max_tables()
+    sql.SQL_GetMaxTableCount()
     table_id = random.randint(0, config.NU_RANDOM)
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
 
     try:
         r_rows = -1
-        mid, r_rows = sql.random_pick_mid(db, table_name)
+        mid, r_rows = sql.SQL_RandomGetMid(db, table_name)
     except Exception as e:
         if r_rows != -1:
-            e = 'random_pic() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
-            error_log.write_it(e)
+            e = 'RandomPicShow() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
+            error_log.RecordError(e)
         else:
-            e = 'random_pic() get mid failed: ' + str(e.args)
-            error_log.write_it(e)
+            e = 'RandomPicShow() get mid failed: ' + str(e.args)
+            error_log.RecordError(e)
 
-        sql.close_mysql(db)
-        random_pic(bot, update)
+        sql.SQL_Close(db)
+        Command_RandomPicShow(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
         # sql.close_mysql(db)
         return
 
     try:
-        fid = sql.select_fid(db, table_name, mid)
+        fid = sql.SQL_GetFid(db, table_name, mid)
     except Exception as e:
-        e = 'random_pic() get fid failed: ' + str(e.args)
-        error_log.write_it(e)
-        sql.close_mysql(db)
-        random_pic(bot, update)
+        e = 'RandomPicShow() get fid failed: ' + str(e.args)
+        error_log.RecordError(e)
+        sql.SQL_Close(db)
+        Command_RandomPicShow(bot, update)
         # text = "..."
         # update.message.reply_text(text=text, quote=True)
         # sql.close_mysql(db)
@@ -199,16 +199,16 @@ def random_pic(bot, update):
         bot.forwardMessage(
             chat_id=cid, from_chat_id=fid, message_id=mid)
     except TelegramError as e:
-        e = 'random_pic() ForwardMessage failed: ' + str(e.args)
-        error_log.write_it(e)
+        e = 'RandomPicShow() ForwardMessage failed: ' + str(e.args)
+        error_log.RecordError(e)
         # pass
 
-    sql.close_mysql(db)
+    sql.SQL_Close(db)
 
 
 @run_async
 @only_admin
-def delete_same(bot, update):
+def Command_DeleteSame(bot, update):
 
     if config.CHECK_STATUS == False:
 
@@ -219,13 +219,13 @@ def delete_same(bot, update):
 
         COPY_LIST = copy.deepcopy(config.CHECK_FILE_ID_LIST)
         for d in COPY_LIST:
-            sql.delete_same_value(d)
+            sql.SQL_DeleteSameValue(d)
             try:
                 # del config.CHECK_FILE_ID_LIST[0]
                 config.CHECK_FILE_ID_LIST.pop(0)
             except IndexError as e:
-                e = 'callback_sql() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
-                error_log.write_it(e)
+                e = 'CallBack_SQL() del failed' + str(e.args) + ' ---> ' + str(COPY_LIST)
+                error_log.RecordError(e)
 
         text = "<b>OK, deleting the same value now</b>"
         update.message.reply_text(text=text, parse_mode=ParseMode.HTML)
@@ -233,7 +233,7 @@ def delete_same(bot, update):
 
 @run_async
 @only_admin
-def check_result_show(bot, update):
+def Command_ShowCheckResult(bot, update):
 
     if config.CHECK_SHOW == True:
 
@@ -250,7 +250,7 @@ def check_result_show(bot, update):
 
 @run_async
 @only_admin
-def check_existed(bot, update):
+def Command_CheckExistedOrNot(bot, update):
 
     # if the config.CHECK_STATUS is True
     # bot will not processed the photo message and insert into MySQL
@@ -272,7 +272,7 @@ def check_existed(bot, update):
 
 
 @run_async
-def callback_sql(bot, job):
+def Command_CallBackSQL(bot, job):
 
     # deep copy the list of SQL_LIST
     # then we delete is one by one
@@ -283,21 +283,22 @@ def callback_sql(bot, job):
     COPY_LIST = copy.deepcopy(config.SQL_LIST)
     if len(COPY_LIST) == 0:
         return
-    db = sql.connect_mysql()
+    db = sql.SQL_ConnectMysql()
     for c in COPY_LIST:
-        sql.process_sql(db, c)
+        sql.SQL_Process(db, c)
         try:
             # del config.SQL_LIST[0]
             config.SQL_LIST.pop(0)
         except IndexError as e:
-            e = 'callback_sql() del failed' + str(e.args) + ' ---> \n' + \
+            e = 'CallBack_SQL() del failed' + str(e.args) + ' ---> \n' + \
                 str(COPY_LIST) + ' ---> \n' + str(config.SQL_LIST)
-            error_log.write_it(e)
-    sql.commit_mysql(db)
-    sql.close_mysql(db)
+            error_log.RecordError(e)
+    sql.SQL_Commit(db)
+    sql.SQL_Close(db)
 
 
-def clean_up():
+@run_async
+def Command_Clean():
     '''
     make the LAST_MESSAGE_ID_LIST none
     '''
@@ -307,7 +308,7 @@ def clean_up():
 
 
 @run_async
-def delete_one_praise(bot, job):
+def Command_DeleteOnePraiseListItem(bot, job):
     '''
     delete one in the praise
     '''
@@ -315,11 +316,10 @@ def delete_one_praise(bot, job):
     if len(config.PRAISE_LIST) != 0:
         config.PRAISE_LIST.pop(0)
 
-# send here
-
 
 @run_async
-def callback_minute_send(bot, job):
+@only_admin
+def Command_CallBackAutoSend(bot, job):
     '''
     send the photo by timeI
     '''
@@ -360,7 +360,7 @@ def callback_minute_send(bot, job):
                 except TelegramError as e:
                     e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
                         ' ---> ' + str(fid) + ', ' + str(mid)
-                    error_log.write_it(e)
+                    error_log.RecordError(e)
                     # pass
             # del config.PHOTO_FILE_ID[0]
             try:
@@ -370,7 +370,7 @@ def callback_minute_send(bot, job):
             except IndexError as e:
                 e = 'callback_minute_send() del failed: ' + str(e.args) + \
                     ' ---> ' + str(config.FIVE_TYPE_LIST)
-                error_log.write_it(e)
+                error_log.RecordError(e)
                 # pass
         # check the same message_id and pass
         else:
@@ -385,7 +385,7 @@ def callback_minute_send(bot, job):
                     except Exception as e:
                         e = 'callback_minute_send() ForwardMessage failed: ' + str(e.args) + \
                             ' ---> ' + str(fid) + ', ' + str(mid)
-                        error_log.write_it(e)
+                        error_log.RecordError(e)
                         pass
                 try:
                     # error_config_list = copy.deepcopy(config.FIVE_TYPE_LIST)
@@ -394,15 +394,15 @@ def callback_minute_send(bot, job):
                 except Exception as e:
                     e = 'callback_minute_send() del failed: ' + str(e.args) + \
                         ' ---> ' + str(config.FIVE_TYPE_LIST)
-                    error_log.write_it(e)
+                    error_log.RecordError(e)
                     pass
 
-    clean_up()
+    Command_Clean()
 
 
 @run_async
 @only_admin
-def forward_state_transition(bot, update):
+def Command_ForwardStateTransition(bot, update):
 
     if config.FORWARD_STATUS == False:
         config.FORWARD_STATUS = True

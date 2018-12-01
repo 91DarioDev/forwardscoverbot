@@ -12,19 +12,19 @@ from hatsunebot import error_log
 from telegram import ParseMode
 
 
-def get_max_tables():
+def SQL_GetMaxTableCount():
 
-    db = connect_mysql()
+    db = SQL_ConnectMysql()
     cursor = db.cursor()
     # get how many tables we have in the database
     cursor.execute(
         "SELECT table_rows FROM information_schema.tables WHERE table_schema='%s'" % config.SQL_DATABASE)
     rows = cursor.fetchall()
     config.NU_RANDOM = len(rows)
-    close_mysql(db)
+    SQL_Close(db)
 
 
-def select_fid(db, table_name, mid):
+def SQL_GetFid(db, table_name, mid):
 
     cursor = db.cursor()
     while True:
@@ -38,7 +38,7 @@ def select_fid(db, table_name, mid):
     return fid
 
 
-def iteration_all_data(db, table_name, update):
+def SQL_IterationAllData(db, table_name, update):
     '''
     here we work
     '''
@@ -68,11 +68,11 @@ def iteration_all_data(db, table_name, update):
         # every rows will here
         # print(data_tuple[r])
         file_id_1 = data_tuple[r][2]
-        count_1 = check_file_id_1_existed(db, file_id_1)
+        count_1 = SQL_CheckFile1Existed(db, file_id_1)
         file_id_2 = data_tuple[r][3]
-        count_2 = check_file_id_2_existed(db, file_id_2)
+        count_2 = SQL_CheckFile2Existed(db, file_id_2)
         file_id_3 = data_tuple[r][4]
-        count_3 = check_file_id_3_existed(db, file_id_3)
+        count_3 = SQL_CheckFile3Existed(db, file_id_3)
 
         if count_1 == count_2 and count_2 == count_3:
             if count_1 > 1:
@@ -86,7 +86,7 @@ def iteration_all_data(db, table_name, update):
     return count_list
 
 
-def random_pick_mid(db, table_name):
+def SQL_RandomGetMid(db, table_name):
 
     cursor = db.cursor()
     mid = -1
@@ -109,14 +109,14 @@ def random_pick_mid(db, table_name):
     return (mid, random_rows)
 
 
-def get_mysql_version(db):
+def SQL_GetMysqlVersion(db):
 
     cursor = db.cursor()
     cursor.execute("SELECT version()")
     return cursor.fetchone()[0]
 
 
-def create_new_tables(db, table_name):
+def SQL_CreateNewTable(db, table_name):
 
     cursor = db.cursor()
     # use the varchar for unsure date
@@ -143,11 +143,11 @@ def create_new_tables(db, table_name):
             return 1
     except Exception as e:
         e = 'create_new_tables() execute failed: ' + str(e.args)
-        error_log.write_it(e)
+        error_log.RecordError(e)
         return 1
 
 
-def connect_mysql():
+def SQL_ConnectMysql():
 
     # now connect to msyql
     try:
@@ -160,7 +160,7 @@ def connect_mysql():
         sys.exit(1)
 
 
-def return_table_rows(db, table_name):
+def SQL_GetTablesRow(db, table_name):
 
     cursor = db.cursor()
     cursor.execute(
@@ -177,9 +177,9 @@ def return_table_rows(db, table_name):
     return rows
 
 
-def check_table_full(db, table_name):
+def SQL_CheckTableFullOrNot(db, table_name):
 
-    rows = return_table_rows(db, table_name)
+    rows = SQL_GetTablesRow(db, table_name)
 
     if rows >= config.MAX_ROWS:
         return 1
@@ -187,7 +187,7 @@ def check_table_full(db, table_name):
         return 0
 
 
-def insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
+def SQL_InsertCheck(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
 
     if db:
         if message_id:
@@ -201,9 +201,9 @@ def insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
     return 1
 
 
-def check_same_value(db, file_id):
+def SQL_CheckSameValue(db, file_id):
 
-    get_max_tables()
+    SQL_GetMaxTableCount()
     cursor = db.cursor()
     for i in range(0, config.NU_RANDOM):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
@@ -216,19 +216,19 @@ def check_same_value(db, file_id):
     return 0
 
 
-def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
+def SQL_InsertMysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date):
 
-    if insert_check(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) == 1:
+    if SQL_InsertCheck(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) == 1:
         return
 
     cursor = db.cursor()
 
     # init the config.NU_RANDOM
-    get_max_tables()
+    SQL_GetMaxTableCount()
 
     all_full = True
     # Here we use the file_id_1 to check the same in mysql
-    if check_same_value(db, file_id_1) == 1:
+    if SQL_CheckSameValue(db, file_id_1) == 1:
         # print('same value')
         # we have the same value in MySQL
         return 0
@@ -237,7 +237,7 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
         # logging.debug(">>>>>>>>>>>>>>>>>>>>>>>>{}".format(i))
         # we check all the database is full or not
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
-        if check_table_full(db, table_name) == 1:
+        if SQL_CheckTableFullOrNot(db, table_name) == 1:
             # rows > config.MAX_ROWS
             continue
         else:
@@ -251,7 +251,7 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
                 # commit_mysql(db)
             except Exception as e:
                 e = 'insert_mysql() execute-1 failed: ' + str(e.args)
-                error_log.write_it(e)
+                error_log.RecordError(e)
                 return 1
 
     if all_full == True:
@@ -259,34 +259,34 @@ def insert_mysql(db, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, 
         # config.NU_RANDOM is the count of tables
         table_name = "{0}pic_{1}".format(
             config.SQL_FORMAT, config.NU_RANDOM)
-        create_new_tables(db, table_name)
+        SQL_CreateNewTable(db, table_name)
         try:
             cursor.execute("INSERT INTO %s(message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (
                 table_name, message_id, from_chat_id, file_id_1, file_id_2, file_id_3, date))
         except Exception as e:
             e = 'insert_mysql() execute-2 failed: ' + str(e.args)
-            error_log.write_it(e)
+            error_log.RecordError(e)
             return 1
     return 0
 
 
-def commit_mysql(db):
+def SQL_Commit(db):
 
     db.commit()
 
 
-def rollback_mysql(db):
+def SQL_RollBack(db):
 
     db.rollback()
 
 
-def close_mysql(db):
+def SQL_Close(db):
 
     # logging.debug('Close mysql connection')
     db.close()
 
 
-def process_sql(db, in_list):
+def SQL_Process(db, in_list):
 
     #            0              1           2          3           4
     # LIST = [MESSAGE_ID, FROM_CHAT_ID， FILE_ID_1, FILE_ID_2, FILE_ID_3]
@@ -294,20 +294,20 @@ def process_sql(db, in_list):
     dt = datetime.now()
     date = dt.strftime('%Y-%m-%d %I:%M:%S')
     try:
-        if insert_mysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
-            rollback_mysql(db)
+        if SQL_InsertMysql(db, in_list[0], in_list[1], in_list[2], in_list[3], in_list[4], date) == 1:
+            SQL_RollBack(db)
     except Exception as e:
         # IndexError and TypeError
         e = 'process_sql() failed: ' + str(e.args)
-        error_log.write_it(e)
+        error_log.RecordError(e)
         pass
 
 
-def show_sql_status():
+def SQL_ShowStatus():
 
-    db = connect_mysql()
+    db = SQL_ConnectMysql()
 
-    get_max_tables()
+    SQL_GetMaxTableCount()
     return_list = []
 
     for i in range(0, config.NU_RANDOM):
@@ -315,7 +315,7 @@ def show_sql_status():
         # we check all the database is full or not
         tmp_list = []
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
-        rows = return_table_rows(db, table_name)
+        rows = SQL_GetTablesRow(db, table_name)
         tmp_list.append(table_name)
         tmp_list.append(int(rows))
         return_list.append(tmp_list)
@@ -323,15 +323,15 @@ def show_sql_status():
     return return_list
 
 
-def check_sql_existed(file_id_1, file_id_2, file_id_3):
+def SQL_CheckExisted(file_id_1, file_id_2, file_id_3):
 
-    get_max_tables()
-    db = connect_mysql()
+    SQL_GetMaxTableCount()
+    db = SQL_ConnectMysql()
 
     # mid_result = check_mid_existed(db, mid)
-    file_1_result = check_file_id_1_existed(db, file_id_1)
-    file_2_result = check_file_id_2_existed(db, file_id_2)
-    file_3_result = check_file_id_3_existed(db, file_id_3)
+    file_1_result = SQL_CheckFile1Existed(db, file_id_1)
+    file_2_result = SQL_CheckFile2Existed(db, file_id_2)
+    file_3_result = SQL_CheckFile3Existed(db, file_id_3)
 
     tmp_list = []
     # tmp_list.append(mid_result)
@@ -339,11 +339,11 @@ def check_sql_existed(file_id_1, file_id_2, file_id_3):
     tmp_list.append(file_2_result)
     tmp_list.append(file_3_result)
 
-    close_mysql(db)
+    SQL_Close(db)
     return tmp_list
 
 
-def check_mid_existed(db, mid):
+def SQL_CheckMidExisted(db, mid):
 
     cursor = db.cursor()
     same_count = 0
@@ -360,7 +360,7 @@ def check_mid_existed(db, mid):
     return same_count
 
 
-def check_file_id_1_existed(db, file_id):
+def SQL_CheckFile1Existed(db, file_id):
 
     cursor = db.cursor()
     same_count = 0
@@ -377,7 +377,7 @@ def check_file_id_1_existed(db, file_id):
     return same_count
 
 
-def check_file_id_2_existed(db, file_id):
+def SQL_CheckFile2Existed(db, file_id):
 
     cursor = db.cursor()
     same_count = 0
@@ -394,7 +394,7 @@ def check_file_id_2_existed(db, file_id):
     return same_count
 
 
-def check_file_id_3_existed(db, file_id):
+def SQL_CheckFile3Existed(db, file_id):
 
     cursor = db.cursor()
     same_count = 0
@@ -411,24 +411,24 @@ def check_file_id_3_existed(db, file_id):
     return same_count
 
 
-def delete_one(cursor, table_name, file_id):
+def SQL_DeleteOneValue(cursor, table_name, file_id):
 
     cursor.execute("DELETE FROM %s WHERE file_id_1='%s' LIMIT 1" %
                    (table_name, file_id))
 
 
-def delete_same_value(file_id):
+def SQL_DeleteSameValue(file_id):
 
-    get_max_tables()
+    SQL_GetMaxTableCount()
 
-    db = connect_mysql()
+    db = SQL_ConnectMysql()
     cursor = db.cursor()
 
     for i in range(0, config.NU_RANDOM):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, i)
-        while check_file_id_1_existed(db, file_id) > 1:
+        while SQL_CheckFile1Existed(db, file_id) > 1:
             # print('delete')
-            delete_one(cursor, table_name, file_id)
-            commit_mysql(db)
+            SQL_DeleteOneValue(cursor, table_name, file_id)
+            SQL_Commit(db)
 
-    close_mysql(db)
+    SQL_Close(db)
