@@ -27,12 +27,11 @@ def SQL_GetMaxTableCount():
 def SQL_GetFid(db, table_name, mid):
 
     cursor = db.cursor()
-    while True:
+    fid = None
+    while fid == None:
         cursor.execute(
             "SELECT from_chat_id FROM %s WHERE message_id='%s'" % (table_name, mid))
         fid = cursor.fetchone()[0]
-        if fid != None:
-            break
 
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(fid))
     return fid
