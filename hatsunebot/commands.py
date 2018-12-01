@@ -163,7 +163,7 @@ def Command_RandomPicShow(bot, update):
     if update.message.from_user.is_bot == 'True':
         return
 
-    print(config.MID_LIST)
+    #print(config.MID_LIST)
     table_id = 0
     fid = None
 
