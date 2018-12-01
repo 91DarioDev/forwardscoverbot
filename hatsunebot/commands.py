@@ -189,6 +189,7 @@ def Command_RandomPicShow(bot, update):
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
         try:
             fid = sql.SQL_GetFid(db, table_name, mid)
+            error_log.RecordError("RandomPicShow() fid[%s]" % fid)
         except err.InterfaceError:
             error_log.RecordError("RandomPicShow() err.InterfaceError - table name [%s] fid[%s]" % (table_name, fid))
             # keep the table_id same
