@@ -181,12 +181,9 @@ def Command_RandomPicShow(bot, update):
     sql.SQL_GetMaxTableCount()
 
     mid_random = random.randint(0, config.MAX_MID_LIST)
-    while True:
-        try:
-            mid = config.MID_LIST[0][mid_random][0]
-            break
-        except IndexError:
-            Command_CallBackQueryMid_Fix(db)
+    while len(config.MID_LIST) == 0:
+        Command_CallBackQueryMid_Fix(db)
+    mid = config.MID_LIST[0][mid_random][0]
 
     while fid == None and table_id <= config.NU_RANDOM:
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
