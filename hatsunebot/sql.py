@@ -100,6 +100,7 @@ def SQL_GetMidLimited(table_name):
     while rows == None:
         error_log.RecordError("SQL_GetMidLimited() rows loop")
         try:
+            cursor = db.cursor()
             cursor.execute(
                 "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
             rows = cursor.fetchone()[0]
