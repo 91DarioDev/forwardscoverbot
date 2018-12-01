@@ -192,6 +192,7 @@ def Command_RandomPicShow(bot, update):
             error_log.RecordError("RandomPicShow() fid[%s]" % fid)
         except err.InterfaceError:
             error_log.RecordError("RandomPicShow() err.InterfaceError - table name [%s] fid[%s]" % (table_name, fid))
+            db = sql.SQL_ConnectMysql()
             # keep the table_id same
             table_id -= 1
         table_id += 1
