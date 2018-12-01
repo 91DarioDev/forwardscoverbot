@@ -185,7 +185,7 @@ def Command_RandomPicShow(bot, update):
         Command_CallBackQueryMid_Fix(db)
     mid = config.MID_LIST[0][mid_random][0]
 
-    while fid == None and table_id <= config.NU_RANDOM:
+    while fid == None and table_id <= config.NU_RANDOM and table_id >= 0:
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
         try:
             fid = sql.SQL_GetFid(db, table_name, mid)
@@ -194,7 +194,7 @@ def Command_RandomPicShow(bot, update):
             table_id -= 1
         table_id += 1
 
-    print(mid, fid)
+    #print(mid, fid)
 
     cid = update.message.chat.id
     try:
