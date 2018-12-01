@@ -318,7 +318,6 @@ def Command_DeleteOnePraiseListItem(bot, job):
 
 
 @run_async
-@only_admin
 def Command_CallBackAutoSend(bot, job):
     '''
     send the photo by timeI
