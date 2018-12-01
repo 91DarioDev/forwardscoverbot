@@ -73,3 +73,5 @@ CHECK_SHOW = False
 
 # fake praise use
 PRAISE_LIST = []
+MID_LIST = []
+MAX_MID_LIST = 1000

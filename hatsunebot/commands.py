@@ -146,6 +146,17 @@ def Command_CheckAllData(bot, update):
 
 
 @run_async
+def Command_CallBackQueryMid(bot, job):
+
+    db = sql.SQL_ConnectMysql()
+    sql.SQL_GetMaxTableCount()
+    table_id = random.randint(0, config.NU_RANDOM)
+    table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
+    sql.SQL_RandomGetMid(db, table_name)
+    sql.SQL_Close(db)
+
+
+@run_async
 def Command_RandomPicShow(bot, update):
 
     # we have to
@@ -159,21 +170,15 @@ def Command_RandomPicShow(bot, update):
     table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
 
     try:
-        r_rows = -1
-        mid, r_rows = sql.SQL_RandomGetMid(db, table_name)
-    except Exception as e:
-        if r_rows != -1:
-            e = 'RandomPicShow() get mid failed: ' + str(e.args) + ': r_rows: ' + str(r_rows)
-            error_log.RecordError(e)
-        else:
-            e = 'RandomPicShow() get mid failed: ' + str(e.args)
-            error_log.RecordError(e)
+        # r_rows = -1
+        # mid, r_rows = sql.SQL_RandomGetMid(db, table_name)
+        mid_random = random.randint(0, config.MAX_MID_LIST)
+        mid = config.MID_LIST[0][mid_random][0]
+        print(mid)
 
+    except Exception as e:
         sql.SQL_Close(db)
         Command_RandomPicShow(bot, update)
-        # text = "..."
-        # update.message.reply_text(text=text, quote=True)
-        # sql.close_mysql(db)
         return
 
     try:

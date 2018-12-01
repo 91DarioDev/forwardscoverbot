@@ -53,7 +53,7 @@ def SQL_IterationAllData(db, table_name, update):
     # print(rows)
     cursor.execute("SELECT * FROM %s" % table_name)
     data_tuple = cursor.fetchall()
-    #print(data_tuple)
+    # print(data_tuple)
     show_time = 1000
     i = 1
 
@@ -89,24 +89,33 @@ def SQL_IterationAllData(db, table_name, update):
 def SQL_RandomGetMid(db, table_name):
 
     cursor = db.cursor()
-    mid = -1
+    #mid = -1
+    # clear the list
+    config.MID_LIST = []
 
-    while True:
-        cursor.execute(
-            "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
+    cursor.execute(
+        "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
 
-        rows = cursor.fetchone()[0]
-        random_rows = random.randint(0, rows)
+    rows = cursor.fetchone()[0]
+    random_limit_row_max = random.randint(0, rows)
+    # pick up 1000 items from mysql
+    if random_limit_row_max - config.MAX_MID_LIST > 0:
+        random_limit_row_min = random_limit_row_max - config.MAX_MID_LIST
+    else:
+        random_limit_row_min = random_limit_row_max
+        random_limit_row_max = random_limit_row_max + config.MAX_MID_LIST
 
-        cursor.execute("SELECT message_id FROM %s" % table_name)
+    # random_rows = random.randint(
+    #     random_limit_row_min, random_limit_row_max)
 
-        mid = cursor.fetchall()[random_rows][0]
-        if mid != -1:
-            # print(mid)
-            break
+    cursor.execute("SELECT message_id FROM %s LIMIT %s, %s" %
+                   table_name, random_limit_row_min, random_limit_row_max)
 
+    config.MID_LIST.append(cursor.fetchall())
+
+    # mid = cursor.fetchall()[random_rows][0]
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>{}".format(mid))
-    return (mid, random_rows)
+    # return (mid, random_rows)
 
 
 def SQL_GetMysqlVersion(db):
