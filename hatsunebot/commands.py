@@ -155,6 +155,14 @@ def Command_CallBackQueryMid(bot, job):
     sql.SQL_GetMidLimited(db, table_name)
     sql.SQL_Close(db)
 
+def Command_CallBackQueryMid_Fix(db):
+
+    sql.SQL_GetMaxTableCount()
+    table_id = random.randint(0, config.NU_RANDOM)
+    table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
+    sql.SQL_GetMidLimited(db, table_name)
+    sql.SQL_Close(db)
+
 
 @run_async
 def Command_RandomPicShow(bot, update):
@@ -172,7 +180,12 @@ def Command_RandomPicShow(bot, update):
     sql.SQL_GetMaxTableCount()
 
     mid_random = random.randint(0, config.MAX_MID_LIST)
-    mid = config.MID_LIST[0][mid_random][0]
+    while True:
+        try:
+            mid = config.MID_LIST[0][mid_random][0]
+            break
+        except IndexError:
+            Command_CallBackQueryMid_Fix(db)
 
     while fid == None and table_id <= config.NU_RANDOM:
         table_name = "{0}pic_{1}".format(config.SQL_FORMAT, table_id)
