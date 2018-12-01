@@ -98,7 +98,7 @@ def SQL_RandomGetMid(db, table_name):
         "SELECT table_rows FROM information_schema.tables WHERE table_name='%s'" % table_name)
     while rows == None:
         try:
-            rows = cursor.fetchone()
+            rows = cursor.fetchone()[0]
         except TypeError:
             pass
     print(rows)
