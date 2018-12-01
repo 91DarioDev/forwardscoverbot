@@ -36,7 +36,7 @@ def UserKeyboard(bot, update):
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
 
     cid = update.message.chat.id
-    text = "Welcome, what's your choice?"
+    text = "Welcome, use the /random to see a random picture from @titswiki."
     bot.send_message(chat_id=cid, text=text, reply_markup=reply_markup)
 
 
