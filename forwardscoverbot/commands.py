@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2018  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -28,7 +28,7 @@ from telegram.ext.dispatcher import run_async
 
 
 @run_async
-def help_command(bot, update):
+def help_command(update, context):
     keyboard = keyboards.github_link_kb()
     text = (
         "<b>Do you want to send a message to someone or in a group, but you want to avoid "
@@ -46,7 +46,7 @@ def help_command(bot, update):
 
 
 @run_async
-def disable_web_page_preview(bot, update):
+def disable_web_page_preview(update, context):
     if not update.message.reply_to_message:
         text = ("This command permits to remove the web page preview from a message with "
                 "a link.\n\nUse it replying to the message the bot already echoed and you "
@@ -74,7 +74,7 @@ def disable_web_page_preview(bot, update):
 
 
 @run_async
-def remove_caption(bot, update):
+def remove_caption(update, context):
     if not update.message.reply_to_message:
         text = (
             "This command permits to remove caption from a message. Reply with this command to "
@@ -85,7 +85,7 @@ def remove_caption(bot, update):
 
     if not update.message.reply_to_message.caption:
         text = "This message has no caption, so what should i remove? Use this command with messages having caption."
-        bot.sendMessage(
+        context.bot.sendMessage(
             chat_id=update.message.from_user.id,
             text=text,
             reply_to_message_id=update.message.reply_to_message.message_id,
@@ -93,11 +93,11 @@ def remove_caption(bot, update):
         )
         return
 
-    messages.process_message(bot, update, remove_caption=True)
+    messages.process_message(update, context, remove_caption=True)
 
 
 @run_async
-def add_caption(bot, update):
+def add_caption(update, context):
     if not update.message.reply_to_message:
         text = (
             "<b>This command permits to add a caption to a message. Reply with this command and the caption after it to "
@@ -119,7 +119,7 @@ def add_caption(bot, update):
             t_consts.MAX_CAPTION_LENGTH,
             len(caption) - t_consts.MAX_CAPTION_LENGTH
         )
-        bot.sendMessage(
+        context.bot.sendMessage(
             chat_id=update.message.from_user.id,
             text=text,
             reply_to_message_id=update.message.reply_to_message.message_id,
@@ -127,11 +127,11 @@ def add_caption(bot, update):
         )
         return
 
-    messages.process_message(bot, update, custom_caption=caption_html)
+    messages.process_message(update, context, custom_caption=caption_html)
     
 
 @utils.only_admin
-def stats(bot, update):
+def stats(update, context):
     update.message.reply_text(text=dbwrapper.stats_text(), parse_mode=ParseMode.HTML)
 
 

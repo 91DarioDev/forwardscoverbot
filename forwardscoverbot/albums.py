@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2018  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -23,7 +23,7 @@ from telegram import ParseMode
 ALBUM_DICT = {}
 
 
-def collect_album_items(bot, update, job_queue):
+def collect_album_items(update, context):
     """
     if the media_group_id not a key in the dictionary yet:
         - send sending action
@@ -35,19 +35,19 @@ def collect_album_items(bot, update, job_queue):
     """
     media_group_id = update.message.media_group_id
     if media_group_id not in ALBUM_DICT:
-        bot.sendChatAction(
+        context.bot.sendChatAction(
             chat_id=update.message.from_user.id, 
             action=ChatAction.UPLOAD_PHOTO if update.message.photo else ChatAction.UPLOAD_VIDEO
         )
         ALBUM_DICT[media_group_id] = [update]
         # schedule the job
-        job_queue.run_once(send_album, 1, context=[media_group_id])
+        context.job_queue.run_once(send_album, 1, context=[media_group_id])
     else:
         ALBUM_DICT[media_group_id].append(update)
 
 
-def send_album(bot, job):
-    media_group_id = job.context[0]
+def send_album(context):
+    media_group_id = context.job.context[0]
     updates = ALBUM_DICT[media_group_id]
 
     # delete from ALBUM_DICT
@@ -74,7 +74,7 @@ def send_album(bot, job):
                     parse_mode=ParseMode.HTML
                 )
             )
-    bot.sendMediaGroup(
+    context.bot.sendMediaGroup(
         chat_id=updates[0].message.from_user.id,
         media=media
     )

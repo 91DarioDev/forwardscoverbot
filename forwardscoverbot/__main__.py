@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2018  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -37,14 +37,14 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
-def error(bot, update, error):
-    logger.warning('Update "%s" caused error "%s"' % (update, error))
+def error(update, context):
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 
 def main():
     print("\nrunning...")
     # define the updater
-    updater = Updater(token=config.BOT_TOKEN)
+    updater = Updater(token=config.BOT_TOKEN, use_context=True)
     
     # define the dispatcher
     dp = updater.dispatcher
@@ -55,9 +55,9 @@ def main():
     # messages
     dp.add_handler(MessageHandler(Filters.all, messages.before_processing), 0)
     # albums
-    dp.add_handler(MessageHandler(custom_filters.album, albums.collect_album_items, pass_job_queue=True), 1)
+    dp.add_handler(MessageHandler(custom_filters.album, albums.collect_album_items), 1)
     # messages
-    dp.add_handler(MessageHandler(Filters.all, messages.process_message, edited_updates=True), 1)
+    dp.add_handler(MessageHandler(Filters.all, messages.process_message), 1)
     # commands
     dp.add_handler(CommandHandler(('start', 'help'), commands.help_command), 2)
     dp.add_handler(CommandHandler('stats', commands.stats), 2)

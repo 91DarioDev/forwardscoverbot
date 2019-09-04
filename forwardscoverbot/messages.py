@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2018  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -26,21 +26,21 @@ from forwardscoverbot import keyboards
 from telegram.ext.dispatcher import run_async
 
 
-def before_processing(bot, update):
+def before_processing(update, context):
     if update.effective_chat.type != "private":
         text = "This bot can be used only in private chats! I leave! Bye!"
         keyboard = keyboards.private_chat_kb()
         update.effective_message.reply_text(text=text, reply_markup=keyboard)
-        bot.leave_chat(chat_id=update.effective_message.chat_id)
+        context.bot.leave_chat(chat_id=update.effective_message.chat_id)
         raise DispatcherHandlerStop
         
     else:
-        int_time = int(time.mktime(update.message.date.timetuple()))
-        dbwrapper.add_user_db(update.message.from_user.id, int_time)
+        int_time = int(time.mktime(update.effective_message.date.timetuple()))
+        dbwrapper.add_user_db(update.effective_message.from_user.id, int_time)
 
 
 @run_async
-def process_message(bot, update, remove_caption=False, custom_caption=None):
+def process_message(update, context, remove_caption=False, custom_caption=None):
     if update.edited_message:
         message = update.edited_message
     elif remove_caption:
