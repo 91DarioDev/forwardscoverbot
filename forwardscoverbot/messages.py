@@ -19,6 +19,7 @@ import time
 
 from telegram import ParseMode
 from telegram.ext import DispatcherHandlerStop
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from forwardscoverbot import dbwrapper
 from forwardscoverbot import keyboards
@@ -39,6 +40,24 @@ def before_processing(update, context):
         dbwrapper.add_user_db(update.effective_message.from_user.id, int_time)
 
 
+def get_message_reply_markup_inline_keyboard(message):
+    if not message.reply_markup:
+        return None
+    if not message.reply_markup.inline_keyboard:
+        return
+    return message.reply_markup.inline_keyboard
+
+
+def leave_only_url_buttons_in_reply_markup(inline_keyboard):
+    removed_buttons = []
+    for row in inline_keyboard:
+        for button in row:
+            if not hasattr(button, 'url'):
+                row.remove(button)
+                removed_buttons.append(button)
+    return inline_keyboard, removed_buttons
+
+
 @run_async
 def process_message(update, context, remove_caption=False, custom_caption=None):
     if update.edited_message:
@@ -55,26 +74,56 @@ def process_message(update, context, remove_caption=False, custom_caption=None):
     else:
         caption = custom_caption
 
+    keyboard_not_cleaned = get_message_reply_markup_inline_keyboard(message)
+    inline_keyboard, removed_buttons_from_keyboard = leave_only_url_buttons_in_reply_markup(keyboard_not_cleaned)
+    reply_markup = InlineKeyboardMarkup(inline_keyboard)
+    if len(removed_buttons_from_keyboard) > 0:
+        message.reply_text('{} buttons have been removed. I support only link buttons'.format(len(removed_buttons_from_keyboard)))
+
     if message.text:
-        message.reply_text(text=message.text_html, parse_mode=ParseMode.HTML)
+        message.reply_text(
+            text=message.text_html, 
+            parse_mode=ParseMode.HTML, 
+            reply_markup=reply_markup
+        )
 
     elif message.voice:
         media = message.voice.file_id
         duration = message.voice.duration
-        message.reply_voice(voice=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
+        message.reply_voice(
+            voice=media, 
+            duration=duration, 
+            caption=caption, 
+            parse_mode=ParseMode.HTML, 
+            reply_markup=reply_markup
+        )
 
     elif message.photo:
         media = message.photo[-1].file_id
-        message.reply_photo(photo=media, caption=caption, parse_mode=ParseMode.HTML)
+        message.reply_photo(
+            photo=media, 
+            caption=caption, 
+            parse_mode=ParseMode.HTML, 
+            reply_markup=reply_markup
+        )
 
     elif message.sticker:
         media = message.sticker.file_id
-        message.reply_sticker(sticker=media)
+        message.reply_sticker(
+            sticker=media, 
+            reply_markup=reply_markup
+        )
 
     elif message.document:
         media = message.document.file_id
         filename = message.document.file_name
-        message.reply_document(document=media, filename=filename, caption=caption, parse_mode=ParseMode.HTML)
+        message.reply_document(
+            document=media, 
+            filename=filename, 
+            caption=caption, 
+            parse_mode=ParseMode.HTML, 
+            reply_markup=reply_markup
+        )
 
     elif message.audio:
         media = message.audio.file_id
@@ -82,26 +131,36 @@ def process_message(update, context, remove_caption=False, custom_caption=None):
         performer = message.audio.performer
         title = message.audio.title
         message.reply_audio(
-                audio=media, 
-                duration=duration, 
-                performer=performer, 
-                title=title, 
-                caption=caption, 
-                parse_mode=ParseMode.HTML)
+            audio=media, 
+            duration=duration, 
+            performer=performer, 
+            title=title, 
+            caption=caption, 
+            parse_mode=ParseMode.HTML, 
+            reply_markup=reply_markup
+        )
     
     elif message.video:
         media = message.video.file_id
         duration = message.video.duration
-        message.reply_video(video=media, duration=duration, caption=caption, parse_mode=ParseMode.HTML)
+        message.reply_video(
+            video=media, 
+            duration=duration, 
+            caption=caption, 
+            parse_mode=ParseMode.HTML, 
+            reply_markup=reply_markup
+        )
 
     elif message.contact:
         phone_number = message.contact.phone_number
         first_name = message.contact.first_name
         last_name = message.contact.last_name
         message.reply_contact(
-                phone_number=phone_number, 
-                first_name=first_name, 
-                last_name=last_name)
+            phone_number=phone_number, 
+            first_name=first_name, 
+            last_name=last_name, 
+            reply_markup=reply_markup
+        )
 
     elif message.venue:
         longitude = message.venue.location.longitude
@@ -110,22 +169,24 @@ def process_message(update, context, remove_caption=False, custom_caption=None):
         address = message.venue.address
         foursquare_id = message.venue.foursquare_id
         message.reply_venue(
-                longitude=longitude, 
-                latitude=latitude, 
-                title=title, 
-                address=address, 
-                foursquare_id=foursquare_id)
+            longitude=longitude, 
+            latitude=latitude, 
+            title=title, 
+            address=address, 
+            foursquare_id=foursquare_id, 
+            reply_markup=reply_markup
+        )
 
     elif message.location:
         longitude = message.location.longitude
         latitude = message.location.latitude
-        message.reply_location(latitude=latitude, longitude=longitude)
+        message.reply_location(latitude=latitude, longitude=longitude, reply_markup=reply_markup)
 
     elif message.video_note:
         media = message.video_note.file_id
         length = message.video_note.length
         duration = message.video_note.duration
-        message.reply_video_note(video_note=media, length=length, duration=duration)
+        message.reply_video_note(video_note=media, length=length, duration=duration, reply_markup=reply_markup)
     
     elif message.game:
         text = "Sorry, telegram doesn't allow to echo this message"
