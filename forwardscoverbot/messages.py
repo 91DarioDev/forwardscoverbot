@@ -44,7 +44,7 @@ def get_message_reply_markup_inline_keyboard(message):
     if not message.reply_markup:
         return None
     if not message.reply_markup.inline_keyboard:
-        return
+        return None
     return message.reply_markup.inline_keyboard
 
 
@@ -75,10 +75,13 @@ def process_message(update, context, remove_caption=False, custom_caption=None):
         caption = custom_caption
 
     keyboard_not_cleaned = get_message_reply_markup_inline_keyboard(message)
-    inline_keyboard, removed_buttons_from_keyboard = leave_only_url_buttons_in_reply_markup(keyboard_not_cleaned)
-    reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    if len(removed_buttons_from_keyboard) > 0:
-        message.reply_text('{} buttons have been removed. I support only link buttons'.format(len(removed_buttons_from_keyboard)))
+    if keyboard_not_cleaned:
+        inline_keyboard, removed_buttons_from_keyboard = leave_only_url_buttons_in_reply_markup(keyboard_not_cleaned)
+        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+        if len(removed_buttons_from_keyboard) > 0:
+            message.reply_text('{} buttons have been removed. I support only link buttons'.format(len(removed_buttons_from_keyboard)))
+    else:
+        reply_markup = None
 
     if message.text:
         message.reply_text(
