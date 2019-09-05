@@ -52,3 +52,4 @@ pip install --upgrade .
 - `/stats` - get statistics about the use of the bot (admins only)
 - `/removecaption` - remove caption from a message
 - `/addcaption` - add or overwrite a caption to a message
+- `/removebuttons` - remove buttons from a message

@@ -59,12 +59,14 @@ def leave_only_url_buttons_in_reply_markup(inline_keyboard):
 
 
 @run_async
-def process_message(update, context, remove_caption=False, custom_caption=None):
+def process_message(update, context, remove_caption=False, custom_caption=None, remove_buttons=False):
     if update.edited_message:
         message = update.edited_message
     elif remove_caption:
         message = update.message.reply_to_message
     elif custom_caption is not None:
+        message = update.message.reply_to_message
+    elif remove_buttons:
         message = update.message.reply_to_message
     else:
         message = update.message
@@ -74,14 +76,20 @@ def process_message(update, context, remove_caption=False, custom_caption=None):
     else:
         caption = custom_caption
 
-    keyboard_not_cleaned = get_message_reply_markup_inline_keyboard(message)
+
+    keyboard_not_cleaned = get_message_reply_markup_inline_keyboard(message) if not remove_buttons else None
     if keyboard_not_cleaned:
         inline_keyboard, removed_buttons_from_keyboard = leave_only_url_buttons_in_reply_markup(keyboard_not_cleaned)
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
         if len(removed_buttons_from_keyboard) > 0:
-            message.reply_text('{} buttons have been removed. I support only link buttons'.format(len(removed_buttons_from_keyboard)))
+            message.reply_text(
+                '{} buttons have been removed. I support only link buttons'.format(
+                    len(removed_buttons_from_keyboard)
+                )
+            )
     else:
         reply_markup = None
+
 
     if message.text:
         message.reply_text(

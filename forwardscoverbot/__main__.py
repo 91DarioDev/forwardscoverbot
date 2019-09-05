@@ -63,6 +63,7 @@ def main():
     dp.add_handler(CommandHandler('stats', commands.stats), 2)
     dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview), 2)
     dp.add_handler(CommandHandler('removecaption', commands.remove_caption), 2)
+    dp.add_handler(CommandHandler('removebuttons', commands.remove_buttons), 2)
     dp.add_handler(CommandHandler('addcaption', commands.add_caption), 2)
     dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
 

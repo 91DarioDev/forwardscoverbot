@@ -96,6 +96,30 @@ def remove_caption(update, context):
     messages.process_message(update, context, remove_caption=True)
 
 
+
+@run_async
+def remove_buttons(update, context):
+    if not update.message.reply_to_message:
+        text = (
+            "This command permits to remove buttons from a message. Reply with this command to "
+            "the message where you want to remove the buttons. Be sure the message has buttons."
+        )
+        update.message.reply_text(text=text)
+        return
+
+    if not update.message.reply_to_message.reply_markup:
+        text = "This message has no buttons, so what should i remove? Use this command with messages having buttons."
+        context.bot.sendMessage(
+            chat_id=update.message.from_user.id,
+            text=text,
+            reply_to_message_id=update.message.reply_to_message.message_id,
+            quote=True
+        )
+        return
+
+    messages.process_message(update, context, remove_buttons=True)    
+
+
 @run_async
 def add_caption(update, context):
     if not update.message.reply_to_message:
