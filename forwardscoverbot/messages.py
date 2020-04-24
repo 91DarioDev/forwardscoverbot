@@ -200,7 +200,7 @@ def process_message(update, context, remove_caption=False, custom_caption=None, 
         message.reply_video_note(video_note=media, length=length, duration=duration, reply_markup=reply_markup)
     
     elif message.dice:
-        context.bot.sendDice(chat_id=update.effective_user.id, reply_markup=reply_markup)
+        context.bot.sendDice(chat_id=update.effective_user.id, reply_markup=reply_markup, emoji=message.dice.emoji)
 
     elif message.game:
         text = "Sorry, telegram doesn't allow to echo this message"
