@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2020  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -59,7 +59,7 @@ def leave_only_url_buttons_in_reply_markup(inline_keyboard):
 
 
 @run_async
-def process_message(update, context, remove_caption=False, custom_caption=None, remove_buttons=False):
+def process_message(update, context, remove_caption=False, custom_caption=None, remove_buttons=False, custom_reply_markup=None):
     if update.edited_message:
         message = update.edited_message
     elif remove_caption:
@@ -67,6 +67,8 @@ def process_message(update, context, remove_caption=False, custom_caption=None, 
     elif custom_caption is not None:
         message = update.message.reply_to_message
     elif remove_buttons:
+        message = update.message.reply_to_message
+    elif custom_reply_markup:
         message = update.message.reply_to_message
     else:
         message = update.message
@@ -77,8 +79,11 @@ def process_message(update, context, remove_caption=False, custom_caption=None, 
         caption = custom_caption
 
 
+
     keyboard_not_cleaned = get_message_reply_markup_inline_keyboard(message) if not remove_buttons else None
-    if keyboard_not_cleaned:
+    if custom_reply_markup:
+        reply_markup = custom_reply_markup
+    elif keyboard_not_cleaned:
         inline_keyboard, removed_buttons_from_keyboard = leave_only_url_buttons_in_reply_markup(keyboard_not_cleaned)
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
         if len(removed_buttons_from_keyboard) > 0:

@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2020  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -65,6 +65,7 @@ def main():
     dp.add_handler(CommandHandler('removecaption', commands.remove_caption), 2)
     dp.add_handler(CommandHandler('removebuttons', commands.remove_buttons), 2)
     dp.add_handler(CommandHandler('addcaption', commands.add_caption), 2)
+    dp.add_handler(CommandHandler('addbuttons', commands.add_buttons), 2)
     dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
 
 

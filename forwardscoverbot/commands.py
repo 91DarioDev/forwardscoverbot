@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2020  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -23,9 +23,12 @@ from forwardscoverbot import messages
 from telegram import MessageEntity
 from telegram import ParseMode
 from telegram import constants as t_consts
+from telegram import InlineKeyboardButton
+from telegram import InlineKeyboardMarkup
 
 from telegram.ext.dispatcher import run_async
 
+import html
 
 @run_async
 def help_command(update, context):
@@ -40,7 +43,9 @@ def help_command(update, context):
         "<b>Supported commands:</b>\n"
         "/disablewebpagepreview\n"
         "/removecaption\n"
-        "/addcaption"
+        "/addcaption\n"
+        "/removebuttons\n"
+        "/addbuttons"
     )
     update.message.reply_text(text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
@@ -152,6 +157,39 @@ def add_caption(update, context):
         return
 
     messages.process_message(update, context, custom_caption=caption_html)
+
+
+@run_async
+def add_buttons(update, context):
+    usage = (
+        "<b>Using this command you can add buttons to messages.</b>Example:\n\n"
+        "<code>/addbuttons first link=https://telegram.org && second link same row=https://google.it &&& third link new row=https://t.me</code>"
+        "\n\nSo the format for a button is [text]=[link]. Buttons on the same line are separated by && and on new lines are separeted by &&&."
+    )
+    if not update.message.reply_to_message or len(context.args) < 1:
+        update.message.reply_text(text=usage, parse_mode='HTML')
+        return
+    
+    param = ' '.join(context.args)
+    rows = param.split('&&&')
+    lst = []
+    for row in rows:
+        try:
+            row_lst = []
+            row_buttons = row.split('&&')
+            for button in row_buttons:
+                text, link = button.split('=')
+                text = text.strip()
+                link = link.strip()
+                button = InlineKeyboardButton(text=text, url=link)
+                
+                row_lst.append(button)
+            lst.append(row_lst)
+        except Exception as e:
+            error = 'ERROR formatting the buttons'
+            update.message.reply_text(text=error, parse_mode='HTML')
+    keyboard = InlineKeyboardMarkup(lst)
+    messages.process_message(update, context, custom_reply_markup=keyboard)
     
 
 @utils.only_admin
