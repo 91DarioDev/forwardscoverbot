@@ -162,7 +162,7 @@ def add_caption(update, context):
 @run_async
 def add_buttons(update, context):
     usage = (
-        "<b>Using this command you can add buttons to messages.</b>Example:\n\n"
+        "<b>Using this command you can add buttons to messages.</b>\nReply with this command to the message where you want to add the buttons. Example:\n\n"
         "<code>/addbuttons first link=https://telegram.org && second link same row=https://google.it &&& third link new row=https://t.me</code>"
         "\n\nSo the format for a button is [text]=[link]. Buttons on the same line are separated by && and on new lines are separeted by &&&."
     )
