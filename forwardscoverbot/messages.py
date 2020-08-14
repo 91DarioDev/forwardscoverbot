@@ -59,24 +59,18 @@ def leave_only_url_buttons_in_reply_markup(inline_keyboard):
 
 
 @run_async
-def process_message(update, context, remove_caption=False, custom_caption=None, remove_buttons=False, custom_reply_markup=None):
-    if update.edited_message:
-        message = update.edited_message
-    elif remove_caption:
-        message = update.message.reply_to_message
-    elif custom_caption is not None:
-        message = update.message.reply_to_message
-    elif remove_buttons:
-        message = update.message.reply_to_message
-    elif custom_reply_markup:
-        message = update.message.reply_to_message
-    else:
-        message = update.message
+def process_message(
+        update, context, message=None, remove_caption=False, custom_caption=None, 
+        remove_buttons=False, custom_reply_markup=None, disable_web_page_preview=False):
 
-    if custom_caption is None:
-        caption = message.caption_html if (message.caption and remove_caption is False) else None
-    else:
+    if not message:
+        message = update.effective_message
+
+    # custom caption
+    if custom_caption:
         caption = custom_caption
+    else:
+        caption = message.caption_html if (message.caption and remove_caption is False) else None
 
 
 
@@ -100,7 +94,8 @@ def process_message(update, context, remove_caption=False, custom_caption=None, 
         message.reply_text(
             text=message.text_html, 
             parse_mode=ParseMode.HTML, 
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            disable_web_page_preview=disable_web_page_preview
         )
 
     elif message.voice:

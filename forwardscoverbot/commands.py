@@ -71,11 +71,7 @@ def disable_web_page_preview(update, context):
         update.message.reply_to_message.reply_text(text=text, quote=True)
         return
 
-    text = update.message.reply_to_message.text_html
-    update.message.reply_to_message.reply_text(
-            text=text, 
-            disable_web_page_preview=True, 
-            parse_mode=ParseMode.HTML)
+    messages.process_message(update=update, context=context, message=update.message.reply_to_message, disable_web_page_preview=True)
 
 
 @run_async
@@ -98,7 +94,7 @@ def remove_caption(update, context):
         )
         return
 
-    messages.process_message(update, context, remove_caption=True)
+    messages.process_message(update=update, context=context, message=update.message.reply_to_message, remove_caption=True)
 
 
 
@@ -122,7 +118,7 @@ def remove_buttons(update, context):
         )
         return
 
-    messages.process_message(update, context, remove_buttons=True)    
+    messages.process_message(update=update, context=context, message=update.message.reply_to_message, remove_buttons=True)    
 
 
 @run_async
@@ -156,7 +152,7 @@ def add_caption(update, context):
         )
         return
 
-    messages.process_message(update, context, custom_caption=caption_html)
+    messages.process_message(update=update, context=context, message=update.message.reply_to_message, custom_caption=caption_html)
 
 
 @run_async
@@ -189,7 +185,7 @@ def add_buttons(update, context):
             error = 'ERROR formatting the buttons'
             update.message.reply_text(text=error, parse_mode='HTML')
     keyboard = InlineKeyboardMarkup(lst)
-    messages.process_message(update, context, custom_reply_markup=keyboard)
+    messages.process_message(update=update, context=context, message=update.message.reply_to_message, custom_reply_markup=keyboard)
     
 
 @utils.only_admin
