@@ -27,7 +27,7 @@ def sep(num, none_is_zero=False):
     return "{:,}".format(num)
 
 
-@run_async
+
 def invalid_command(update, context):
     text = "This command is invalid"
     update.message.reply_text(text=text, quote=True)

@@ -57,16 +57,16 @@ def main():
     # albums
     dp.add_handler(MessageHandler(custom_filters.album, albums.collect_album_items), 1)
     # messages
-    dp.add_handler(MessageHandler(Filters.all, messages.process_message), 1)
+    dp.add_handler(MessageHandler(Filters.all, messages.process_message, run_async=True), 1)
     # commands
-    dp.add_handler(CommandHandler(('start', 'help'), commands.help_command), 2)
+    dp.add_handler(CommandHandler(('start', 'help'), commands.help_command, run_async=True), 2)
     dp.add_handler(CommandHandler('stats', commands.stats), 2)
-    dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview), 2)
-    dp.add_handler(CommandHandler('removecaption', commands.remove_caption), 2)
-    dp.add_handler(CommandHandler('removebuttons', commands.remove_buttons), 2)
-    dp.add_handler(CommandHandler('addcaption', commands.add_caption), 2)
-    dp.add_handler(CommandHandler('addbuttons', commands.add_buttons), 2)
-    dp.add_handler(MessageHandler(Filters.command, utils.invalid_command), 2)
+    dp.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview, run_async=True), 2)
+    dp.add_handler(CommandHandler('removecaption', commands.remove_caption, run_async=True), 2)
+    dp.add_handler(CommandHandler('removebuttons', commands.remove_buttons, run_async=True), 2)
+    dp.add_handler(CommandHandler('addcaption', commands.add_caption, run_async=True), 2)
+    dp.add_handler(CommandHandler('addbuttons', commands.add_buttons, run_async=True), 2)
+    dp.add_handler(MessageHandler(Filters.command, utils.invalid_command, run_async=True), 2)
 
 
     # handle errors

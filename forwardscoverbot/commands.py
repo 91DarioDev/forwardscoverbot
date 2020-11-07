@@ -30,7 +30,7 @@ from telegram.ext.dispatcher import run_async
 
 import html
 
-@run_async
+
 def help_command(update, context):
     keyboard = keyboards.github_link_kb()
     text = (
@@ -50,7 +50,7 @@ def help_command(update, context):
     update.message.reply_text(text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
 
-@run_async
+
 def disable_web_page_preview(update, context):
     if not update.message.reply_to_message:
         text = ("This command permits to remove the web page preview from a message with "
@@ -74,7 +74,7 @@ def disable_web_page_preview(update, context):
     messages.process_message(update=update, context=context, message=update.message.reply_to_message, disable_web_page_preview=True)
 
 
-@run_async
+
 def remove_caption(update, context):
     if not update.message.reply_to_message:
         text = (
@@ -98,7 +98,6 @@ def remove_caption(update, context):
 
 
 
-@run_async
 def remove_buttons(update, context):
     if not update.message.reply_to_message:
         text = (
@@ -121,7 +120,7 @@ def remove_buttons(update, context):
     messages.process_message(update=update, context=context, message=update.message.reply_to_message, remove_buttons=True)    
 
 
-@run_async
+
 def add_caption(update, context):
     if not update.message.reply_to_message:
         text = (
@@ -155,7 +154,7 @@ def add_caption(update, context):
     messages.process_message(update=update, context=context, message=update.message.reply_to_message, custom_caption=caption_html)
 
 
-@run_async
+
 def add_buttons(update, context):
     usage = (
         "<b>Using this command you can add buttons to messages.</b>\nReply with this command to the message where you want to add the buttons. Example:\n\n"

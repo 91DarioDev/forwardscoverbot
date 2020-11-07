@@ -37,7 +37,7 @@ def before_processing(update, context):
         
     else:
         int_time = int(time.mktime(update.effective_message.date.timetuple()))
-        dbwrapper.add_user_db(update.effective_message.from_user.id, int_time)
+        context.dispatcher.run_async(dbwrapper.add_user_db, update.effective_message.from_user.id, int_time)
 
 
 def get_message_reply_markup_inline_keyboard(message):
@@ -58,7 +58,7 @@ def leave_only_url_buttons_in_reply_markup(inline_keyboard):
     return inline_keyboard, removed_buttons
 
 
-@run_async
+
 def process_message(
         update, context, message=None, remove_caption=False, custom_caption=None, 
         remove_buttons=False, custom_reply_markup=None, disable_web_page_preview=False):
