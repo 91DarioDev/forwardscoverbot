@@ -24,7 +24,7 @@ if len(sys.argv) == 2:
     path = sys.argv[1]
 try:
     with open(path, 'r') as stream:
-        conf = yaml.load(stream)
+        conf = yaml.load(stream, Loader=yaml.FullLoader)
 except FileNotFoundError:
     print("\n\WARNING:\n"
             "before of running forwardscoverbot you should create a file named `config.yaml`"
