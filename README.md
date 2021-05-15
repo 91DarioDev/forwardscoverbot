@@ -37,7 +37,7 @@ docker run -dit \
    -v /home/forwardscoverbot/database:/forwardscoverbot/database \
    --name forwardscoverbot \
    --restart always \
-   
+   comdotwww/forwardscoverbot:latest
 ```
 > `/home` can be replaced by your path.
 
