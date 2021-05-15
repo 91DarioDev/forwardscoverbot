@@ -27,7 +27,7 @@ admins:
 It will be like this picture: 
 ![Config File](https://i.imgur.com/UQtKZpu.png)
 
-The token of the bot, you get from [@BotFather](https://t.me/BotFather) (type: str)
+The token of the bot, you get from [@BotFather](https://t.me/BotFather) (type: str) <br>
 `admins` is a list containing the telegram ids of the admins of the bot,  you get from [@IDBot](https://t.me/myidbot)
 
 ### Pull and Run Bot
