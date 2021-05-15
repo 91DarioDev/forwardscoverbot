@@ -41,6 +41,16 @@ docker run -dit \
 ```
 > `/home` can be replaced by your path.
 
+### Check Progress
+Just Run:
+```
+docker logs forwardscoverbot
+```
+When it is showen  `running...` , all has been done! 
+
+Just Enjoy Bot!
+
+
 ## Deploy Bot in VPS
 
 **If you want to run this bot  in VPS by yourself:**
