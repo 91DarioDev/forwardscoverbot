@@ -8,7 +8,7 @@ To be sure that when you send messages to this bot to anonymize them it doesn't 
 ### Deploy Bot in Docker
 **Install Docker:**
 ```
-bash <(curl -fsSL https://get.docker.com) --mirror Aliyun
+curl -sSL https://get.docker.com/ | sh
 ```
 ### Creat Folder and Config File
 ```
