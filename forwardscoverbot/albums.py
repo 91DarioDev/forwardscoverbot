@@ -19,7 +19,6 @@ from telegram.ext import DispatcherHandlerStop
 from telegram import ChatAction
 from telegram import ParseMode
 
-
 ALBUM_DICT = {}
 
 
@@ -36,7 +35,7 @@ def collect_album_items(update, context):
     media_group_id = update.message.media_group_id
     if media_group_id not in ALBUM_DICT:
         context.bot.sendChatAction(
-            chat_id=update.message.from_user.id, 
+            chat_id=update.message.from_user.id,
             action=ChatAction.UPLOAD_PHOTO if update.message.photo else ChatAction.UPLOAD_VIDEO
         )
         ALBUM_DICT[media_group_id] = [update]

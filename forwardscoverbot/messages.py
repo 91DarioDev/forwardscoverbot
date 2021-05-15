@@ -34,7 +34,7 @@ def before_processing(update, context):
         update.effective_message.reply_text(text=text, reply_markup=keyboard)
         context.bot.leave_chat(chat_id=update.effective_message.chat_id)
         raise DispatcherHandlerStop
-        
+
     else:
         int_time = int(time.mktime(update.effective_message.date.timetuple()))
         context.dispatcher.run_async(dbwrapper.add_user_db, update.effective_message.from_user.id, int_time)
@@ -58,11 +58,9 @@ def leave_only_url_buttons_in_reply_markup(inline_keyboard):
     return inline_keyboard, removed_buttons
 
 
-
 def process_message(
-        update, context, message=None, remove_caption=False, custom_caption=None, 
+        update, context, message=None, remove_caption=False, custom_caption=None,
         remove_buttons=False, custom_reply_markup=None, disable_web_page_preview=False):
-
     if not message:
         message = update.effective_message
 
@@ -71,8 +69,6 @@ def process_message(
         caption = custom_caption
     else:
         caption = message.caption_html if (message.caption and remove_caption is False) else None
-
-
 
     keyboard_not_cleaned = get_message_reply_markup_inline_keyboard(message) if not remove_buttons else None
     if custom_reply_markup:
@@ -89,11 +85,10 @@ def process_message(
     else:
         reply_markup = None
 
-
     if message.text:
         message.reply_text(
-            text=message.text_html, 
-            parse_mode=ParseMode.HTML, 
+            text=message.text_html,
+            parse_mode=ParseMode.HTML,
             reply_markup=reply_markup,
             disable_web_page_preview=disable_web_page_preview
         )
@@ -102,26 +97,26 @@ def process_message(
         media = message.voice.file_id
         duration = message.voice.duration
         message.reply_voice(
-            voice=media, 
-            duration=duration, 
-            caption=caption, 
-            parse_mode=ParseMode.HTML, 
+            voice=media,
+            duration=duration,
+            caption=caption,
+            parse_mode=ParseMode.HTML,
             reply_markup=reply_markup
         )
 
     elif message.photo:
         media = message.photo[-1].file_id
         message.reply_photo(
-            photo=media, 
-            caption=caption, 
-            parse_mode=ParseMode.HTML, 
+            photo=media,
+            caption=caption,
+            parse_mode=ParseMode.HTML,
             reply_markup=reply_markup
         )
 
     elif message.sticker:
         media = message.sticker.file_id
         message.reply_sticker(
-            sticker=media, 
+            sticker=media,
             reply_markup=reply_markup
         )
 
@@ -129,10 +124,10 @@ def process_message(
         media = message.document.file_id
         filename = message.document.file_name
         message.reply_document(
-            document=media, 
-            filename=filename, 
-            caption=caption, 
-            parse_mode=ParseMode.HTML, 
+            document=media,
+            filename=filename,
+            caption=caption,
+            parse_mode=ParseMode.HTML,
             reply_markup=reply_markup
         )
 
@@ -142,23 +137,23 @@ def process_message(
         performer = message.audio.performer
         title = message.audio.title
         message.reply_audio(
-            audio=media, 
-            duration=duration, 
-            performer=performer, 
-            title=title, 
-            caption=caption, 
-            parse_mode=ParseMode.HTML, 
+            audio=media,
+            duration=duration,
+            performer=performer,
+            title=title,
+            caption=caption,
+            parse_mode=ParseMode.HTML,
             reply_markup=reply_markup
         )
-    
+
     elif message.video:
         media = message.video.file_id
         duration = message.video.duration
         message.reply_video(
-            video=media, 
-            duration=duration, 
-            caption=caption, 
-            parse_mode=ParseMode.HTML, 
+            video=media,
+            duration=duration,
+            caption=caption,
+            parse_mode=ParseMode.HTML,
             reply_markup=reply_markup
         )
 
@@ -167,9 +162,9 @@ def process_message(
         first_name = message.contact.first_name
         last_name = message.contact.last_name
         message.reply_contact(
-            phone_number=phone_number, 
-            first_name=first_name, 
-            last_name=last_name, 
+            phone_number=phone_number,
+            first_name=first_name,
+            last_name=last_name,
             reply_markup=reply_markup
         )
 
@@ -180,11 +175,11 @@ def process_message(
         address = message.venue.address
         foursquare_id = message.venue.foursquare_id
         message.reply_venue(
-            longitude=longitude, 
-            latitude=latitude, 
-            title=title, 
-            address=address, 
-            foursquare_id=foursquare_id, 
+            longitude=longitude,
+            latitude=latitude,
+            title=title,
+            address=address,
+            foursquare_id=foursquare_id,
             reply_markup=reply_markup
         )
 
@@ -198,7 +193,7 @@ def process_message(
         length = message.video_note.length
         duration = message.video_note.duration
         message.reply_video_note(video_note=media, length=length, duration=duration, reply_markup=reply_markup)
-    
+
     elif message.dice:
         context.bot.sendDice(chat_id=update.effective_user.id, reply_markup=reply_markup, emoji=message.dice.emoji)
 

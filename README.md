@@ -5,8 +5,45 @@ This telegram bot just echoes any message you send it or modify for him. If you 
 ## How to run this bot by you:
 To be sure that when you send messages to this bot to anonymize them it doesn't forward your message in other chats (it doesn't), you may want to run a your own instance.
 
-**If you want to run this bot by you:**
+### Deploy Bot in Docker
+**Install Docker:**
+```
+bash <(curl -fsSL https://get.docker.com) --mirror Aliyun
+```
+### Creat Folder and Config File
+```
+mkdir /home/forwardscoverbot/  /home/forwardscoverbot/config /home/forwardscoverbot/database
+vim /home/forwardscoverbot/config/config.yaml
+```
+> `/home` can be replaced by your path.
 
+So you should write down some info of your bot:
+```
+bot_token: "token"
+db_path: "database/database.db"
+admins: 
+- 1234
+```
+It will be like this picture: 
+![Config File](https://i.imgur.com/UQtKZpu.png)
+
+The token of the bot, you get from [@BotFather](https://t.me/BotFather) (type: str)
+`admins` is a list containing the telegram ids of the admins of the bot,  you get from [@IDBot](https://t.me/myidbot)
+
+### Pull and Run Bot
+```
+docker run -dit \
+   -v /home/forwardscoverbot/config:/forwardscoverbot/config \
+   -v /home/forwardscoverbot/database:/forwardscoverbot/database \
+   --name forwardscoverbot \
+   --restart always \
+   
+```
+> `/home` can be replaced by your path.
+
+## Deploy Bot in VPS
+
+**If you want to run this bot  in VPS by yourself:**
 
 **Clone and install:**
 ```

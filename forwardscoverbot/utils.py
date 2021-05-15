@@ -27,7 +27,6 @@ def sep(num, none_is_zero=False):
     return "{:,}".format(num)
 
 
-
 def invalid_command(update, context):
     text = "This command is invalid"
     update.message.reply_text(text=text, quote=True)
@@ -40,5 +39,5 @@ def only_admin(func):
             invalid_command(update, context, *args, **kwargs)
             return
         return func(update, context, *args, **kwargs)
-    return wrapped
 
+    return wrapped
