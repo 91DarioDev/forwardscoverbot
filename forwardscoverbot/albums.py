@@ -14,13 +14,26 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
-from telegram import InputMedia, InputMediaPhoto, InputMediaVideo
+from telegram import InputMedia, InputMediaPhoto, InputMediaVideo, InputMediaAudio, InputMediaDocument
 from telegram.ext import DispatcherHandlerStop
 from telegram import ChatAction
 from telegram import ParseMode
 
 
 ALBUM_DICT = {}
+
+
+def chat_action(message):
+    action = ChatAction.UPLOAD_DOCUMENT
+    if message.photo:
+        action = ChatAction.UPLOAD_PHOTO
+    elif message.video:
+        action = ChatAction.UPLOAD_VIDEO
+    elif message.audio:
+        action = ChatAction.UPLOAD_AUDIO
+    elif message.document:
+        action = ChatAction.UPLOAD_DOCUMENT
+    return action
 
 
 def collect_album_items(update, context):
@@ -37,7 +50,7 @@ def collect_album_items(update, context):
     if media_group_id not in ALBUM_DICT:
         context.bot.sendChatAction(
             chat_id=update.message.from_user.id, 
-            action=ChatAction.UPLOAD_PHOTO if update.message.photo else ChatAction.UPLOAD_VIDEO
+            action=chat_action(update.message)
         )
         ALBUM_DICT[media_group_id] = [update]
         # schedule the job
@@ -70,6 +83,22 @@ def send_album(context):
             media.append(
                 InputMediaVideo(
                     media=update.message.video.file_id,
+                    caption='' if update.message.caption is None else update.message.caption_html,
+                    parse_mode=ParseMode.HTML
+                )
+            )
+        elif update.message.audio:
+            media.append(
+                InputMediaAudio(
+                    media=update.message.audio.file_id,
+                    caption='' if update.message.caption is None else update.message.caption_html,
+                    parse_mode=ParseMode.HTML
+                )
+            )
+        elif update.message.document:
+            media.append(
+                InputMediaDocument(
+                    media=update.message.document.file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
                     parse_mode=ParseMode.HTML
                 )

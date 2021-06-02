@@ -4,3 +4,4 @@
 /database/database.db
 /config/config.yaml
 forwardscoverbot.egg-info/
+.vscode/
