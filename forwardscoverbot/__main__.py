@@ -60,7 +60,7 @@ def main():
     application.add_handler(MessageHandler(filters.ALL, messages.process_message, block=False), 1)
     # commands
     application.add_handler(CommandHandler(('start', 'help'), commands.help_command, block=False), 2)
-    application.add_handler(CommandHandler('stats', commands.stats, block=False), 2)
+    application.add_handler(CommandHandler('stats', commands.stats), 2)
     application.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview, block=False), 2)
     application.add_handler(CommandHandler('removecaption', commands.remove_caption, block=False), 2)
     application.add_handler(CommandHandler('removebuttons', commands.remove_buttons, block=False), 2)
