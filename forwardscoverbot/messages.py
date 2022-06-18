@@ -35,8 +35,7 @@ async def before_processing(update, context):
         
     else:
         int_time = int(time.mktime(update.effective_message.date.timetuple()))
-        print('reanable add user db')
-        #Application.create_task(dbwrapper.add_user_db, update.effective_message.from_user.id, int_time)
+        await dbwrapper.add_user_db(update.effective_message.from_user.id, int_time)
 
 
 def get_message_reply_markup_inline_keyboard(message):

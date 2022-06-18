@@ -53,7 +53,7 @@ def create_db():
     run_query(query)
 
 
-def add_user_db(user_id, int_time):
+async def add_user_db(user_id, int_time):
     # try to update or ignore
     query = "UPDATE OR IGNORE users SET last_activity = ? WHERE user_id = ?"
     run_query(query, int_time, user_id)
