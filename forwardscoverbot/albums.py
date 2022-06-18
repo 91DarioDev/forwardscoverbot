@@ -53,13 +53,13 @@ async def collect_album_items(update, context):
         )
         ALBUM_DICT[media_group_id] = [update]
         # schedule the job
-        context.job_queue.run_once(send_album, 1, context=[media_group_id])
+        context.job_queue.run_once(send_album, 1, data=[media_group_id])
     else:
         ALBUM_DICT[media_group_id].append(update)
 
 
 async def send_album(context):
-    media_group_id = context.job.context[0]
+    media_group_id = context.job.data[0]
     updates = ALBUM_DICT[media_group_id]
 
     # delete from ALBUM_DICT
