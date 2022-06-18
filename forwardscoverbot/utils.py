@@ -18,8 +18,6 @@
 from functools import wraps
 from forwardscoverbot import config
 
-from telegram.ext.dispatcher import run_async
-
 
 def sep(num, none_is_zero=False):
     if num is None:
@@ -28,17 +26,17 @@ def sep(num, none_is_zero=False):
 
 
 
-def invalid_command(update, context):
+async def invalid_command(update, context):
     text = "This command is invalid"
-    update.message.reply_text(text=text, quote=True)
+    await update.message.reply_text(text=text, quote=True)
 
 
 def only_admin(func):
     @wraps(func)
-    def wrapped(update, context, *args, **kwargs):
+    async def wrapped(update, context, *args, **kwargs):
         if update.message.from_user.id not in config.ADMINS:
-            invalid_command(update, context, *args, **kwargs)
+            await invalid_command(update, context, *args, **kwargs)
             return
-        return func(update, context, *args, **kwargs)
+        return await func(update, context, *args, **kwargs)
     return wrapped
-
+    

@@ -15,9 +15,8 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
 from telegram import InputMedia, InputMediaPhoto, InputMediaVideo, InputMediaAudio, InputMediaDocument
-from telegram.ext import DispatcherHandlerStop
-from telegram import ChatAction
-from telegram import ParseMode
+from telegram.constants import ChatAction
+from telegram.constants import ParseMode
 
 
 ALBUM_DICT = {}
@@ -36,7 +35,7 @@ def chat_action(message):
     return action
 
 
-def collect_album_items(update, context):
+async def collect_album_items(update, context):
     """
     if the media_group_id not a key in the dictionary yet:
         - send sending action
@@ -48,7 +47,7 @@ def collect_album_items(update, context):
     """
     media_group_id = update.message.media_group_id
     if media_group_id not in ALBUM_DICT:
-        context.bot.sendChatAction(
+        await context.bot.sendChatAction(
             chat_id=update.message.from_user.id, 
             action=chat_action(update.message)
         )
@@ -59,7 +58,7 @@ def collect_album_items(update, context):
         ALBUM_DICT[media_group_id].append(update)
 
 
-def send_album(context):
+async def send_album(context):
     media_group_id = context.job.context[0]
     updates = ALBUM_DICT[media_group_id]
 
@@ -103,7 +102,7 @@ def send_album(context):
                     parse_mode=ParseMode.HTML
                 )
             )
-    context.bot.sendMediaGroup(
+    await context.bot.sendMediaGroup(
         chat_id=updates[0].message.from_user.id,
         media=media
     )

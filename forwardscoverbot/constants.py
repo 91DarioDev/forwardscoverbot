@@ -15,8 +15,4 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
 
-from forwardscoverbot import config
-
-from telegram import Bot
-
-GET_ME = Bot(config.BOT_TOKEN).getMe()
+GET_ME = None

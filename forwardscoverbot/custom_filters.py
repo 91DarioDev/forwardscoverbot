@@ -15,7 +15,7 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
 
-from telegram.ext import MessageFilter
+from telegram.ext.filters import MessageFilter
 
 class Album(MessageFilter):
 	def filter(self, message):
