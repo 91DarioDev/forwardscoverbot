@@ -76,7 +76,7 @@ def main():
 
 
     # handle errors
-    application.add_error_handler(error)
+    #application.add_error_handler(error)
 
     application.run_polling()
 
