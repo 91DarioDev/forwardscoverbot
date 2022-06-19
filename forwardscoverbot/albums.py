@@ -52,7 +52,7 @@ async def collect_album_items(update, context):
     else:
         - add update to the list of that media_group_id
     """
-    media_group_id = update.message.media_group_id
+    media_group_id = update.effective_message.media_group_id
     if media_group_id not in ALBUM_DICT:
         context.application.create_task(send_album_action(update, context), update=update)
         ALBUM_DICT[media_group_id] = [update]
