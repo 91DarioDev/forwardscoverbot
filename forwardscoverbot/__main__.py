@@ -57,7 +57,7 @@ async def before_serving(application):
 def main():
     print("\nrunning...")
     # define the application
-    application = Application.builder().token(config.BOT_TOKEN).concurrent_updates(True).post_init(before_serving).build()
+    application = Application.builder().token(config.BOT_TOKEN).post_init(before_serving).build()
     # messages
     application.add_handler(MessageHandler(filters.ALL, messages.before_processing), 0)
     # albums
