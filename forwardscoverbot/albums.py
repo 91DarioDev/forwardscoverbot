@@ -47,13 +47,13 @@ async def collect_album_items(update, context):
     """
     media_group_id = update.message.media_group_id
     if media_group_id not in ALBUM_DICT:
+        ALBUM_DICT[media_group_id] = [update]
+        # schedule the job
+        context.job_queue.run_once(send_album, 1, data=[media_group_id])
         await context.bot.sendChatAction(
             chat_id=update.message.from_user.id, 
             action=chat_action(update.message)
         )
-        ALBUM_DICT[media_group_id] = [update]
-        # schedule the job
-        context.job_queue.run_once(send_album, 1, data=[media_group_id])
     else:
         ALBUM_DICT[media_group_id].append(update)
 
