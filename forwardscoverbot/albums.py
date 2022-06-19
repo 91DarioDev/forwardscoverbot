@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2022  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -15,9 +15,8 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
 from telegram import InputMedia, InputMediaPhoto, InputMediaVideo, InputMediaAudio, InputMediaDocument
-from telegram.ext import DispatcherHandlerStop
-from telegram import ChatAction
-from telegram import ParseMode
+from telegram.constants import ChatAction
+from telegram.constants import ParseMode
 
 
 ALBUM_DICT = {}
@@ -36,7 +35,7 @@ def chat_action(message):
     return action
 
 
-def collect_album_items(update, context):
+async def collect_album_items(update, context):
     """
     if the media_group_id not a key in the dictionary yet:
         - send sending action
@@ -48,19 +47,19 @@ def collect_album_items(update, context):
     """
     media_group_id = update.message.media_group_id
     if media_group_id not in ALBUM_DICT:
-        context.bot.sendChatAction(
+        await context.bot.sendChatAction(
             chat_id=update.message.from_user.id, 
             action=chat_action(update.message)
         )
         ALBUM_DICT[media_group_id] = [update]
         # schedule the job
-        context.job_queue.run_once(send_album, 1, context=[media_group_id])
+        context.job_queue.run_once(send_album, 1, data=[media_group_id])
     else:
         ALBUM_DICT[media_group_id].append(update)
 
 
-def send_album(context):
-    media_group_id = context.job.context[0]
+async def send_album(context):
+    media_group_id = context.job.data[0]
     updates = ALBUM_DICT[media_group_id]
 
     # delete from ALBUM_DICT
@@ -103,7 +102,7 @@ def send_album(context):
                     parse_mode=ParseMode.HTML
                 )
             )
-    context.bot.sendMediaGroup(
+    await context.bot.sendMediaGroup(
         chat_id=updates[0].message.from_user.id,
         media=media
     )

@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2022  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -18,8 +18,6 @@
 from functools import wraps
 from forwardscoverbot import config
 
-from telegram.ext.dispatcher import run_async
-
 
 def sep(num, none_is_zero=False):
     if num is None:
@@ -28,17 +26,17 @@ def sep(num, none_is_zero=False):
 
 
 
-def invalid_command(update, context):
+async def invalid_command(update, context):
     text = "This command is invalid"
-    update.message.reply_text(text=text, quote=True)
+    await update.message.reply_text(text=text, quote=True)
 
 
 def only_admin(func):
     @wraps(func)
-    def wrapped(update, context, *args, **kwargs):
+    async def wrapped(update, context, *args, **kwargs):
         if update.message.from_user.id not in config.ADMINS:
-            invalid_command(update, context, *args, **kwargs)
+            await invalid_command(update, context, *args, **kwargs)
             return
-        return func(update, context, *args, **kwargs)
+        return await func(update, context, *args, **kwargs)
     return wrapped
-
+    

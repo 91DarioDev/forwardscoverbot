@@ -1,5 +1,5 @@
 # ForwardsCoverBot - don't let people on telegram forward with your name on the forward label
-# Copyright (C) 2017-2019  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
+# Copyright (C) 2017-2022  Dario <dariomsn@hotmail.it> (github.com/91DarioDev)
 #
 # ForwardsCoverBot is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -15,8 +15,4 @@
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
 
-from forwardscoverbot import config
-
-from telegram import Bot
-
-GET_ME = Bot(config.BOT_TOKEN).getMe()
+GET_ME = None
