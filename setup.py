@@ -30,7 +30,8 @@ setuptools.setup(
 
     install_requires=[
         "python-telegram-bot",
-        "Pyyaml"
+        "Pyyaml",
+        "aiosqlite"
     ],
 
     packages=[
