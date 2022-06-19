@@ -35,6 +35,13 @@ def chat_action(message):
     return action
 
 
+async def send_album_action(update, context):
+    await context.bot.sendChatAction(
+        chat_id=update.message.from_user.id, 
+        action=chat_action(update.message)
+    )
+
+
 async def collect_album_items(update, context):
     """
     if the media_group_id not a key in the dictionary yet:
@@ -47,13 +54,10 @@ async def collect_album_items(update, context):
     """
     media_group_id = update.message.media_group_id
     if media_group_id not in ALBUM_DICT:
+        context.application.create_task(send_album_action(update, context), update=update)
         ALBUM_DICT[media_group_id] = [update]
         # schedule the job
         context.job_queue.run_once(send_album, 1, data=[media_group_id])
-        await context.bot.sendChatAction(
-            chat_id=update.message.from_user.id, 
-            action=chat_action(update.message)
-        )
     else:
         ALBUM_DICT[media_group_id].append(update)
 
