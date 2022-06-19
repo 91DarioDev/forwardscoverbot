@@ -29,7 +29,7 @@ def chat_action(message):
     elif message.video:
         action = ChatAction.UPLOAD_VIDEO
     elif message.audio:
-        action = ChatAction.UPLOAD_AUDIO
+        action = ChatAction.UPLOAD_VOICE
     elif message.document:
         action = ChatAction.UPLOAD_DOCUMENT
     return action
