@@ -22,7 +22,7 @@ from forwardscoverbot import messages
 
 from telegram import MessageEntity
 from telegram.constants import ParseMode
-from telegram import constants as t_consts
+from telegram.constants import MessageLimit
 from telegram import InlineKeyboardButton
 from telegram import InlineKeyboardMarkup
 
@@ -134,10 +134,10 @@ async def add_caption(update, context):
     caption = " ".join(update.message.text.split(" ")[1:])
     caption_html = " ".join(update.message.text_html.split(" ")[1:])
 
-    if len(caption) > t_consts.MAX_CAPTION_LENGTH:
+    if len(caption) > MessageLimit.CAPTION_LENGTH:
         text = "This caption is too long. max allowed: {} chars. Please retry removing {} chars.".format(
-            t_consts.MAX_CAPTION_LENGTH,
-            len(caption) - t_consts.MAX_CAPTION_LENGTH
+            MessageLimit.CAPTION_LENGTH,
+            len(caption) - MessageLimit.CAPTION_LENGTH 
         )
         await context.bot.sendMessage(
             chat_id=update.message.from_user.id,
