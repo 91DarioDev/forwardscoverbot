@@ -24,6 +24,8 @@ from forwardscoverbot import messages
 from forwardscoverbot import utils
 from forwardscoverbot import albums
 from forwardscoverbot import custom_filters
+from forwardscoverbot import constants
+from forwardscoverbot import dbwrapper
 
 from telegram import Bot
 from telegram.ext import (
@@ -47,26 +49,30 @@ async def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 
+async def before_serving(application):
+    constants.GET_ME = await application.bot.getMe()
+    await dbwrapper.create_db()
+
+
 def main():
     print("\nrunning...")
     # define the application
-    application = Application.builder().token(config.BOT_TOKEN).build()
-    #await Bot(config.BOT_TOKEN).getMe()
+    application = Application.builder().token(config.BOT_TOKEN).concurrent_updates(True).post_init(before_serving).build()
     # messages
     application.add_handler(MessageHandler(filters.ALL, messages.before_processing), 0)
     # albums
     application.add_handler(MessageHandler(custom_filters.album, albums.collect_album_items), 1)
     # messages
-    application.add_handler(MessageHandler(filters.ALL, messages.process_message, block=False), 1)
+    application.add_handler(MessageHandler(filters.ALL, messages.process_message), 1)
     # commands
-    application.add_handler(CommandHandler(('start', 'help'), commands.help_command, block=False), 2)
+    application.add_handler(CommandHandler(('start', 'help'), commands.help_command), 2)
     application.add_handler(CommandHandler('stats', commands.stats), 2)
-    application.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview, block=False), 2)
-    application.add_handler(CommandHandler('removecaption', commands.remove_caption, block=False), 2)
-    application.add_handler(CommandHandler('removebuttons', commands.remove_buttons, block=False), 2)
-    application.add_handler(CommandHandler('addcaption', commands.add_caption, block=False), 2)
-    application.add_handler(CommandHandler('addbuttons', commands.add_buttons, block=False), 2)
-    application.add_handler(MessageHandler(filters.COMMAND, utils.invalid_command, block=False), 2)
+    application.add_handler(CommandHandler('disablewebpagepreview', commands.disable_web_page_preview), 2)
+    application.add_handler(CommandHandler('removecaption', commands.remove_caption), 2)
+    application.add_handler(CommandHandler('removebuttons', commands.remove_buttons), 2)
+    application.add_handler(CommandHandler('addcaption', commands.add_caption), 2)
+    application.add_handler(CommandHandler('addbuttons', commands.add_buttons), 2)
+    application.add_handler(MessageHandler(filters.COMMAND, utils.invalid_command), 2)
 
 
     # handle errors

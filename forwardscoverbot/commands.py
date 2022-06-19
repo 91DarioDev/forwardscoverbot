@@ -185,7 +185,7 @@ async def add_buttons(update, context):
 
 @utils.only_admin
 async def stats(update, context):
-    await update.message.reply_text(text=dbwrapper.stats_text(), parse_mode=ParseMode.HTML)
+    await update.message.reply_text(text=await dbwrapper.stats_text(), parse_mode=ParseMode.HTML)
 
 
 
