@@ -72,6 +72,8 @@ def main():
     application.add_handler(CommandHandler('removebuttons', commands.remove_buttons, block=False), 2)
     application.add_handler(CommandHandler('addcaption', commands.add_caption, block=False), 2)
     application.add_handler(CommandHandler('addbuttons', commands.add_buttons, block=False), 2)
+    application.add_handler(CommandHandler('removespoiler', commands.remove_spoiler, block=False), 2)
+    application.add_handler(CommandHandler('addspoiler', commands.add_spoiler, block=False), 2)
     application.add_handler(MessageHandler(filters.COMMAND, utils.invalid_command, block=False), 2)
 
 

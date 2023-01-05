@@ -62,7 +62,8 @@ def leave_only_url_buttons_in_reply_markup(inline_keyboard):
 
 async def process_message(
         update, context, message=None, remove_caption=False, custom_caption=None, 
-        remove_buttons=False, custom_reply_markup=None, disable_web_page_preview=False):
+        remove_buttons=False, custom_reply_markup=None, disable_web_page_preview=False,
+        spoiler_action=None):
 
     if not message:
         message = update.effective_message
@@ -91,6 +92,14 @@ async def process_message(
         reply_markup = None
 
 
+    new_spoiler = message.has_media_spoiler
+    if spoiler_action:
+        if spoiler_action == 'add':
+            new_spoiler = True
+        if spoiler_action == 'remove':
+            new_spoiler = False
+
+
     if message.text:
         await message.reply_text(
             text=message.text_html, 
@@ -117,7 +126,7 @@ async def process_message(
             caption=caption, 
             parse_mode=ParseMode.HTML, 
             reply_markup=reply_markup,
-            has_spoiler=message.has_media_spoiler 
+            has_spoiler=new_spoiler
         )
 
     elif message.animation:
@@ -127,7 +136,7 @@ async def process_message(
             caption=caption, 
             parse_mode=ParseMode.HTML, 
             reply_markup=reply_markup,
-            has_spoiler=message.has_media_spoiler 
+            has_spoiler=new_spoiler
         )
 
     elif message.sticker:
@@ -172,7 +181,7 @@ async def process_message(
             caption=caption, 
             parse_mode=ParseMode.HTML, 
             reply_markup=reply_markup,
-            has_spoiler=message.has_media_spoiler
+            has_spoiler=new_spoiler
         )
 
     elif message.contact:

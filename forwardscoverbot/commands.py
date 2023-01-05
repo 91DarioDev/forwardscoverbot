@@ -41,7 +41,9 @@ async def help_command(update, context):
         "/removecaption\n"
         "/addcaption\n"
         "/removebuttons\n"
-        "/addbuttons"
+        "/addbuttons\n"
+        "/addspoiler\n"
+        "/removespoiler\n"
     )
     await update.message.reply_text(text=text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
 
@@ -85,13 +87,48 @@ async def remove_caption(update, context):
         await context.bot.sendMessage(
             chat_id=update.message.from_user.id,
             text=text,
-            reply_to_message_id=update.message.reply_to_message.message_id,
-            quote=True
+            reply_to_message_id=update.message.reply_to_message.message_id
         )
         return
 
     await messages.process_message(update=update, context=context, message=update.message.reply_to_message, remove_caption=True)
 
+
+
+async def add_spoiler(update, context):
+    await handle_spoiler(update, context, 'add')
+
+
+async def remove_spoiler(update, context):
+    await handle_spoiler(update, context, 'remove')
+
+
+async def handle_spoiler(update, context, spoiler_action):
+    if not update.message.reply_to_message:
+        if spoiler_action == 'add':
+            text = (
+                "This command permits to add a spoiler to a message. Reply with this command to "
+                "the message where you want to add the spoiler."
+            )
+        elif spoiler_action == 'remove':
+            text = (
+                "This command permits to remove the spoiler from a message. Reply with this command to "
+                "the message where you want to remove the spoiler."
+            )
+        await update.message.reply_text(text=text)
+        return
+
+    
+    if not (update.message.reply_to_message.photo or update.message.reply_to_message.video or update.message.reply_to_message.animation):
+        text = "This message doesn't support spoilers."
+        await context.bot.sendMessage(
+            chat_id=update.message.from_user.id,
+            text=text,
+            reply_to_message_id=update.message.reply_to_message.message_id,
+        )
+        return
+
+    await messages.process_message(update=update, context=context, message=update.message.reply_to_message, spoiler_action=spoiler_action)
 
 
 async def remove_buttons(update, context):
@@ -108,8 +145,7 @@ async def remove_buttons(update, context):
         await context.bot.sendMessage(
             chat_id=update.message.from_user.id,
             text=text,
-            reply_to_message_id=update.message.reply_to_message.message_id,
-            quote=True
+            reply_to_message_id=update.message.reply_to_message.message_id
         )
         return
 
@@ -142,8 +178,7 @@ async def add_caption(update, context):
         await context.bot.sendMessage(
             chat_id=update.message.from_user.id,
             text=text,
-            reply_to_message_id=update.message.reply_to_message.message_id,
-            quote=True
+            reply_to_message_id=update.message.reply_to_message.message_id
         )
         return
 
