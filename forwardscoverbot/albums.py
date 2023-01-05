@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
-from telegram import InputMedia, InputMediaPhoto, InputMediaVideo, InputMediaAudio, InputMediaDocument
+from telegram import InputMedia, InputMediaPhoto, InputMediaVideo, InputMediaAudio, InputMediaDocument, InputMediaAnimation
 from telegram.constants import ChatAction
 from telegram.constants import ParseMode
 
@@ -79,7 +79,8 @@ async def send_album(context):
                 InputMediaPhoto(
                     media=update.message.photo[-1].file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
-                    parse_mode=ParseMode.HTML
+                    parse_mode=ParseMode.HTML,
+                    has_spoiler=update.message.has_media_spoiler 
                 )
             )
         elif update.message.video:
@@ -87,7 +88,8 @@ async def send_album(context):
                 InputMediaVideo(
                     media=update.message.video.file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
-                    parse_mode=ParseMode.HTML
+                    parse_mode=ParseMode.HTML,
+                    has_spoiler=update.message.has_media_spoiler 
                 )
             )
         elif update.message.audio:
@@ -96,6 +98,15 @@ async def send_album(context):
                     media=update.message.audio.file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
                     parse_mode=ParseMode.HTML
+                )
+            )
+        elif update.message.animation:
+            media.append(
+                InputMediaAnimation(
+                    media=update.message.animation.file_id,
+                    caption='' if update.message.caption is None else update.message.caption_html,
+                    parse_mode=ParseMode.HTML,
+                    has_spoiler=update.message.has_media_spoiler 
                 )
             )
         elif update.message.document:

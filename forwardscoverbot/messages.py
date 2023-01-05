@@ -116,7 +116,18 @@ async def process_message(
             photo=media, 
             caption=caption, 
             parse_mode=ParseMode.HTML, 
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            has_spoiler=message.has_media_spoiler 
+        )
+
+    elif message.animation:
+        media = message.animation.file_id
+        await message.reply_animation(
+            animation=media, 
+            caption=caption, 
+            parse_mode=ParseMode.HTML, 
+            reply_markup=reply_markup,
+            has_spoiler=message.has_media_spoiler 
         )
 
     elif message.sticker:
@@ -160,7 +171,8 @@ async def process_message(
             duration=duration, 
             caption=caption, 
             parse_mode=ParseMode.HTML, 
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            has_spoiler=message.has_media_spoiler
         )
 
     elif message.contact:
