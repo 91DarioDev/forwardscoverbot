@@ -24,9 +24,7 @@
 bot_token : " 6189234125:AAFjbG62setPOD0kDI3bBayqx8tyCrtGMq4 "
 
 # اسم قاعدة البيانات (نوع: str)
-db_path : " https://github.com/91DarioDev/forwardscoverbot
-cd forwardscoverbot
-pip install . "
+db_path : " https://github.com/91DarioDev/forwardscoverbot "
 
 # قائمة تحتوي على معرفات برقية لمسؤولي الروبوت (النوع: معرفات int)
 المشرفون :
