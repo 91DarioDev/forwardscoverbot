@@ -29,7 +29,7 @@ setuptools.setup(
     author_email="dariomsn@hotmail.it",
 
     install_requires=[
-        "python-telegram-bot",
+        "python-telegram-bot[ext]==20.3",
         "Pyyaml",
         "aiosqlite"
     ],

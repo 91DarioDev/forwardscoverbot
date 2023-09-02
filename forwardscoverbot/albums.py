@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with ForwardsCoverBot.  If not, see <http://www.gnu.org/licenses/>
 
-from telegram import InputMedia, InputMediaPhoto, InputMediaVideo, InputMediaAudio, InputMediaDocument
+from telegram import InputMedia, InputMediaPhoto, InputMediaVideo, InputMediaAudio, InputMediaDocument, InputMediaAnimation
 from telegram.constants import ChatAction
 from telegram.constants import ParseMode
 
@@ -29,10 +29,17 @@ def chat_action(message):
     elif message.video:
         action = ChatAction.UPLOAD_VIDEO
     elif message.audio:
-        action = ChatAction.UPLOAD_AUDIO
+        action = ChatAction.UPLOAD_VOICE
     elif message.document:
         action = ChatAction.UPLOAD_DOCUMENT
     return action
+
+
+async def send_album_action(update, context):
+    await context.bot.sendChatAction(
+        chat_id=update.message.from_user.id, 
+        action=chat_action(update.message)
+    )
 
 
 async def collect_album_items(update, context):
@@ -45,12 +52,9 @@ async def collect_album_items(update, context):
     else:
         - add update to the list of that media_group_id
     """
-    media_group_id = update.message.media_group_id
+    media_group_id = update.effective_message.media_group_id
     if media_group_id not in ALBUM_DICT:
-        await context.bot.sendChatAction(
-            chat_id=update.message.from_user.id, 
-            action=chat_action(update.message)
-        )
+        context.application.create_task(send_album_action(update, context), update=update)
         ALBUM_DICT[media_group_id] = [update]
         # schedule the job
         context.job_queue.run_once(send_album, 1, data=[media_group_id])
@@ -75,7 +79,8 @@ async def send_album(context):
                 InputMediaPhoto(
                     media=update.message.photo[-1].file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
-                    parse_mode=ParseMode.HTML
+                    parse_mode=ParseMode.HTML,
+                    has_spoiler=update.message.has_media_spoiler 
                 )
             )
         elif update.message.video:
@@ -83,7 +88,8 @@ async def send_album(context):
                 InputMediaVideo(
                     media=update.message.video.file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
-                    parse_mode=ParseMode.HTML
+                    parse_mode=ParseMode.HTML,
+                    has_spoiler=update.message.has_media_spoiler 
                 )
             )
         elif update.message.audio:
@@ -92,6 +98,15 @@ async def send_album(context):
                     media=update.message.audio.file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
                     parse_mode=ParseMode.HTML
+                )
+            )
+        elif update.message.animation:
+            media.append(
+                InputMediaAnimation(
+                    media=update.message.animation.file_id,
+                    caption='' if update.message.caption is None else update.message.caption_html,
+                    parse_mode=ParseMode.HTML,
+                    has_spoiler=update.message.has_media_spoiler 
                 )
             )
         elif update.message.document:
