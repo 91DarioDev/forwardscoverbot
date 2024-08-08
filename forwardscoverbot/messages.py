@@ -105,7 +105,7 @@ async def process_message(
             text=message.text_html, 
             parse_mode=ParseMode.HTML, 
             reply_markup=reply_markup,
-            disable_web_page_preview=disable_web_page_preview
+            link_preview_options=message.link_preview_options if not disable_web_page_preview else {'is_disabled': True}
         )
 
     elif message.voice:
