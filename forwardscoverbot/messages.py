@@ -126,7 +126,8 @@ async def process_message(
             caption=caption, 
             parse_mode=ParseMode.HTML, 
             reply_markup=reply_markup,
-            has_spoiler=new_spoiler
+            has_spoiler=new_spoiler,
+            show_caption_above_media=message.show_caption_above_media
         )
 
     elif message.animation:
@@ -136,7 +137,8 @@ async def process_message(
             caption=caption, 
             parse_mode=ParseMode.HTML, 
             reply_markup=reply_markup,
-            has_spoiler=new_spoiler
+            has_spoiler=new_spoiler,
+            show_caption_above_media=message.show_caption_above_media
         )
 
     elif message.sticker:
@@ -181,7 +183,8 @@ async def process_message(
             caption=caption, 
             parse_mode=ParseMode.HTML, 
             reply_markup=reply_markup,
-            has_spoiler=new_spoiler
+            has_spoiler=new_spoiler,
+            show_caption_above_media=message.show_caption_above_media
         )
 
     elif message.contact:

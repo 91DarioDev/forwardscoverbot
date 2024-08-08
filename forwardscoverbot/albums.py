@@ -80,7 +80,8 @@ async def send_album(context):
                     media=update.message.photo[-1].file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
                     parse_mode=ParseMode.HTML,
-                    has_spoiler=update.message.has_media_spoiler 
+                    has_spoiler=update.message.has_media_spoiler,
+                    show_caption_above_media=updates[0].message.show_caption_above_media
                 )
             )
         elif update.message.video:
@@ -89,7 +90,8 @@ async def send_album(context):
                     media=update.message.video.file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
                     parse_mode=ParseMode.HTML,
-                    has_spoiler=update.message.has_media_spoiler 
+                    has_spoiler=update.message.has_media_spoiler,
+                    show_caption_above_media=updates[0].message.show_caption_above_media
                 )
             )
         elif update.message.audio:
@@ -106,7 +108,8 @@ async def send_album(context):
                     media=update.message.animation.file_id,
                     caption='' if update.message.caption is None else update.message.caption_html,
                     parse_mode=ParseMode.HTML,
-                    has_spoiler=update.message.has_media_spoiler 
+                    has_spoiler=update.message.has_media_spoiler,
+                    show_caption_above_media=updates[0].message.show_caption_above_media
                 )
             )
         elif update.message.document:
