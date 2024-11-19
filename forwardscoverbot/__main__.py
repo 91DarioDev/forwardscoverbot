@@ -45,6 +45,12 @@ logger = logging.getLogger(__name__)
 aps_logger = logging.getLogger('apscheduler')
 aps_logger.setLevel(logging.WARNING)
 
+
+# disable httpx logging
+httpx_logger = logging.getLogger('httpx')
+httpx_logger.setLevel(logging.WARNING)
+
+
 async def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
